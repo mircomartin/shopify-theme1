@@ -1,0 +1,40 @@
+# Git Ignore Base
+# Add your personal files/folders to this file BEFORE
+# starting a new proyect or moving an old one.
+
+# -------
+# Folders
+# -------
+
+build/
+zz-assets/
+.sass-cache/
+node_modules/
+
+# ---------------------------------------------------------------------------- #
+#                                Common - System                               #
+# ---------------------------------------------------------------------------- #
+*~
+.DS_Store
+.svn
+.cvs
+*.bak
+*.swp
+Thumbs.db
+
+# ---------------------------------------------------------------------------- #
+#                               Development Tools                              #
+# ---------------------------------------------------------------------------- #
+/node_modules
+/npm-debug.log
+
+# ---------------------------------------------------------------------------- #
+#                                Compiled assets                               #
+# ---------------------------------------------------------------------------- #
+*.map
+dist/*
+build/
+public/*
+!public/assets
+.sass-cache/
+node_modules/
