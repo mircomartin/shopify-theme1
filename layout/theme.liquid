@@ -10,8 +10,14 @@
   {{ content_for_header }} <!-- Header hook for plugins -->
   {{ 'application.css' | asset_url | stylesheet_tag }}
   {{ 'application.js' | asset_url | script_tag }}
+
+  <!--Libraries-->
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+  
 </head>
-<body>
+<body
+  class="font-sans"
+>
 
   <header>
     {% section 'header' %}
@@ -20,5 +26,10 @@
   <main role="main">
     {{ content_for_layout }}
   </main>
+
+  <footer>
+
+  </footer>
+  
 </body>
 </html>

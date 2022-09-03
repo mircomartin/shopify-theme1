@@ -1,0 +1,41 @@
+<div class="my-10">
+	<h1 
+		style="border-bottom: 1px dotted black"
+		class="text-2xl tracking-widest font-bold pb-2"
+	>
+	{{ section.settings.title | upcase }}
+	</h1>
+	<h4 class="text-xs font-normal my-3">{{ section.settings.subtext_title | upcase }}</h4>
+	{% if section.settings.button_url == blank %}
+		{% assign shop_url = shop.secure_url %}
+		{% else %}
+		{% assign shop_url = section.settings.button_url %}
+	{% endif %}
+	<a href="{{shop_url}}" class="inline-block text-sm border-black border hover:bg-black hover:text-white uppercase px-5 py-3">Back To Home</a>
+</div>
+
+{% schema %}
+{
+	"name": "Template 404",
+	"class": "container mx-auto h-screen",
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "404 Heading Title",
+			"default": "OOPS - WE COULDN'T FIND THAT ONE"
+		},
+		{
+			"type": "text",
+			"id": "subtext_title",
+			"label": "404 Subtext Title",
+			"default": "THIS PAGE DOES NOT EXIST. TRY SEARCHING FOR WHAT YOU WOULD LIKE TO FIND."
+		},
+		{
+			"type": "url",
+			"id": "button_url",
+			"label": "Button URL"
+		}
+	]
+}
+{% endschema %}
