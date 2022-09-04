@@ -4,9 +4,9 @@
 	{% assign main_menu_linklist = section.settings.menu.links %}
 {% endif %}
 
-<div class="relative bg-white" x-data="{ mobileMenuOpen: false}">
+<div class="relative bg-white md:mb-12" x-data="{ mobileMenuOpen: false}">
 	<div class="mx-auto px-4 sm:px-6">
-		<div class="flex justify-center items-center pb-6 md:justify-start md:space-x-10">
+		<div class="flex justify-center items-center md:justify-start md:space-x-10">
 			
 			<!-- Store name / logo -->
 			<section class="flex justify-start truncate">
@@ -29,35 +29,33 @@
 					{% if link.links != blank %}
 					{% assign link_handle = link.handle | replace: '-', '_' %}
 
-						<div class="relative" x-data="{ {{link_handle}}: false}">
-							<button @click="{{link_handle}} = true" 
+						<div x-data="{ {{link_handle}}: false}" @mouseleave="{{link_handle}} = false">
+							<button @mouseover="{{link_handle}} = true" 
 							class="inline-flex items-center gap-2 text-black text-base font-medium tracking-wide hover:bg-stone-100 p-5">
 								{{ link.title | upcase }}
 								{% render 'icon-dropdown' %}
 							</button>
 
 							<div 
-								x-show="{{link_handle}}" @click.away="{{link_handle}} = false"
+								x-show="{{link_handle}}"
 								x-transition:enter="transition ease-out duration-300"
 								x-transition:enter-start="opacity-0 transform scale-90"
 								x-transition:enter-end="opacity-100 transform scale-100"
 								x-transition:leave="transition ease-in duration-300"
 								x-transition:leave-start="opacity-100 transform scale-100"
 								x-transition:leave-end="opacity-0 transform scale-90"
-								class="absolute z-10 -ml-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-								<div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
-									<div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-										{% for childlink in link.links %}
-											<a href="{{childlink.url}}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-100 p-5">
-												<div class="ml-4">
-													<p class="text-black text-base font-medium tracking-wide hover:bg-stone-100">
-														{{childlink.title | upcase }}
-													</p>
-												</div>
-											</a>
-										{% endfor %}
-									</div>
-								</div>
+								class="absolute left-0 w-full bg-stone-100">
+								
+								<ul class="flex">
+									{% for childlink in link.links %}
+									<li>
+										<a href="{{childlink.url}}" class="py-4 px-5 text-xs font-bold tracking-wide inline-block">
+											{{childlink.title | upcase }}
+										</a>
+									</li>
+									{% endfor %}
+								</ul>
+								
 							</div>
 
 						</div>
@@ -68,21 +66,21 @@
 			</nav>
 
 			<!-- Cart/User -->
-			<section class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
-				<a href="/cart" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
-					{% render 'icon-shopping-bag' %}
-				</a>
+			<section class="hidden md:flex items-center justify-end md:flex-1 md:gap-x-2.5">
 
 				{% if shop.customer_accounts_enabled %}
 					{% if customer %}
 						<a href="/account" class="text-base text-gray-500 hover:text-gray-900">Account</a>
 						{{ 'Log out' | customer_logout_link | replace: '<a', '<a class="text-base text-gray-500 hover-text-gray-900"' }}
 						{% else %}
-						{{ 'Log in' | customer_login_link | replace: '<a', '<a class="text-base text-gray-500 hover-text-gray-900"' }}
-						{{ 'Register' | customer_register_link | replace: '<a', '<a class="text-base text-gray-500 hover-text-gray-900"' }}
+						{% render 'icon-user' %}
 					{% endif %}
 					
 				{% endif %}
+				<a href="/cart">
+					{% render 'icon-shopping-bag' %}
+				</a>
+
 			</section>
 
 			<!--Mobile Menu Container-->
