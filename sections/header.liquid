@@ -4,16 +4,36 @@
 	{% assign main_menu_linklist = section.settings.menu.links %}
 {% endif %}
 
-<div class="relative bg-white md:mb-12" x-data="{ mobileMenuOpen: false}">
+<div class="relative bg-white py-4 md:py-0 md:mb-12" x-data="{ mobileMenuOpen: false}">
 	<div class="mx-auto px-4 sm:px-6">
 		<div class="flex justify-center items-center md:justify-start md:space-x-10">
 			
 			<!-- Store name / logo -->
 			<section class="flex justify-start truncate">
-				<h1 class="text-xl font-bold truncate">
-					{{shop.name}}
-				</h1>
+
+				<a href="{{shop.secure_url}}" class="inline-block no-underline">
+					{% if settings.logo == blank and settings.logoSVG == blank %}
+						<h1 class="text-xl font-bold truncate">
+							{{shop.name}}
+						</h1>
+					{% else %}
+					
+						{% assign logo = settings.logoSVG %}
+						{% if logo == blank %}
+							{% assign logo = settings.logo %}
+							<figure class="m-0 max-w-xs overflow-hidden">
+								<img src="{{logo | img_url: 'small'}}" alt="{{logo.image.alt}}" class="w-full"/>
+							</figure>
+						{% else %}
+							{% render 'logo-svg' logo:logo %}
+						{% endif %}
+						
+					{% endif %}
+				</a>
+				
 			</section>
+
+			<!--Hamburger Menu-->
 			<div class="-mr-2 -my-2 ml-3 md:hidden">
 				<button 
 					@click="mobileMenuOpen = true"

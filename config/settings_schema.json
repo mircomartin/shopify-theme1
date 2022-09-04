@@ -3,10 +3,20 @@
     "name": "General Settings",
     "settings": [
       {
+        "type": "header",
+        "content": "Logo Selection"
+      },
+      {
         "type": "image_picker",
-        "id": "id",
-        "label": "label"
-      }
+        "id": "logo",
+        "label": "Logo Image"
+      },
+      {
+				"type": "html",
+				"id": "logoSVG",
+				"label": "Logo SVG",
+				"info": "The SVG has priority over Logo Image"
+			}
     ]
   }
 ]
