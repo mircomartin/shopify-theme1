@@ -8,16 +8,19 @@
           "settings": {
           }
         },
-        "content": {
+        "269fa7a5-a48e-4985-94a9-cd5da5773539": {
           "type": "article_content",
           "settings": {
           }
         }
       },
       "block_order": [
-        "title"
+        "title",
+        "269fa7a5-a48e-4985-94a9-cd5da5773539"
       ],
       "settings": {
+        "enable_author": true,
+        "enable_published_date": true
       }
     }
   },
