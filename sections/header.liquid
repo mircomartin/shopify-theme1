@@ -4,43 +4,45 @@
 	{% assign main_menu_linklist = section.settings.menu.links %}
 {% endif %}
 
-<div class="relative bg-white py-4 md:py-0 md:mb-12" x-data="{ mobileMenuOpen: false}">
-	<div class="mx-auto px-4 sm:px-6">
-		<div class="flex justify-center items-center md:justify-start md:space-x-10">
+<div class="relative bg-white py-5 md:py-0 md:mb-12" x-data="{ mobileMenuOpen: false}">
+	<div class="mx-auto px-3 sm:px-6">
+		<div class="flex justify-between items-center md:justify-start md:space-x-10">
 			
-			<!-- Store name / logo -->
-			<section class="flex justify-start truncate">
-
-				<a href="{{shop.secure_url}}" class="inline-block no-underline">
-					{% if settings.logo == blank and settings.logoSVG == blank %}
-						<h1 class="text-xl font-bold truncate">
-							{{shop.name}}
-						</h1>
-					{% else %}
-					
-						{% assign logo = settings.logoSVG %}
-						{% if logo == blank %}
-							{% assign logo = settings.logo %}
-							<figure class="m-0 max-w-xs overflow-hidden">
-								<img src="{{logo | img_url: 'small'}}" alt="{{logo.image.alt}}" class="w-full"/>
-							</figure>
+			<div class="flex justify-start items-center truncate gap-x-2 md:gap-x-0">
+				<!--Hamburger Menu-->
+				<div class="flex md:hidden">
+					<button 
+						@click="mobileMenuOpen = true"
+						class="focus:outline-none"
+						type="button">
+						{% render 'icon-menu' %}
+					</button>
+				</div>
+	
+				<!-- Store name / logo -->
+				<section >
+	
+					<a href="{{shop.secure_url}}" class="flex no-underline">
+						{% if settings.logo == blank and settings.logoSVG == blank %}
+							<h1 class="text-xl font-bold truncate">
+								{{shop.name}}
+							</h1>
 						{% else %}
-							{% render 'logo-svg', logo:logo %}
-						{% endif %}
 						
-					{% endif %}
-				</a>
-				
-			</section>
-
-			<!--Hamburger Menu-->
-			<div class="-mr-2 -my-2 ml-3 md:hidden">
-				<button 
-					@click="mobileMenuOpen = true"
-					class="bg-white p-2 inline-flex items-center justify-center focus:outline-none"
-					type="button">
-					{% render 'icon-menu' %}
-				</button>
+							{% assign logo = settings.logoSVG %}
+							{% if logo == blank %}
+								{% assign logo = settings.logo %}
+								<figure class="m-0 max-w-xs overflow-hidden">
+									<img src="{{logo | img_url: 'small'}}" alt="{{logo.image.alt}}" class="w-full"/>
+								</figure>
+							{% else %}
+								{% render 'logo-svg', logo:logo %}
+							{% endif %}
+							
+						{% endif %}
+					</a>
+					
+				</section>
 			</div>
 
 			<!-- Nav Menu -->
@@ -86,14 +88,16 @@
 			</nav>
 
 			<!-- Cart/User -->
-			<section class="hidden md:flex items-center justify-end md:flex-1 md:gap-x-2.5">
+			<section class="flex items-center justify-end md:flex-1 gap-x-2.5">
 
 				{% if shop.customer_accounts_enabled %}
 					{% if customer %}
 						<a href="/account" class="text-base text-gray-500 hover:text-gray-900">Account</a>
 						{{ 'Log out' | customer_logout_link | replace: '<a', '<a class="text-base text-gray-500 hover-text-gray-900"' }}
 						{% else %}
-						{% render 'icon-user' %}
+						<a href="/account" class="cursor-pointer">
+							{% render 'icon-user' %}
+						</a>
 					{% endif %}
 					
 				{% endif %}
@@ -105,23 +109,23 @@
 
 			<!--Mobile Menu Container-->
 			<section 
-			@click.away="mobileMenuOpen = false"
-			x-show="mobileMenuOpen"
-			class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+				@click.away="mobileMenuOpen = false"
+				x-show="mobileMenuOpen"
+				class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
 				<div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
-					<div class="p-5 divide-y-2 divide-gray-50">
+					<div class="p-2.5 divide-y-2 divide-gray-50">
 
 						<!--Mobile Menu header Close Button-->
 						<div class="flex items-center justify-between pb-3">
 							<div>
-								<h1 class="text-lg text-gray-500">
+								<h1 class="text-lg text-black">
 									{{section.settings.mobile_menu_title}}
 								</h1>
 							</div>
 							<div class="-mr-2">
 								<button 
 									@click="mobileMenuOpen = false"
-									class="bg-white rounded-md p-2 text-gray-500" type="button">
+									class="bg-white rounded-md p-2 text-black" type="button">
 									{% render 'icon-close' %}
 								</button>
 							</div>
@@ -129,27 +133,27 @@
 
 						<!--Navigation Links-->
 						<div class="pt-3">
-							<nav class="grid gap-y-7">
+							<nav class="grid gap-y-5">
 								{% for link in main_menu_linklist %}
 									{% if link.links != blank %}
 									{% assign mobile_link_handle = link.handle | replace: '-', '_' %}
 										<div class="relative"  x-data="{ {{mobile_link_handle}}: false}"">
 											<button 
 											@click="{{mobile_link_handle}} = true"
-											class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
+											class="text-xs text-black uppercase flex items-center justify-between w-full">
 												{{link.title}}
 												{% render 'icon-dropdown' %}
 											</button>
-											<div class="grid gap-y-7 py-3"
+											<div class="grid gap-y-1.5 mt-1.5"
 											x-show="{{mobile_link_handle}}" @click.away="{{mobile_link_handle}} = false"
 											>
 												{% for childlink in link.links %}
-													<a href="{{childlink.url}}" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50"><span class="ml-3">{{childlink.title}}</span></a>
+													<a href="{{childlink.url}}" class="flex items-center rounded-md text-black text-xs uppercase"><span class="ml-3">{{childlink.title}}</span></a>
 												{% endfor %}
 											</div>
 										</div>
 									{% else %}
-										<a href="{{link.url}}">{{link.title}}</a>
+										<a href="{{link.url}}" class="text-xs text-black uppercase">{{link.title}}</a>
 									{% endif %}
 									
 								{% endfor %}

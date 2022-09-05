@@ -16,6 +16,25 @@
         "id": "logoSVG",
         "label": "Logo SVG",
         "info": "The SVG has priority over Logo Image"
+      },
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "header",
+        "content": "Topbar"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_topbar",
+        "label": "Hide Topbar",
+        "default": false
       }
     ]
   }

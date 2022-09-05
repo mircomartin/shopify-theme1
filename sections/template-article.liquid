@@ -2,7 +2,10 @@
 	{% for block in section.blocks %}
 		
 	{% if block.type == "article_title" %}
-	<section style="background: url('{{article.image | img_url: 'grande'}}') no-repeat center; height: 500px; max-height: 600px; background-size:cover;" class="flex items-center justify-center" >
+	<section 
+		style="background: url('{{article.image | img_url: 'grande'}}') no-repeat center; height: 500px; max-height: 600px; background-size:cover;" 
+		class="flex items-center justify-center" 
+	>
 		<div class="flex flex-col gap-2 items-center backdrop-blur-md bg-black/30 w-4/5 py-4">
 
 			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider">{{article.title | upcase}}</h1>
@@ -29,12 +32,52 @@
 </article>
 
 {% if blog.comments_enabled? %}
-	<section id="comments" class="my-8 mx-auto container">
+	<section id="comments" class="my-8 mx-auto container max-w-4xl">
 		{% if article.comments_count > 0 %}
 
 		{% else %}
 		<p>There are no comments in this article.</p>
 		{% endif %}
+	</section>
+
+	<section id="comment_form" class="mb-8 mx-auto container max-w-4xl">
+		{% form 'new_comment', article %}
+			<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
+				<div class="">
+					<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
+					<input 
+						type="text" 
+						name="comment[author]" 
+						id="comment_author"
+						class="w-full text-black border py-3 px-4 mb-3 focus:outline-none" 
+						placeholder="Name"
+						required
+					/>
+				</div>
+				<div class="">
+					<label for="comment_email" class="text-black font-medium uppercase text-xs mb-2">Email</label>
+					<input 
+						type="email" 
+						name="comment[email]" 
+						id="comment_email"
+						class="w-full text-black border py-3 px-4 mb-3 focus:outline-none" 
+						placeholder="email@youremail.com"
+						required
+					/>
+				</div>
+			</div>
+			<div class="px-1 md:flex mb-3 mx-auto">
+				<div class="md:w-full px-3">
+					<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
+					<textarea 
+						class="w-full text-black resize-none h-20 py-2 px-3 border focus:outline-none"
+						name="comment[body]" 
+						id="comment_content" 
+						required>
+					</textarea>
+				</div>
+			</div>
+		{% endform %}
 	</section>
 {% endif %}
 

@@ -1,0 +1,49 @@
+<script>
+	$(document).ready(function () {
+		$('.responsive.topbar').slick({
+			dots: false,
+			arrows: false,
+			infinite: true,
+			autoplay: true,
+			speed: 600,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			fade: true,
+			cssEase: 'linear'
+			
+		});
+	});
+</script>
+
+<section id="topbar" class="bg-stone-100 py-5">
+	<div class="container mx-auto">
+		<div class="responsive topbar">
+			{% for block in section.blocks %}
+			{{block.settings.message_topbar | replace: '<p', '<p class="text-center text-sm uppercase"'}}
+			{% endfor %}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Topbar",
+	"settings": [
+	
+	],
+	"blocks":[
+		{
+			"type": "message",
+			"name": "Message Topbar",
+			"settings": [
+				{
+					"type": "richtext",
+					"id": "message_topbar",
+					"label": "Message",
+					"default": "<p>FREE SHIPPING for Hurley Rewards Club Members Only  |  Join now</p>"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
