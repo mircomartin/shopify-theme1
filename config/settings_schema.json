@@ -12,11 +12,11 @@
         "label": "Logo Image"
       },
       {
-				"type": "html",
-				"id": "logoSVG",
-				"label": "Logo SVG",
-				"info": "The SVG has priority over Logo Image"
-			}
+        "type": "html",
+        "id": "logoSVG",
+        "label": "Logo SVG",
+        "info": "The SVG has priority over Logo Image"
+      }
     ]
   }
 ]

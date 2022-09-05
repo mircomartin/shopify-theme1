@@ -1,14 +1,69 @@
-<section class="mx-auto p-4 w-full md:p-0 md:w-1/2">
-	<div style="background: url('{{article.image | img_url: 'grande'}}') no-repeat center; height: 500px; background-size:cover;" class="flex items-center justify-center" >
-		<div class="flex flex-col gap-2">
-			<h1 class="text-2xl text-white font-bold tracking-wider">{{article.title | upcase}}</h1>
-			<small class="text-white">{{article.author | upcase}}</small>
-			<time datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-white">{{article.published_at | date: '%Y-%m-%d'}}</time>
-		</div>
-	</div>
-	
-	<article>
-		{{article.content}}
-	</article>
+<article class="mx-auto p-4 w-full md:p-0 md:w-1/2 flex flex-col gap-y-10">
+	{% for block in section.blocks %}
+		
+	{% if block.type == "article_title" %}
+	<section style="background: url('{{article.image | img_url: 'grande'}}') no-repeat center; height: 500px; max-height: 600px; background-size:cover;" class="flex items-center justify-center" >
+		<div class="flex flex-col gap-2 items-center backdrop-blur-md bg-black/30 w-4/5 py-4">
 
-</section>
+			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider">{{article.title | upcase}}</h1>
+
+			{% if section.settings.enable_author %}
+			<small class="text-white text-sm"><strong>Author:</strong> {{article.author | upcase}}</small>				
+			{% endif %}
+
+			{% if section.settings.enable_published_date %}
+			<time datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-white text-sm"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>				
+			{% endif %}
+
+		</div>
+	</section>
+	{% endif %}
+
+	{% if block.type == "article_content" %}
+	<section class="px-1 md:px-14">
+		{{ article.content | replace: '<p', '<p class="text-xs uppercase text-justify"'}}
+	</section>
+	{% endif %}
+
+	{% endfor %}
+</article>
+
+{% if blog.comments_enabled? %}
+	<section id="comments" class="my-8 mx-auto container">
+		{% if article.comments_count > 0 %}
+
+		{% else %}
+		<p>There are no comments in this article.</p>
+		{% endif %}
+	</section>
+{% endif %}
+
+{% schema %}
+{
+	"name":"Template Article",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "enable_author",
+			"label": "Display Author Name.",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_published_date",
+			"label": "Display published data",
+			"default": true
+		}
+	],
+	"blocks": [
+		{
+			"type": "article_title",
+			"name": "Title"
+		},
+		{
+			"type": "article_content",
+			"name": "Content"
+		}
+	]
+}
+{% endschema %}

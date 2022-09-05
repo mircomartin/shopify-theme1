@@ -25,7 +25,7 @@
 								<img src="{{logo | img_url: 'small'}}" alt="{{logo.image.alt}}" class="w-full"/>
 							</figure>
 						{% else %}
-							{% render 'logo-svg' logo:logo %}
+							{% render 'logo-svg', logo:logo %}
 						{% endif %}
 						
 					{% endif %}

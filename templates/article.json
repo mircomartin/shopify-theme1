@@ -1,8 +1,27 @@
 {
-	"sections": {
-		"template": {
-			"type":"template-article"
-		}
-	},
-	"order":["template"]
+  "sections": {
+    "template": {
+      "type": "template-article",
+      "blocks": {
+        "title": {
+          "type": "article_title",
+          "settings": {
+          }
+        },
+        "content": {
+          "type": "article_content",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "template"
+  ]
 }
