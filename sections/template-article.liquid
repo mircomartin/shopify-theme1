@@ -59,63 +59,71 @@
 	</section>
 
 	<section id="comment_form" class="mb-8 mx-auto container max-w-4xl">
-		{% form 'new_comment', article %}
-			<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
-				{% if form.errors %}
-				<p>Oh no! Your comment was not posted.</p>
-				<div class="border p-5">
-					<div class="flex flex-row items-center w-full my-3">
-						<div class="text-red-500">
-							{% render 'icon-failed' %}
-						</div>
-					</div>
+	{% form 'new_comment', article %}
+		{% if form.errors %}
+		<div class="border p-5 max-w-4xl m-5">
+			<div class="flex flex-col items-center w-full my-3">
+				<div class="flex">
+					{% render 'icon-failed' %}
+					<p class="ml-3 text-sm font-medium">Oh no! Your comment was not posted.</p>
 				</div>
-				{% elsif form.posted_successfully? %}
-					<p>Comment is posted successfully!</p>
-				{% endif %}
-				<div class="">
-					<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
-					<input 
-						type="text" 
-						name="comment[author]" 
-						id="comment_author"
-						class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
-						placeholder="Name"
-						required
-					/>
-				</div>
-				<div class="">
-					<label for="comment_email" class="text-black font-medium uppercase text-xs mb-2">Email</label>
-					<input 
-						type="email" 
-						name="comment[email]" 
-						id="comment_email"
-						class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
-						placeholder="email@youremail.com"
-						required
-					/>
-				</div>
+				<ul class="px-4 mb-3 ml-7 list-decimal">
+					{% for error in form.errors %}
+						<li class="text-xs uppercase">{{ form.errors.messages[error] }}</li>
+					{% endfor %}
+				</ul>
 			</div>
-			<div class="px-1 md:flex mb-3 mx-auto">
-				<div class="md:w-full px-3">
-					<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
-					<textarea 
-						class="w-full text-black resize-none h-20 py-2 px-3 border border-black focus:outline-none"
-						name="comment[body]" 
-						id="comment_content" 
-						required></textarea>
-				</div>
+		</div>
+		{% elsif form.posted_successfully? %}
+		<div class="flex flex-row items-center justify-center w-full my-3 p-5">
+			{% render 'icon-success' %}
+			<p class="text-sm font-medium ml-3">Comment is posted successfuly!</p>
+		</div>
+		{% endif %}
+		<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
+			<div class="">
+				<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
+				<input 
+					type="text" 
+					name="comment[author]" 
+					id="comment_author"
+					class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
+					placeholder="Name"
+					required
+				/>
 			</div>
-			<div class="px-1 md:flex mb-3">
-				<div class="md:w-full px-3">
-					<input 
-						value="post comment" 
-						type="submit" 
-						class="block w-full py-2 cursor-pointer text-base font-medium bg-white hover:bg-black border border-black text-black hover:text-white uppercase">
-					</input>
-				</div>
+			<div class="">
+				<label for="comment_email" class="text-black font-medium uppercase text-xs mb-2">Email</label>
+				<input 
+					type="email" 
+					name="comment[email]" 
+					id="comment_email"
+					class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
+					placeholder="email@youremail.com"
+					required
+				/>
 			</div>
-		{% endform %}
+		</div>
+		<div class="px-1 md:flex mb-3 mx-auto">
+			<div class="md:w-full px-3">
+				<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
+				<textarea 
+					class="w-full text-black resize-none h-20 py-2 px-3 border border-black focus:outline-none"
+					name="comment[body]" 
+					id="comment_content" 
+					required></textarea>
+			</div>
+		</div>
+		<div class="px-1 md:flex mb-3">
+			<div class="md:w-full px-3">
+				<input 
+					value="post comment" 
+					type="submit" 
+					class="block w-full py-2 cursor-pointer text-base font-medium bg-white hover:bg-black border border-black text-black hover:text-white uppercase">
+				</input>
+			</div>
+		</div>
+	{% endform %}
 	</section>
 {% endif %}
 
