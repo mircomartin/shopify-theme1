@@ -24,7 +24,7 @@
 
 	{% if block.type == "article_content" %}
 	<section class="px-1 md:px-14">
-		{{ article.content | replace: '<p', '<p class="text-xs uppercase text-justify"'}}
+		{{ article.content | replace: '<p', '<p class="text-xs uppercase text-justify"' }}
 	</section>
 	{% endif %}
 
@@ -34,7 +34,25 @@
 {% if blog.comments_enabled? %}
 	<section id="comments" class="my-8 mx-auto container max-w-4xl">
 		{% if article.comments_count > 0 %}
+			<div class="flex-1 items-center justify-center mx-auto max-w-4xl px-4">
+				<h1 class="text-lg mb-4 font-medium">
+					See what Hurley people saying
+				</h1>
+				{% paginate article.comments by 5 %}
 
+					{% for comment in article.comments %}
+						<div class="flex-1 border border-black my-4 px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+							<span class="capitalize mr-2">{{ comment.author }}</span><span class="text-xs text-black-400">{{ comment.created_at | date: format: 'date' }}</span>
+							<p class="text-sm">{{ comment.content }}</p>
+						</div>
+					{% endfor %}
+
+					{% if paginate.pages > 1 %}
+						{{ paginate | default_pagination }}
+					{% endif %}
+
+				{% endpaginate %}
+			</div>
 		{% else %}
 		<p>There are no comments in this article.</p>
 		{% endif %}
@@ -43,13 +61,25 @@
 	<section id="comment_form" class="mb-8 mx-auto container max-w-4xl">
 		{% form 'new_comment', article %}
 			<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
+				{% if form.errors %}
+				<p>Oh no! Your comment was not posted.</p>
+				<div class="border p-5">
+					<div class="flex flex-row items-center w-full my-3">
+						<div class="text-red-500">
+							{% render 'icon-failed' %}
+						</div>
+					</div>
+				</div>
+				{% elsif form.posted_successfully? %}
+					<p>Comment is posted successfully!</p>
+				{% endif %}
 				<div class="">
 					<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
 					<input 
 						type="text" 
 						name="comment[author]" 
 						id="comment_author"
-						class="w-full text-black border py-3 px-4 mb-3 focus:outline-none" 
+						class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
 						placeholder="Name"
 						required
 					/>
@@ -60,7 +90,7 @@
 						type="email" 
 						name="comment[email]" 
 						id="comment_email"
-						class="w-full text-black border py-3 px-4 mb-3 focus:outline-none" 
+						class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
 						placeholder="email@youremail.com"
 						required
 					/>
@@ -70,11 +100,19 @@
 				<div class="md:w-full px-3">
 					<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
 					<textarea 
-						class="w-full text-black resize-none h-20 py-2 px-3 border focus:outline-none"
+						class="w-full text-black resize-none h-20 py-2 px-3 border border-black focus:outline-none"
 						name="comment[body]" 
 						id="comment_content" 
-						required>
-					</textarea>
+						required></textarea>
+				</div>
+			</div>
+			<div class="px-1 md:flex mb-3">
+				<div class="md:w-full px-3">
+					<input 
+						value="post comment" 
+						type="submit" 
+						class="block w-full py-2 cursor-pointer text-base font-medium bg-white hover:bg-black border border-black text-black hover:text-white uppercase">
+					</input>
 				</div>
 			</div>
 		{% endform %}
