@@ -1,4 +1,5 @@
-{ 	"sections": {
+{ 	
+	"sections": {
 		"template": {
 			"type":"template-article",
 			"blocks": {

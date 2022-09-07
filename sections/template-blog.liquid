@@ -1,0 +1,35 @@
+<section class="py-4">
+	<div class="container mx-auto w-full mb-4 px-2 md:w-1/2 text-center md:px-0">
+		<h1 class="mb-4 uppercase text-4xl tracking-wide">Surf. Art. Music. Style.</h1>
+		<p class="text-xs uppercase text-center tracking-wide">Born from water, Hurley was founded in Huntington Beach, CA in 1999 on the principle of empowering and fueling the next generation. Since then, we’ve been making waves and getting loud with the world’s best surfers, skaters, musicians, artists, and tastemakers. Everything we do is put through the lens innovation and inclusion, turning the end result into a colorful celebration of the people, places, music, and art that keep us inspired — every single day. Welcome to the World of Hurley, enjoy!</p>
+	</div>
+
+	<div class="container w-full mx-auto my-5 px-2 md:w-1/2 md:px-0 md:my-16">
+		<div class="grid grid-cols-1 md:grid-cols-3 md:gap-16">
+			{% paginate blog.articles by 3 %}
+				{% for article in blog.articles %}
+					<div class="flex flex-col gap-y-3.5">
+						
+						{% if article.image != blank %}
+						<a href="{{article.url}}">
+							<figure>
+								<img src="{{ article.image | img_url: 'large' }}" alt="{{article.image.alt}}">
+							</figure>
+						</a>
+						{% endif %}
+
+						<div>
+							<time itemprop="datePublished dateCreated" datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-xs text-gray-600 uppercase"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>	
+
+							<a href="{{article.url}}">
+								<h2 class="text-xl tracking-wide">{{ article.title | upcase }}</h2>
+							</a>
+						</div>
+		
+						
+					</div>
+				{% endfor %}
+			{% endpaginate %}
+		</div>
+	</div>
+</section>

@@ -5,17 +5,17 @@
 - json structured schema
 
 ### Libraries:
-- *Tailwind CSS 
-- *Alpine JS
-- *Slick Carousel
+- Tailwind CSS 
+- Alpine JS
+- Slick Carousel
 
 ## Progress:
 
 ### SECTIONS:
-- *Header(Desktop/Mobile) -> Customizable
-- *Topbar -> Carousel Customizable
-- *Template-404  -> Customizable
-- *Template-Article -> Customizable
+- Header(Desktop/Mobile) -> Customizable
+- Topbar -> Carousel Customizable
+- Template-404  -> Customizable
+- Template-Article -> Customizable
 
 ### TEMPLATES:
 - 404.json
