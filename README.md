@@ -16,6 +16,7 @@
 - Topbar -> Carousel Customizable
 - Template-404  -> Customizable
 - Template-Article -> Customizable
+- Blog Template -> In progress.
 
 ### TEMPLATES:
 - 404.json
