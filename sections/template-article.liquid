@@ -1,4 +1,4 @@
-<article class="mx-auto p-4 w-full md:p-0 md:w-1/2 flex flex-col gap-y-10">
+<article class="mx-auto p-4 w-full md:p-0 md:w-1/2 flex flex-col gap-y-10" itemscope itemtype="http://schema.org/BlogPosting">
 	{% for block in section.blocks %}
 		
 	{% if block.type == "article_title" %}
@@ -8,14 +8,17 @@
 	>
 		<div class="flex flex-col gap-2 items-center backdrop-blur-md bg-black/30 w-4/5 py-4">
 
-			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider">{{article.title | upcase}}</h1>
+			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider" itemprop="headline">{{article.title | upcase}}</h1>
 
 			{% if section.settings.enable_author %}
-			<small class="text-white text-sm"><strong>Author:</strong> {{article.author | upcase}}</small>				
+			<small class="text-white text-sm" itemscope itemtype="http://schema.org/Person">
+				<span itemprop="author">
+					<strong>Author:</strong> {{article.author | upcase}} </small>	
+				</span>			
 			{% endif %}
 
 			{% if section.settings.enable_published_date %}
-			<time datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-white text-sm"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>				
+			<time itemprop="datePublished dateCreated" datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-white text-sm"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>				
 			{% endif %}
 
 		</div>
@@ -23,7 +26,7 @@
 	{% endif %}
 
 	{% if block.type == "article_content" %}
-	<section class="px-1 md:px-14">
+	<section class="px-1 md:px-14" itemprop="articleBody">
 		{{ article.content | replace: '<p', '<p class="text-xs uppercase text-justify"' }}
 	</section>
 	{% endif %}
@@ -38,20 +41,23 @@
 				<h1 class="text-lg mb-4 font-medium">
 					See what Hurley people saying
 				</h1>
-				{% paginate article.comments by 5 %}
-
+				<div>
+					{% paginate article.comments by 5 %}
+	
 					{% for comment in article.comments %}
 						<div class="flex-1 border border-black my-4 px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
 							<span class="capitalize mr-2">{{ comment.author }}</span><span class="text-xs text-black-400">{{ comment.created_at | date: format: 'date' }}</span>
 							<p class="text-sm">{{ comment.content }}</p>
 						</div>
 					{% endfor %}
-
-					{% if paginate.pages > 1 %}
-						{{ paginate | default_pagination }}
-					{% endif %}
-
-				{% endpaginate %}
+					<div class="flex justify-center uppercase gap-x-4 text-sm">
+						{% if paginate.pages > 1 %}
+							{{ paginate | default_pagination }}
+						{% endif %}
+					</div>
+	
+					{% endpaginate %}
+				</div>
 			</div>
 		{% else %}
 		<p>There are no comments in this article.</p>
@@ -126,6 +132,31 @@
 	{% endform %}
 	</section>
 {% endif %}
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "BlogPosting",
+	"headline": {{ article.title | json }},
+	"articleBody": {{ article.content | strip_html | json }},
+	{% if article.excerpt != blank %}
+		"description": {{ article.excerpt | strip_html | json }},
+	{% endif %}
+	{% if article.image != blank %}
+		"image": [ {{ article.image | img_url: "grande" | prepend: 'https:' | json }} ],
+	{% endif %}
+	"datePublished": {{ article.published_at | date: format: 'date' | json }},
+	"dateCreated": {{ article.created_at | date: format: 'date' | json }},
+	"author": {
+		"@type": "Person",
+		"name": {{ article.author | json }}
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": {{ shop.name | json }}
+	}
+}
+</script>
 
 {% schema %}
 {
