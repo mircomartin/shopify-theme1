@@ -16,10 +16,11 @@
 - Topbar -> Carousel Customizable
 - Template-404  -> Customizable
 - Template-Article -> Customizable
-- Blog Template -> In progress.
+- Blog-Template -> In progress (Pagination).
+- Banner-Full-Width -> Customizable
 
 ### TEMPLATES:
 - 404.json
 - article.json
-- blog.json -> In progress.
+- blog.json
 

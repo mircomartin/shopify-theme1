@@ -4,33 +4,39 @@
 		<p class="text-xs uppercase text-center tracking-wide">{{section.settings.subtext_title}}</p>
 	</div>
 
-	<div class="container w-full mx-auto my-5 px-2 md:w-1/2 md:px-0 md:my-16">
-		<div class="grid grid-cols-1 md:grid-cols-3 md:gap-16">
-			{% paginate blog.articles by 3 %}
+	<div class="container w-full mx-auto my-5 px-4 md:w-1/2 md:px-0 md:my-16">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+			{% paginate blog.articles by section.settings.number_of_blog_posts %}
 				{% for article in blog.articles %}
-					<div class="flex flex-col gap-y-3.5">
+					<div class="flex flex-col gap-3.5 w-full">
 						
-						{% if article.image != blank %}
-						<a href="{{article.url}}">
-							<figure>
+						<a href="{{ article.url }}">
+							<figure class="overflow-hidden">
+								{% if article.image != blank %}
 								<img src="{{ article.image | img_url: 'large' }}" alt="{{article.image.alt}}">
+								{% else %}
+								{{ 'image' | placeholder_svg_tag: 'w-20' }}
+								{% endif %}
 							</figure>
 						</a>
-						{% endif %}
 
 						<div>
-							<time itemprop="datePublished dateCreated" datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-xs text-gray-700 uppercase"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>	
+							<time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="text-xs text-gray-700 uppercase"><strong>Date:</strong> {{ article.published_at | date: '%Y-%m-%d' }}</time>	
 
-							<a href="{{article.url}}">
-								<h2 class="text-xl tracking-wide">{{ article.title | upcase }}</h2>
+							<a href="{{ article.url }}">
+								<h2 class="text-xl tracking-wide truncate">{{ article.title | upcase }}</h2>
 							</a>
 						</div>
 						
-						{% if article.excerpt != blank %}
-						<p class="text-xs tracking-wide">{{ article.excerpt | upcase }}</p>							
+						{% if article.excerpt.size > 0 %}
+						<p class="text-xs tracking-wide">{{ article.excerpt | strip_html | truncatewords: 15 | upcase }}</p>
+						{% else %}
+						<p class="text-xs tracking-wide">
+							{{ article.content | strip_html | truncatewords: 15 | upcase }}
+						</p>					
 						{% endif %}
 
-						<a class="text-xs tracking-wide text-gray-500 underline uppercase" href="{{article.url}}">Read More</a>
+						<a class="text-xs tracking-wide text-gray-500 underline uppercase" href="{{ article.url }}">Read More</a>
 
 					</div>
 				{% endfor %}
@@ -54,6 +60,15 @@
 			"id": "subtext_title",
 			"label": "Blog Subtext Title",
 			"default": "Born from water, Hurley was founded in Huntington Beach, CA in 1999 on the principle of empowering and fueling the next generation. Since then, we’ve been making waves and getting loud with the world’s best surfers, skaters, musicians, artists, and tastemakers. Everything we do is put through the lens innovation and inclusion, turning the end result into a colorful celebration of the people, places, music, and art that keep us inspired — every single day. Welcome to the World of Hurley, enjoy!"
+		},
+		{
+			"type": "range",
+			"id": "number_of_blog_posts",
+			"label": "Blog posts per page",
+			"min": 1,
+			"max": 6,
+			"step": 1,
+			"default": 3
 		}
 	]
 }

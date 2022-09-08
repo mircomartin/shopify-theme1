@@ -1,0 +1,107 @@
+<section id="banner_full_width" class="w-full my-10">
+	<figure class="relative">
+		<a href="{{ section.settings.button_link }}">
+			<img src="{{ section.settings.image_desktop | img_url: 'master' }}" alt="{{ section.settings.image_desktop.alt }}" class="h-auto w-full	object-cover hidden md:block" />
+
+			{% if section.settings.image_mobile != blank %}
+			<img src="{{ section.settings.image_mobile | img_url: 'large' }}" alt="{{ section.settings.image_mobile.alt }}" class="h-auto w-full object-cover block md:hidden" />
+			{% else %}
+			<img src="{{ section.settings.image_desktop | img_url: 'master' }}" alt="{{ section.settings.image_desktop.alt }}" class="h-auto w-full	object-cover hidden md:block" />
+			{% endif %}
+		</a>
+
+		<div class="absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:{{ section.settings.location }}-16 md:max-w-lg">
+			{% if section.settings.title != blank %}
+			<h2 class="text-{{ section.settings.text_color }} tracking-wider text-2xl font-bold text-center md:text-left">{{ section.settings.title | upcase }}</h2>
+			{% endif %}
+			{% if section.settings.subtext_title != blank %}
+			<h3 class="text-{{ section.settings.text_color }} tracking-wider text-xs text-center md:text-left">{{ section.settings.subtext_title | upcase }}</h3>
+			{% endif %}
+			{% if section.settings.button_link != blank %}
+			<a href="{{ section.settings.button_link }}" class="bg-white text-sm	border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{ section.settings.text_button | upcase }}</a>
+			{% endif %}
+		</div>
+		
+	</figure>
+</section>
+
+{% schema %}
+{
+	"name": "Banner Full-Width",
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Title",
+			"default": "Title"
+		},
+		{
+			"type": "text",
+			"id": "subtext_title",
+			"label": "Banner Subtext Title",
+			"default": "Banner Subtext Title"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_desktop",
+			"label": "Image Desktop",
+			"info": "Size Recommended: 1920px x 960px"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_mobile",
+			"label": "Image Mobile",
+			"info": "Size Recommended: 800px x 800px"
+		},
+		{
+			"type": "select",
+			"id": "text_color",
+			"label": "Text Color",
+			"default": "white",
+			"options": [
+				{
+					"value": "black",
+					"label": "Black"
+				},
+				{
+					"value": "white",
+					"label": "White"
+				}
+			]
+		},
+		{
+			"type": "select",
+			"id": "location",
+			"label": "Block Text Location",
+			"default": "left",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			]
+		},
+		{
+			"type": "url",
+			"id": "button_link",
+			"label": "Link"
+		},
+		{
+			"type": "text",
+			"id": "text_button",
+			"label": "Texto Button",
+			"default": "SHOP NOW"
+		}
+	],
+	"presets": [
+		{
+			"category": "Banners",
+			"name":"Banner Full-Width"
+		}
+	]
+}
+{% endschema %}
