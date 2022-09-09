@@ -1,8 +1,29 @@
 {
-	"sections":{
-		"template": {
-			"type": "template-blog"
-		}
-	},
-	"order":["template"]
+  "sections": {
+    "template": {
+      "type": "template-blog",
+      "settings": {
+        "title": "Surf. Art. Music. Style.",
+        "subtext_title": "Born from water, Hurley was founded in Huntington Beach, CA in 1999 on the principle of empowering and fueling the next generation. Since then, we’ve been making waves and getting loud with the world’s best surfers, skaters, musicians, artists, and tastemakers. Everything we do is put through the lens innovation and inclusion, turning the end result into a colorful celebration of the people, places, music, and art that keep us inspired — every single day. Welcome to the World of Hurley, enjoy!",
+        "number_of_blog_posts": 3
+      }
+    },
+    "1662670311f4611991": {
+      "type": "banner-fullwidth",
+      "settings": {
+        "title": "Sustainably Made Swim",
+        "subtext_title": "Take a dip in swim that looks good on you — and the planet",
+        "image_desktop": "shopify:\/\/shop_images\/sustainably-made-swim_1280x_af29e6ba-69f7-4b97-94b5-ce5e27539da6.webp",
+        "image_mobile": "shopify:\/\/shop_images\/mobile.webp",
+        "text_color": "white",
+        "location": "left",
+        "button_link": "shopify:\/\/blogs\/news\/win-a-limited-edition-loveshackfancy-x-hurley-skateboard-win-a-limited-edition-loveshackfancy-x-hurley-skateboard",
+        "text_button": "SHOP NOW"
+      }
+    }
+  },
+  "order": [
+    "template",
+    "1662670311f4611991"
+  ]
 }

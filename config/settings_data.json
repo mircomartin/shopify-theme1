@@ -33,6 +33,29 @@
         ],
         "settings": {
         }
+      },
+      "marquee-announcement": {
+        "type": "marquee-announcement",
+        "blocks": {
+          "2a6ed459-7d25-4287-91e0-311ecdeab8e7": {
+            "type": "message",
+            "settings": {
+              "message": "SUMMER SALE UP TO 50% OFF!"
+            }
+          },
+          "236bd556-4cb3-4837-8952-f32b3e800f78": {
+            "type": "message",
+            "settings": {
+              "message": "WINTER SALE UP TO 50% OFF!"
+            }
+          }
+        },
+        "block_order": [
+          "2a6ed459-7d25-4287-91e0-311ecdeab8e7",
+          "236bd556-4cb3-4837-8952-f32b3e800f78"
+        ],
+        "settings": {
+        }
       }
     },
     "content_for_index": [

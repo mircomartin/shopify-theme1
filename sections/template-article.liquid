@@ -3,22 +3,22 @@
 		
 	{% if block.type == "article_title" %}
 	<section 
-		style="background: url('{{article.image | img_url: 'grande'}}') no-repeat center; height: 500px; max-height: 600px; background-size:cover;" 
+		style="background: url('{{ article.image | img_url: 'master' }}') no-repeat center; height: 600px; background-size:cover;" 
 		class="flex items-center justify-center" 
 	>
 		<div class="flex flex-col gap-2 items-center backdrop-blur-md bg-black/30 w-4/5 py-4">
 
-			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider" itemprop="headline">{{article.title | upcase}}</h1>
+			<h1 class="text-lg text-center md:text-2xl text-white font-bold tracking-wider" itemprop="headline">{{ article.title | upcase }}</h1>
 
 			{% if section.settings.enable_author %}
 			<small class="text-white text-sm" itemscope itemtype="http://schema.org/Person">
 				<span itemprop="author">
-					<strong>Author:</strong> {{article.author | upcase}} </small>	
+					<strong>Author:</strong> {{ article.author | upcase }}</small>	
 				</span>			
 			{% endif %}
 
 			{% if section.settings.enable_published_date %}
-			<time itemprop="datePublished dateCreated" datetime="{{article.published_at | date: '%Y-%m-%d'}}" class="text-white text-sm"><strong>Date:</strong> {{article.published_at | date: '%Y-%m-%d'}}</time>				
+			<time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="text-white text-sm"><strong>Date:</strong> {{ article.published_at | date: '%Y-%m-%d' }}</time>				
 			{% endif %}
 
 		</div>
@@ -51,16 +51,19 @@
 						</div>
 					{% endfor %}
 					<div class="flex justify-center uppercase gap-x-4 text-sm">
-						{% if paginate.pages > 1 %}
+
+						{% render 'pagination', pagination: paginate %}
+
+						<!-- {% if paginate.pages > 1 %}
 							{{ paginate | default_pagination }}
-						{% endif %}
+						{% endif %} -->
 					</div>
 	
 					{% endpaginate %}
 				</div>
 			</div>
 		{% else %}
-		<p>There are no comments in this article.</p>
+		<p class="text-lg mb-4 font-medium">There are no comments in this article.</p>
 		{% endif %}
 	</section>
 

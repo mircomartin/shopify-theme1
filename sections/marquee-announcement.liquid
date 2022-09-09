@@ -1,0 +1,50 @@
+<section id="marquee_annoucement" class="hidden md:block">
+	<div class="marquee bg-blue-700 text-white relative overflow-hidden h-6">
+		<div class="flex absolute overflow-hidden">
+			{% for block in section.blocks %}
+			<span class="text-base uppercase w-1/2"><b>{{ block.settings.message }}</b></span>				
+			{% endfor %}
+		</div>
+	  </div>
+</section>
+
+<style type="text/css">
+
+	.marquee div {
+	  animation: marquee 15s linear infinite;
+	  width: 200%;
+	}
+	@keyframes marquee {
+		0% { 
+			left: 0; 
+		}
+		100% { 
+			left: -100%; 
+		}
+	}
+
+</style>
+
+{% schema %}
+{
+	"name": "Marquee Announcement",
+	"max_blocks": 5,
+	"settings": [
+		
+	],
+	"blocks": [
+		{
+			"type": "message",
+			"name": "Marquee Message",
+			"settings": [
+				{
+					"type": "text",
+					"id": "message",
+					"label": "Message",
+					"default": "SUMMER SALE UP TO 50% OFF!"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

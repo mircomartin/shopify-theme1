@@ -29,11 +29,30 @@
       {
         "type": "header",
         "content": "Topbar"
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Topbar"
       },
       {
         "type": "checkbox",
         "id": "hide_topbar",
         "label": "Hide Topbar",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Marquee Announcement"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_marquee",
+        "label": "Hide Marquee Announcement",
         "default": false
       }
     ]

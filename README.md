@@ -16,8 +16,9 @@
 - Topbar -> Carousel Customizable
 - Template-404  -> Customizable
 - Template-Article -> Customizable
-- Blog-Template -> In progress (Pagination).
+- Blog-Template -> Customizable.
 - Banner-Full-Width -> Customizable
+- Marquee Announcement -> Customizable
 
 ### TEMPLATES:
 - 404.json

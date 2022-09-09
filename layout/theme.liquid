@@ -28,15 +28,17 @@
   class="font-sans text-black font-normal"
 >
 
-  <header>
+  {% if settings.hide_topbar == false %}
+  {% section 'topbar' %}      
+  {% endif %}
 
-    {% if settings.hide_topbar == false %}
-    {% section 'topbar' %}      
-    {% endif %}
-
+  <header class="sticky top-0 z-50">
     {% section 'header' %}
-    
   </header>
+
+  {% if settings.hide_marquee == false%}
+  {% section 'marquee-announcement' %}  
+  {% endif %}
 
   <main role="main">
     {{ content_for_layout }}
