@@ -34,107 +34,178 @@
 	{% endfor %}
 </article>
 
+<!-- Comments section  -->
 {% if blog.comments_enabled? %}
-	<section id="comments" class="my-8 mx-auto container max-w-4xl">
-		{% if article.comments_count > 0 %}
-			<div class="flex-1 items-center justify-center mx-auto max-w-4xl px-4">
-				<h1 class="text-lg mb-4 font-medium">
-					See what Hurley people saying
-				</h1>
-				<div>
-					{% paginate article.comments by 5 %}
-	
-					{% for comment in article.comments %}
-						<div class="flex-1 border border-black my-4 px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-							<span class="capitalize mr-2">{{ comment.author }}</span><span class="text-xs text-black-400">{{ comment.created_at | date: format: 'date' }}</span>
-							<p class="text-sm">{{ comment.content }}</p>
-						</div>
-					{% endfor %}
-					<div class="flex justify-center uppercase gap-x-4 text-sm">
+<section id="comments" class="my-8 mx-auto container max-w-4xl">
+	{% if article.comments_count > 0 %}
+	<div class="flex-1 items-center justify-center mx-auto max-w-4xl px-4">
+		<h1 class="text-lg mb-4 font-medium">
+			See what Hurley people saying
+		</h1>
+		<div>
+			{% paginate article.comments by 5 %}
 
-						{% render 'pagination', pagination: paginate %}
-
-						<!-- {% if paginate.pages > 1 %}
-							{{ paginate | default_pagination }}
-						{% endif %} -->
-					</div>
-	
-					{% endpaginate %}
+			{% for comment in article.comments %}
+				<div class="flex-1 border border-black my-4 px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+					<span class="capitalize mr-2">{{ comment.author }}</span><span class="text-xs text-black-400">{{ comment.created_at | date: format: 'date' }}</span>
+					<p class="text-sm">{{ comment.content }}</p>
 				</div>
-			</div>
-		{% else %}
-		<p class="text-lg mb-4 font-medium">There are no comments in this article.</p>
-		{% endif %}
-	</section>
+			{% endfor %}
+			<div class="flex justify-center uppercase gap-x-4 text-sm">
 
-	<section id="comment_form" class="mb-8 mx-auto container max-w-4xl">
-	{% form 'new_comment', article %}
-		{% if form.errors %}
-		<div class="border p-5 max-w-4xl m-5">
-			<div class="flex flex-col items-center w-full my-3">
-				<div class="flex">
-					{% render 'icon-failed' %}
-					<p class="ml-3 text-sm font-medium">Oh no! Your comment was not posted.</p>
-				</div>
-				<ul class="px-4 mb-3 ml-7 list-decimal">
-					{% for error in form.errors %}
-						<li class="text-xs uppercase">{{ form.errors.messages[error] }}</li>
-					{% endfor %}
-				</ul>
+				{% render 'pagination', pagination: paginate %}
+
+				<!-- {% if paginate.pages > 1 %}
+					{{ paginate | default_pagination }}
+				{% endif %} -->
 			</div>
+
+			{% endpaginate %}
 		</div>
-		{% elsif form.posted_successfully? %}
-		<div class="flex flex-row items-center justify-center w-full my-3 p-5">
-			{% render 'icon-success' %}
-			<p class="text-sm font-medium ml-3">Comment is posted successfuly!</p>
-		</div>
-		{% endif %}
-		<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
-			<div class="">
-				<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
-				<input 
-					type="text" 
-					name="comment[author]" 
-					id="comment_author"
-					class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
-					placeholder="Name"
-					required
-				/>
+	</div>
+	{% else %}
+	<p class="text-lg mb-4 font-medium">There are no comments in this article.</p>
+	{% endif %}
+</section>
+
+<section id="comment_form" class="mb-8 mx-auto container max-w-4xl">
+{% form 'new_comment', article %}
+	{% if form.errors %}
+	<div class="border p-5 max-w-4xl m-5">
+		<div class="flex flex-col items-center w-full my-3">
+			<div class="flex">
+				{% render 'icon-failed' %}
+				<p class="ml-3 text-sm font-medium">Oh no! Your comment was not posted.</p>
 			</div>
-			<div class="">
-				<label for="comment_email" class="text-black font-medium uppercase text-xs mb-2">Email</label>
-				<input 
-					type="email" 
-					name="comment[email]" 
-					id="comment_email"
-					class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
-					placeholder="email@youremail.com"
-					required
-				/>
-			</div>
+			<ul class="px-4 mb-3 ml-7 list-decimal">
+				{% for error in form.errors %}
+					<li class="text-xs uppercase">{{ form.errors.messages[error] }}</li>
+				{% endfor %}
+			</ul>
 		</div>
-		<div class="px-1 md:flex mb-3 mx-auto">
-			<div class="md:w-full px-3">
-				<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
-				<textarea 
-					class="w-full text-black resize-none h-20 py-2 px-3 border border-black focus:outline-none"
-					name="comment[body]" 
-					id="comment_content" 
-					required></textarea>
-			</div>
+	</div>
+	{% elsif form.posted_successfully? %}
+	<div class="flex flex-row items-center justify-center w-full my-3 p-5">
+		{% render 'icon-success' %}
+		<p class="text-sm font-medium ml-3">Comment is posted successfuly!</p>
+	</div>
+	{% endif %}
+	<div class="grid items-center grid-cols-1 md:grid-cols-2 mx-auto px-4 gap-3">
+		<div class="">
+			<label for="comment_author" class="text-black font-medium uppercase text-xs mb-2">Name</label>
+			<input 
+				type="text" 
+				name="comment[author]" 
+				id="comment_author"
+				class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
+				placeholder="Name"
+				required
+			/>
 		</div>
-		<div class="px-1 md:flex mb-3">
-			<div class="md:w-full px-3">
-				<input 
-					value="post comment" 
-					type="submit" 
-					class="block w-full py-2 cursor-pointer text-base font-medium bg-white hover:bg-black border border-black text-black hover:text-white uppercase">
-				</input>
-			</div>
+		<div class="">
+			<label for="comment_email" class="text-black font-medium uppercase text-xs mb-2">Email</label>
+			<input 
+				type="email" 
+				name="comment[email]" 
+				id="comment_email"
+				class="w-full text-black border border-black py-3 px-4 mb-3 focus:outline-none" 
+				placeholder="email@youremail.com"
+				required
+			/>
 		</div>
-	{% endform %}
-	</section>
+	</div>
+	<div class="px-1 md:flex mb-3 mx-auto">
+		<div class="md:w-full px-3">
+			<label for="comment_content" class="text-black font-medium uppercase text-xs mb-2">Comment</label>
+			<textarea 
+				class="w-full text-black resize-none h-20 py-2 px-3 border border-black focus:outline-none"
+				name="comment[body]" 
+				id="comment_content" 
+				required></textarea>
+		</div>
+	</div>
+	<div class="px-1 md:flex mb-3">
+		<div class="md:w-full px-3">
+			<input 
+				value="post comment" 
+				type="submit" 
+				class="block w-full py-2 cursor-pointer text-base font-medium bg-white hover:bg-black border border-black text-black hover:text-white uppercase">
+			</input>
+		</div>
+	</div>
+{% endform %}
+</section>
 {% endif %}
+<!-- Comments section  -->
+
+<!-- Previous and Next Post  Section -->
+<section class="container my-8 mx-auto max-w-4xl flex justify-between">
+
+	{% if blog.previous_article != blank %}
+	<a class="flex items-center text-sm tracking-wider hover:text-gray-400 mr-auto uppercase" href="{{ blog.previous_article }}">
+		{% render 'icon-previous' %}
+		<span>Previous Post</span>
+	</a>
+	{% endif %}
+
+	{% if blog.next_article %}
+	<a class="flex items-center text-sm tracking-wider hover:text-gray-400 ml-auto uppercase" href="{{  blog.next_article  }}">
+		<span>Next Post</span>
+		{% render 'icon-next' %}
+	</a>	
+	{% endif %}
+
+</section>
+<!-- Previous and Next Post Section -->
+
+<!-- Related Post Section -->
+{% if section.settings.enable_related_articles %}
+<section class="container w-full mx-auto my-5 px-4 md:w-1/2 md:px-0 md:my-16">
+	<h2 class="text-center text-2xl	tracking-widest font-bold uppercase mb-10">{{ section.settings.title_related_articles }}</h2>
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-7">
+
+    {% paginate blog.articles by 3 %}
+        {% for article in blog.articles %}
+            
+		<div class="flex flex-col gap-3.5 w-full">
+						
+			<a href="{{ article.url }}">
+				<figure class="overflow-hidden">
+					{% if article.image != blank %}
+					<img src="{{ article.image | img_url: 'large' }}" alt="{{article.image.alt}}">
+					{% else %}
+					{{ 'image' | placeholder_svg_tag: 'w-20' }}
+					{% endif %}
+				</figure>
+			</a>
+
+			<div>
+				<time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}" class="text-xs text-gray-700 uppercase"><strong>Date:</strong> {{ article.published_at | date: '%Y-%m-%d' }}</time>	
+
+				<a href="{{ article.url }}">
+					<h2 class="text-xl tracking-wide truncate">{{ article.title | upcase }}</h2>
+				</a>
+			</div>
+			
+			{% if article.excerpt.size > 0 %}
+			<p class="text-xs tracking-wide">{{ article.excerpt | strip_html | truncatewords: 15 | upcase }}</p>
+			{% else %}
+			<p class="text-xs tracking-wide">
+				{{ article.content | strip_html | truncatewords: 15 | upcase }}
+			</p>					
+			{% endif %}
+
+			<a class="text-xs tracking-wide text-gray-500 underline uppercase" href="{{ article.url }}">Read More</a>
+
+		</div>
+            
+        {% endfor %}
+    {% endpaginate %}
+
+	</div>
+</section>
+{% endif %}
+<!-- Related Post Section -->
 
 <script type="application/ld+json">
 {
@@ -176,6 +247,18 @@
 			"id": "enable_published_date",
 			"label": "Display published data",
 			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_related_articles",
+			"label": "Display Related Articles",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "title_related_articles",
+			"label": "Title Related Articles",
+			"default": "You may also like..."
 		}
 	],
 	"blocks": [

@@ -22,7 +22,7 @@
 				<!-- Store name / logo -->
 				<section >
 	
-					<a href="{{shop.secure_url}}" class="flex no-underline">
+					<a href="{{ shop.secure_url }}" class="flex no-underline">
 						{% if settings.logo == blank and settings.logoSVG == blank %}
 							<h1 class="text-xl font-bold truncate">
 								{{shop.name}}
@@ -33,7 +33,7 @@
 							{% if logo == blank %}
 								{% assign logo = settings.logo %}
 								<figure class="m-0 max-w-xs overflow-hidden">
-									<img src="{{logo | img_url: 'small'}}" alt="{{logo.image.alt}}" class="w-full"/>
+									<img src="{{ logo | img_url: 'small' }}" alt="{{ logo.image.alt }}" class="w-full"/>
 								</figure>
 							{% else %}
 								{% render 'logo-svg', logo:logo %}
@@ -51,15 +51,15 @@
 					{% if link.links != blank %}
 					{% assign link_handle = link.handle | replace: '-', '_' %}
 
-						<div x-data="{ {{link_handle}}: false}" @mouseleave="{{link_handle}} = false">
-							<button @mouseover="{{link_handle}} = true" 
+						<div x-data="{ {{ link_handle }}: false}" @mouseleave="{{ link_handle }} = false">
+							<button @mouseover="{{ link_handle }} = true" 
 							class="inline-flex items-center gap-2 text-black text-base font-medium tracking-wide hover:bg-stone-100 p-5">
 								{{ link.title | upcase }}
 								{% render 'icon-dropdown' %}
 							</button>
 
 							<div 
-								x-show="{{link_handle}}"
+								x-show="{{ link_handle }}"
 								x-transition:enter="transition ease-out duration-300"
 								x-transition:enter-start="opacity-0 transform scale-90"
 								x-transition:enter-end="opacity-100 transform scale-100"
@@ -71,8 +71,8 @@
 								<ul class="flex">
 									{% for childlink in link.links %}
 									<li>
-										<a href="{{childlink.url}}" class="py-4 px-5 text-xs font-bold tracking-wide inline-block">
-											{{childlink.title | upcase }}
+										<a href="{{ childlink.url }}" class="py-4 px-5 text-xs font-bold tracking-wide inline-block">
+											{{ childlink.title | upcase }}
 										</a>
 									</li>
 									{% endfor %}
@@ -82,7 +82,7 @@
 
 						</div>
 						{% else %}
-							<a href="{{link.url}}" class="text-black text-base font-medium tracking-wide hover:bg-stone-100 p-5">{{link.title | upcase }}</a>
+							<a href="{{ link.url }}" class="text-black text-base font-medium tracking-wide hover:bg-stone-100 p-5">{{ link.title | upcase }}</a>
 					{% endif %}
 				{% endfor %}
 			</nav>
@@ -92,16 +92,16 @@
 
 				{% if shop.customer_accounts_enabled %}
 					{% if customer %}
-						<a href="/account" class="text-base text-gray-500 hover:text-gray-900">Account</a>
+						<a href="{{ routes.account_url }}" class="text-base text-gray-500 hover:text-gray-900">Account</a>
 						{{ 'Log out' | customer_logout_link | replace: '<a', '<a class="text-base text-gray-500 hover-text-gray-900"' }}
 						{% else %}
-						<a href="/account" class="cursor-pointer">
+						<a href="{{ routes.account_url }}" class="cursor-pointer">
 							{% render 'icon-user' %}
 						</a>
 					{% endif %}
 					
 				{% endif %}
-				<a href="/cart">
+				<a href="{{ routes.cart_url }}">
 					{% render 'icon-shopping-bag' %}
 				</a>
 
@@ -119,7 +119,7 @@
 						<div class="flex items-center justify-between pb-3">
 							<div>
 								<h1 class="text-lg text-black">
-									{{section.settings.mobile_menu_title}}
+									{{ section.settings.mobile_menu_title }}
 								</h1>
 							</div>
 							<div class="-mr-2">
@@ -137,23 +137,23 @@
 								{% for link in main_menu_linklist %}
 									{% if link.links != blank %}
 									{% assign mobile_link_handle = link.handle | replace: '-', '_' %}
-										<div class="relative"  x-data="{ {{mobile_link_handle}}: false}"">
+										<div class="relative"  x-data="{ {{ mobile_link_handle }}: false}"">
 											<button 
-											@click="{{mobile_link_handle}} = true"
+											@click="{{ mobile_link_handle }} = true"
 											class="text-xs text-black uppercase flex items-center justify-between w-full">
-												{{link.title}}
+												{{ link.title }}
 												{% render 'icon-dropdown' %}
 											</button>
 											<div class="grid gap-y-1.5 mt-1.5"
-											x-show="{{mobile_link_handle}}" @click.away="{{mobile_link_handle}} = false"
+											x-show="{{ mobile_link_handle }}" @click.away="{{ mobile_link_handle }} = false"
 											>
 												{% for childlink in link.links %}
-													<a href="{{childlink.url}}" class="flex items-center rounded-md text-black text-xs uppercase"><span class="ml-3">{{childlink.title}}</span></a>
+													<a href="{{ childlink.url }}" class="flex items-center rounded-md text-black text-xs uppercase"><span class="ml-3">{{ childlink.title }}</span></a>
 												{% endfor %}
 											</div>
 										</div>
 									{% else %}
-										<a href="{{link.url}}" class="text-xs text-black uppercase">{{link.title}}</a>
+										<a href="{{ link.url }}" class="text-xs text-black uppercase">{{ link.title }}</a>
 									{% endif %}
 									
 								{% endfor %}

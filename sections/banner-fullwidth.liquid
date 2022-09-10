@@ -11,10 +11,10 @@
 			{% endif %}
 		</a>
 
-		<div class="absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:{{ section.settings.location }}-16 md:max-w-lg pointer-events-none">
+		<div class="c-textBlock absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:max-w-lg">
 			
 			{% if section.settings.title != blank %}
-			<h2 class="text-{{ section.settings.text_color }} tracking-wider text-2xl font-bold text-center md:text-left">{{ section.settings.title | upcase }}</h2>
+			<h2 class="tracking-wider text-2xl font-bold text-center md:text-left">{{ section.settings.title | upcase }}</h2>
 			{% endif %}
 
 			{% if section.settings.subtext_title != blank %}
@@ -29,6 +29,17 @@
 		
 	</figure>
 </section>
+
+<style type="text/css">
+	@media (min-width: 768px) { 
+		#banner_full_width .c-textBlock {
+			{{ section.settings.location }}: 4rem; 
+		}
+		#banner_full_width .c-textBlock h2 {
+			color: {{ section.settings.text_color }};
+		}
+	 }
+</style>
 
 {% schema %}
 {
