@@ -21,25 +21,61 @@
 					{% endif %}
 				</a>
 				<div class="flex flex-col w-full md:flex-row md:justify-between gap-4 md:flex-1">
-					<div class="flex flex-col justify-center md:w-full">
+					<div class="flex flex-col justify-center md:w-3/4">
 						<a href="{{ item.url }}" class="text-xl	tracking-wider font-medium">{{ item.product.title | truncatewords: 5 }}</a>
-						<p class="text-stone-500 tracking-wider font-medium">{{ item.variant.title | upcase }}</p>
+
+						{% if item.product.has_only_default_variant == false %}
+						<p class="text-stone-500 font-medium">{{ item.variant.option1 | upcase }}</p>	
+						<p class="text-stone-500 font-medium">{{ item.variant.option2 | upcase }}</p>	
+						<p class="text-stone-500 font-medium">{{ item.variant.option3 | upcase }}</p>
+						{% endif %}
+
 					</div>
-					<div class="flex justify-between md:w-2/5">
+					<div class="flex justify-between md:w-1/4">
 						<div class="flex flex-col gap-4">
 							<div>
-								<input type="number" name="updates[]" value="{{ item.quantity }}" min="1" id="updates_{{ forloop.index }}" class="w-20 border p-2 text-center" />
+								<input type="number" name="updates[]" value="{{ item.quantity }}" min="1" max="5" id="updates_{{ forloop.index }}" class="w-20 border p-2 text-center" />
 							</div>
 							<a class="text-stone-500 tracking-wider uppercase text-xs underline" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+							<button type="submit" name="update" class="text-stone-500 tracking-wider uppercase text-xs underline text-left">Update</button>
 						</div>
 						<div>
-							<p>Price</p>
+							<p>{{ item.line_price | money }}</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			{% endfor %}
+
+			<div class="mt-10 px-3 flex flex-col gap-5 md:flex-row md:justify-between justify-start">
+				<div class="w-full flex flex-col gap-y-1">
+					{% if section.settings.disabled_cart_notes %}
+					<label for="cart_notes" class="text-xl font-medium">Cart Notes:</label>
+					<textarea name="note" id="cart_notes" class="w-full border-stone-600 md:max-w-lg resize-none border h-20"></textarea>
+					{% endif %}
+				</div>
+				<div class="flex flex-col gap-y-5 w-full md:w-1/4">
+					{% for block in section.blocks %}
+
+						{% case block.type %}
+
+							{% when 'subtotal' %}
+
+							<p class="flex justify-between text-2xl	font-bold">Subtotal: <span>{{ cart.total_price | money }}</span></p>
+								
+							{% when 'checkout_button' %}
+
+							<button class="w-full border border-stone-600 uppercase p-4 hover:bg-black hover:text-white hover:border-black" type="submit" name="checkout">Check Out</button>
+							
+						{% endcase %}
+						
+					{% endfor %}
+					
+					<p class="font-bold">Shipping calculated at checkout.</p>
+				</div>
+			</div>
+
 		</form>
 
 	</div>
@@ -54,3 +90,29 @@
 	{% endif %}
 
 </section>
+
+{% schema %}
+{
+	"name": "Template Blog",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "disabled_cart_notes",
+			"label": "Disabled Cart Notes",
+			"default": false
+		}
+	],
+	"blocks": [
+		{
+			"type": "subtotal",
+			"name": "Subtotal",
+			"limit": 1
+		},
+		{
+			"type": "checkout_button",
+			"name": "Checkout Button",
+			"limit": 1
+		}
+	]
+}
+{% endschema %}
