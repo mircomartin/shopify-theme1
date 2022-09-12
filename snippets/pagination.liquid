@@ -4,7 +4,12 @@
 		{% if pagination.previous %}
 		<a class="flex items-center text-sm tracking-wider hover:text-gray-400 mr-auto" href="{{ pagination.previous.url }}">
 			{% render 'icon-previous' %}
-			<span>Previous</span>
+			<span>
+				Previous
+				{% if comment %}
+				{{ comment }}
+				{% endif %}
+			</span>
 		</a>			
 		{% endif %}
 
@@ -20,7 +25,12 @@
 
 		{% if pagination.next %}
 		<a class="flex items-center text-sm tracking-wider hover:text-gray-400 ml-auto" href="{{ pagination.next.url }}">
-			<span>Next</span>
+			<span>
+				Next
+				{% if comment %}
+				{{ comment }}
+				{% endif %}
+			</span>
 			{% render 'icon-next' %}
 		</a>			
 		{% endif %}

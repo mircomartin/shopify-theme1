@@ -10,7 +10,36 @@
 		</div>
 
 		<form action="{{ routes.cart_url }}" method="post" novalidate>
+			{% for item in cart.items %}
 			
+			<div class="flex items-center gap-4 px-3 py-3 border border-l-white border-t-white border-r-white border-b-stone-600">
+				<a href="{{ item.url }}">
+					{% if item.image %}
+						<img src="{{ item.image | img_url: 'small' }}" alt="{{ item.title | escape }}" class="w-20 h-auto object-cover"/>
+					{% else %}
+						{{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
+					{% endif %}
+				</a>
+				<div class="flex flex-col w-full md:flex-row md:justify-between gap-4 md:flex-1">
+					<div class="flex flex-col justify-center md:w-full">
+						<a href="{{ item.url }}" class="text-xl	tracking-wider font-medium">{{ item.product.title | truncatewords: 5 }}</a>
+						<p class="text-stone-500 tracking-wider font-medium">{{ item.variant.title | upcase }}</p>
+					</div>
+					<div class="flex justify-between md:w-2/5">
+						<div class="flex flex-col gap-4">
+							<div>
+								<input type="number" name="updates[]" value="{{ item.quantity }}" min="1" id="updates_{{ forloop.index }}" class="w-20 border p-2 text-center" />
+							</div>
+							<a class="text-stone-500 tracking-wider uppercase text-xs underline" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+						</div>
+						<div>
+							<p>Price</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% endfor %}
 		</form>
 
 	</div>

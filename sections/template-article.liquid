@@ -53,7 +53,7 @@
 			{% endfor %}
 			<div class="flex justify-center uppercase gap-x-4 text-sm">
 
-				{% render 'pagination', pagination: paginate %}
+				{% render 'pagination', pagination: paginate, comment: 'comments' %}
 
 				<!-- {% if paginate.pages > 1 %}
 					{{ paginate | default_pagination }}
