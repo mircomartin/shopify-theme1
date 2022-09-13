@@ -1,0 +1,34 @@
+<div class="product-card">
+	<div class="cardImgWrap--{{ product.id }}">
+		<a href="{{ product.url }}" class="block overflow-hidden">
+
+			{% if product.featured_image %}
+			<figure class="imgOne">
+				<img src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt }}" class="w-full h-auto object-cover {% if section.settings.show_second_image == false %}{% if section.settings.active_zoom_image %}transition duration-1000 ease-in-out hover:scale-105 transform{% endif %}{% endif %}">
+			</figure>
+			{% else %}
+			{{ 'product-1' | placeholder_svg_tag: 'w-full h-auto object-cover' }}
+			{% endif %}
+
+			{% if section.settings.show_second_image %}
+				{% if product.images[1] %}
+				<figure class="imgTwo">
+					<img src="{{ product.images[1] | img_url: 'large' }}" alt="{{ product.featured_image.alt }}" class="w-full h-auto object-cover">
+				</figure>
+				{% endif %}
+			{% endif %}
+
+		</a>
+	</div>
+	<div class="flex flex-col mt-6">
+
+		{% if section.settings.show_vendor %}
+		<p class="font-medium tracking-wider text-stone-500">{{ product.vendor | upcase }}</p>			
+		{% endif %}
+
+		<div class="flex justify-between items-start gap-3 md:items-center">
+			<a href="{{ product.url }}" class="tracking-wider">{{ product.title | upcase }}</a>
+			<span>{{ product.price | money }}</span>
+		</div>
+	</div>
+</div>

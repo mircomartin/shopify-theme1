@@ -22,12 +22,13 @@
 - Banner-Full-Width -> Customizable
 - Marquee Announcement -> Customizable
 - Template-Cart -> Customizable
-- Template-Collection -> In Progress
+- Template-Collection -> Customizable
+- Index  -> In progress
 
 ### TEMPLATES:
 - 404.json
 - article.json
 - blog.json
 - cart.json
-- collection .json -> In Progress
+- collection .json
 

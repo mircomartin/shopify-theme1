@@ -1,24 +1,15 @@
 <section class="px-4 mt-5">
-	<h1 class="text-center text-4xl my-4">{{ collection.title | upcase }}</h1>
-	
-	{% paginate collection.products by 12 %}
 
-	<div class="grid grid-cols-2 gap-2.5 md:grid-cols-4">
+	{% if section.settings.show_title_collection %}
+	<h1 class="text-center text-4xl my-4">{{ collection.title | upcase }}</h1>		
+	{% endif %}
+	
+	{% paginate collection.products by section.settings.number_of_products_per_page %}
+
+	<div class="grid grid-cols-2 gap-x-2.5 gap-y-3 md:grid-cols-4">
 		
 		{% for product in collection.products %}
-			<div>
-				<a href="{{ product.url }}">
-					<figure>
-						{% if product.featured_image %}
-						<img src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt }}" class="w-full h-auto object-cover">
-						{% endif %}
-					</figure>
-				</a>
-				<div class="flex justify-between items-center mt-6">
-					<a href="{{ product.url }}" class="tracking-wider">{{ product.title | upcase }}</a>
-					<span>{{ product.price | money }}</span>
-				</div>
-			</div>
+			{% render 'product-card', product: product %}
 			{% else %}
 				<p>There are no products inside of this collection.</p>
 		{% endfor %}
@@ -29,3 +20,63 @@
 	{% endpaginate %}
 	
 </section>
+
+<style type="text/css">
+	{% for product in collection.products %}
+		{% if section.settings.show_second_image %}
+			{%  if product.images[1] %}
+			.cardImgWrap--{{ product.id }} .imgOne {
+				display: block;
+			}
+			.cardImgWrap--{{ product.id }}:hover .imgOne {
+				display: none;
+			}
+			.cardImgWrap--{{ product.id }} .imgTwo {
+				display: none;
+			}
+			.cardImgWrap--{{ product.id }}:hover .imgTwo {
+				display: block;
+			}
+			{%  endif %}
+		{% endif %}
+	{% endfor %}
+</style>
+
+{% schema %}
+{
+	"name": "Template Collection",
+	"settings": [
+		{
+			"type": "number",
+			"id": "number_of_products_per_page",
+			"default": 6,
+			"label": "Number of products per page."
+		},
+		{
+			"type": "checkbox",
+			"id": "show_title_collection",
+			"label": "Show Title Collection",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_vendor",
+			"label": "Show Vendor",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_second_image",
+			"label": "Show Second Image",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "active_zoom_image",
+			"label": "Active Zoom Image",
+			"default": false,
+			"info": "If you active this option Second Image must be desactivated"
+		}
+	]
+}
+{% endschema %}
