@@ -11,7 +11,7 @@
 			{% endif %}
 
 			{% if section.settings.show_second_image %}
-				{% if product.images[1] %}
+				{% if product.images.size > 1 %}
 				<figure class="imgTwo">
 					<img src="{{ product.images[1] | img_url: 'large' }}" alt="{{ product.featured_image.alt }}" class="w-full h-auto object-cover">
 				</figure>
@@ -21,7 +21,6 @@
 		</a>
 	</div>
 	<div class="flex flex-col mt-6">
-
 		{% if section.settings.show_vendor %}
 		<p class="font-medium tracking-wider text-stone-500">{{ product.vendor | upcase }}</p>			
 		{% endif %}

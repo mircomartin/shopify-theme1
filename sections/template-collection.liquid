@@ -6,7 +6,7 @@
 	
 	{% paginate collection.products by section.settings.number_of_products_per_page %}
 
-	<div class="grid grid-cols-2 gap-x-2.5 gap-y-3 md:grid-cols-4">
+	<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
 		
 		{% for product in collection.products %}
 			{% render 'product-card', product: product %}
@@ -22,24 +22,24 @@
 </section>
 
 <style type="text/css">
+{% if section.settings.show_second_image %}
 	{% for product in collection.products %}
-		{% if section.settings.show_second_image %}
-			{%  if product.images[1] %}
-			.cardImgWrap--{{ product.id }} .imgOne {
-				display: block;
-			}
-			.cardImgWrap--{{ product.id }}:hover .imgOne {
-				display: none;
-			}
-			.cardImgWrap--{{ product.id }} .imgTwo {
-				display: none;
-			}
-			.cardImgWrap--{{ product.id }}:hover .imgTwo {
-				display: block;
-			}
-			{%  endif %}
-		{% endif %}
+		{%  if product.images.size > 1 %}
+		.cardImgWrap--{{ product.id }} .imgOne {
+			display: block;
+		}
+		.cardImgWrap--{{ product.id }}:hover .imgOne {
+			display: none;
+		}
+		.cardImgWrap--{{ product.id }} .imgTwo {
+			display: none;
+		}
+		.cardImgWrap--{{ product.id }}:hover .imgTwo {
+			display: block;
+		}
+		{%  endif %}
 	{% endfor %}
+{% endif %}
 </style>
 
 {% schema %}

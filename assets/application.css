@@ -801,6 +801,16 @@ video {
   width: 1rem;
 }
 
+.w-max {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.w-screen {
+  width: 100vw;
+}
+
 .max-w-xs {
   max-width: 20rem;
 }
@@ -1306,6 +1316,10 @@ video {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover\:block:hover {
+  display: block;
 }
 
 .hover\:scale-105:hover {
