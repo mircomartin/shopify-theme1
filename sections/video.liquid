@@ -1,0 +1,97 @@
+<section class="{% if section.settings.disabled_mobile == true %} hidden md:block {% endif %}">
+
+	{% if section.settings.title != blank %}
+	<div class="mx-auto container text-center text-4xl my-4">
+		<h2>{{ section.settings.title }}</h2>
+	</div>
+	{% endif %}
+
+	{% if section.settings.video_url == blank and section.settings.mp4url == blank %}
+		<div class="video-wrapper relative h-0 overflow-hidden">
+			<iframe class="absolute w-full h-full top-0 left-0" src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720"
+				frameborder="0" allowfullscreen></iframe>
+		</div>
+		{% else %}
+
+		{% if section.settings.video_url.type == "youtube" %}
+		<div class="video-wrapper relative h-0 overflow-hidden" style="padding-top: 35px;"><iframe class="absolute w-full h-full top-0 left-0"
+				src="//www.youtube.com/embed/{{ section.settings.video_url.id }}?{% if section.settings.autoplay %}autoplay=1&?{% endif %}rel=0&showinfo=0&vq=720&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+		{% endif %}
+		{% if section.settings.video_url.type == "vimeo" %}
+		<div class="video-wrapper relative h-0 overflow-hidden" style="padding-top: 1px;"><iframe class="absolute w-full h-full top-0 left-0"
+				src="//player.vimeo.com/video/{{ section.settings.video_url.id }}?{% if section.settings.autoplay %}autoplay=1&{% endif %}loop=1&muted=1" fullscreen; picture-in-picture allowfullscreen></iframe></div>
+		{% endif %}
+
+		{% if section.settings.video_url == blank and section.settings.mp4url != blank %}
+		<video width="100%" {% if section.settings.autoplay %} autoplay {% endif %}loop muted playsinline>
+			<source src="{{section.settings.mp4url}}" codecs="avc1.4d002a, mp4a.40.2" type="video/mp4">
+			Your browser does not support the video tag.
+			</source>
+		</video>
+		{% endif %}
+	{% endif %}
+
+</section>
+
+<style type="text/css">
+	.video-section .video-wrapper {
+		padding: 0;
+		padding-bottom: 56.25%;
+	}
+</style>
+
+{% schema %}
+{
+	"name": "Video",
+	"class": "video-section",
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading Title",
+			"default": "Heading Title..."
+		},
+		{
+			"type": "checkbox",
+			"id": "disabled_mobile",
+			"label": "Disable video for mobile devices",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "autoplay",
+			"label": "Autoplay Video",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "YouTube or Vimeo link"
+		},
+		{
+			"type": "video_url",
+			"id": "video_url",
+			"accept": [
+				"youtube",
+				"vimeo"
+			],
+			"label": "Video link"
+		},
+		{
+			"type": "header",
+			"content": "Or MP4 Video [recommended]"
+		}, 
+		{
+			"type": "textarea",
+			"id": "mp4url",
+			"label": "Mp4 video link",
+			"info":"Paste video url. Upload and copy video url from Settings --> File. Video  size must not exceed 20 mb. It is shopify limit for video."      
+		}
+	],
+	"presets": [
+		{
+			"category": "video",
+			"name":"Video"
+		}
+	]
+}
+{% endschema %}

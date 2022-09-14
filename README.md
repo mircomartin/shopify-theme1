@@ -20,6 +20,7 @@
 - Template-Article -> Customizable
 - Blog-Template -> Customizable.
 - Banner-Full-Width -> Customizable
+- Video -> Customizable
 - Marquee Announcement -> Customizable
 - Template-Cart -> Customizable
 - Template-Collection -> Customizable

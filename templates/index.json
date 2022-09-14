@@ -1,0 +1,11 @@
+{
+	"sections": {
+		"video": {
+			"type": "video"
+		},
+		"featured-collection": {
+			"type": "featured-collection"
+		}
+	},
+	"order":["video", "featured-collection"]
+}
