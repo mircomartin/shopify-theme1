@@ -4,7 +4,10 @@
 			"type": "video"
 		},
 		"featured-collection": {
-			"type": "featured-collection"
+			"type": "featured-collection",
+			"settings": {
+				"featured_collection": "all"
+			}
 		}
 	},
 	"order":["video", "featured-collection"]

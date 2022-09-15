@@ -2,7 +2,7 @@
 	{% for block in section.blocks %}
 		
 	{% if block.type == "article_title" %}
-	<section 
+	<div 
 		style="background: url('{{ article.image | img_url: 'master' }}') no-repeat center; height: 600px; background-size:cover;" 
 		class="flex items-center justify-center" 
 	>
@@ -22,13 +22,13 @@
 			{% endif %}
 
 		</div>
-	</section>
+	</div>
 	{% endif %}
 
 	{% if block.type == "article_content" %}
-	<section class="px-1 md:px-14" itemprop="articleBody">
+	<div class="px-1 md:px-14" itemprop="articleBody">
 		{{ article.content | replace: '<p', '<p class="text-xs uppercase text-justify"' }}
-	</section>
+	</div>
 	{% endif %}
 
 	{% endfor %}

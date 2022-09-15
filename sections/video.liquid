@@ -1,6 +1,6 @@
 <section class="{% if section.settings.disabled_mobile == true %} hidden md:block {% endif %}">
 
-	{% if section.settings.title != blank %}
+	{% if section.settings.show_title %}
 	<div class="mx-auto container text-center text-4xl my-4">
 		<h2>{{ section.settings.title }}</h2>
 	</div>
@@ -18,7 +18,7 @@
 				src="//www.youtube.com/embed/{{ section.settings.video_url.id }}?{% if section.settings.autoplay %}autoplay=1&?{% endif %}rel=0&showinfo=0&vq=720&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 		{% endif %}
 		{% if section.settings.video_url.type == "vimeo" %}
-		<div class="video-wrapper relative h-0 overflow-hidden" style="padding-top: 1px;"><iframe class="absolute w-full h-full top-0 left-0"
+		<div class="video-wrapper relative h-0 overflow-hidden" style="padding-top: 0px;"><iframe class="absolute w-full h-full top-0 left-0"
 				src="//player.vimeo.com/video/{{ section.settings.video_url.id }}?{% if section.settings.autoplay %}autoplay=1&{% endif %}loop=1&muted=1" fullscreen; picture-in-picture allowfullscreen></iframe></div>
 		{% endif %}
 
@@ -50,6 +50,12 @@
 			"id": "title",
 			"label": "Heading Title",
 			"default": "Heading Title..."
+		},
+		{
+			"type": "checkbox",
+			"id": "show_title",
+			"label": "Show Title",
+			"default": true
 		},
 		{
 			"type": "checkbox",
