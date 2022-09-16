@@ -1,7 +1,7 @@
 <section class="px-4 mt-5">
 
 	{% if section.settings.show_title_collection %}
-	<h1 class="text-center text-4xl my-4">{{ collection.title | upcase }}</h1>		
+	<h1 class="text-center text-4xl my-4 tracking-widest">{{ collection.title | upcase }}</h1>		
 	{% endif %}
 	
 	{% paginate collection.products by section.settings.number_of_products_per_page %}

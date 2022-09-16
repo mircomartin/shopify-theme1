@@ -52,11 +52,11 @@
 					{% assign link_handle = link.handle | replace: '-', '_' %}
 
 						<div x-data="{ {{ link_handle }}: false}" @mouseleave="{{ link_handle }} = false">
-							<button @mouseover="{{ link_handle }} = true" 
+							<a href="{{ link.url }}" @mouseover="{{ link_handle }} = true" 
 							class="inline-flex items-center gap-2 text-black text-base font-medium tracking-wide hover:bg-stone-100 p-5">
 								{{ link.title | upcase }}
 								{% render 'icon-dropdown' %}
-							</button>
+							</a>
 
 							<div 
 								x-show="{{ link_handle }}"

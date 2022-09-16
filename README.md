@@ -16,14 +16,17 @@
 ### SECTIONS:
 - Header(Desktop/Mobile) -> Customizable
 - Topbar -> Carousel Customizable
+- Marquee Announcement -> Customizable
 - Template-404  -> Customizable
 - Template-Article -> Customizable
 - Blog-Template -> Customizable.
-- Banner-Full-Width -> Customizable
-- Video -> Customizable
-- Marquee Announcement -> Customizable
 - Template-Cart -> Customizable
 - Template-Collection -> Customizable
+- Template-List-Collections -> Customizable
+- Banner-Full-Width -> Customizable
+- Featured-Collection -> Customizable
+- Video -> Customizable
+- Template-Aboutus -> In progress...
 - Index  -> In progress
 
 ### TEMPLATES:
@@ -31,5 +34,7 @@
 - article.json
 - blog.json
 - cart.json
-- collection .json
+- collection.json
+- list-collections.json
+- about-us.json
 
