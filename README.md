@@ -27,7 +27,8 @@
 - Featured-Collection -> Customizable
 - Video -> Customizable
 - Template-Aboutus -> In progress...
-- Index  -> In progress
+- Index  -> In progress ...
+- Footer -> In progress...
 
 ### TEMPLATES:
 - 404.json

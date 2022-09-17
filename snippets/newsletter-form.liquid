@@ -1,0 +1,12 @@
+{% form 'customer', id: formId, novalidate: 'novalidate', class: '' %}
+	{{ form.errors | default_errors }}
+	{%- if form.posted_successfully? -%}
+		<p class="uppercase">Thanks for suscribed!</p>
+	{%- else -%}
+		<div class="w-full flex gap-x-2	justify-between">
+			<input type="hidden" name="contact[tags]" value="newsletter">
+			<input type="email" name="contact[email]" id="Email" class="flex-1 py-2 px-4 border border-slate-300" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{% if customer %}{{ customer.email }}{% else %} EMAIL ADDRESS {% endif %}" autocorrect="off" autocapitalize="off">
+			<button type="submit" class="px-5 border border-black bg-white uppercase hover:bg-black hover:text-white" name="commit" id="Subscribe">Submit</button>
+		</div>
+	{%- endif -%}
+{% endform %}

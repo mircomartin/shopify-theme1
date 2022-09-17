@@ -1,7 +1,7 @@
 <section class="container mx-auto my-16 md:w-1/2">
 
 	<div class="mb-10">
-		<h2>
+		<h2 class="mb-4 uppercase text-4xl tracking-widest text-center">
 			{% if section.settings.main_image != blank %}
 			<figure>
 				<img src="{{ section.settings.main_image | img_url: 'master' }}" alt="{{ section.settings.main_image.alt }}" class="w-full">
@@ -15,25 +15,25 @@
 	<div class="px-4 md:px-0">
 		<div class="flex flex-col md:flex-row gap-8 mb-10">
 			<div class="w-full md:w-2/5">
-				<h1 class="text-2xl	font-bold tracking-widest mb-4">INCLUSION. POSITIVITY. FREEDOM OF EXPRESSION.</h1>
-				<h3 class="text-sm">Born from water, Hurley was founded in Huntington Beach, CA in 1999 on the principle of empowering and fueling the next generation. Since then, we’ve been making waves and getting loud with the world’s best surfers, skaters, musicians, artists, and tastemakers. Everything we do is put through the lens innovation and inclusion, turning the end result into a colorful celebration of the people, places, music, and art that keep us inspired — every single day. Welcome to the World of Hurley. Enjoy.</h3>
+				<h1 class="text-2xl	font-bold tracking-widest mb-4">{{ section.settings.title_body | upcase }}</h1>
+				<h3 class="text-sm">{{ section.settings.subtitle_body | upcase }}</h3>
 			</div>
 			<div class="w-full md:w-3/5 grid grid-cols-2 gap-5">
 				<figure>
-					<img src="//cdn.shopify.com/s/files/1/0277/3680/1419/files/surf_300x.jpg?v=1642534035" alt="" class="w-full h-full object-cover">
+					<img src="{{ section.settings.img_left_body | img_url: 'medium' }}" alt="{{ section.settings.img_left_body.alt }}" class="w-full h-full object-cover">
 				</figure>
 				<figure>
-					<img src="//cdn.shopify.com/s/files/1/0277/3680/1419/files/coco_300x.jpg?v=1642534059" alt="" class="w-full h-full object-cover">
+					<img src="{{ section.settings.img_right_body | img_url: 'medium' }}" alt="{{ section.settings.img_right_body.alt }}" class="w-full h-full object-cover">
 				</figure>
 			</div>
 		</div>
 	
 		<div class="flex gap-8">
 			<figure class="w-2/5">
-				<img src="//cdn.shopify.com/s/files/1/0277/3680/1419/files/ocean_300x.jpg?v=1642534077" alt="" class="w-full h-full object-cover">
+				<img src="{{ section.settings.img_left_footer | img_url: 'medium' }}" alt="{{ section.settings.img_left_footer.alt }}" class="w-full h-full object-cover">
 			</figure>
 			<figure class="w-3/5">
-				<img src="//cdn.shopify.com/s/files/1/0277/3680/1419/files/skate_300x.jpg?v=1642534092" alt="" class="w-full h-full object-cover">
+				<img src="{{ section.settings.img_right_footer | img_url: 'medium' }}" alt="{{ section.settings.img_left_footer.img_right_footer }}" class="w-full h-full object-cover">
 			</figure>
 		</div>
 	</div>
@@ -45,6 +45,10 @@
 	"name": "Template Page",
 	"settings": [
 		{
+			"type": "header",
+			"content": "Header Section"
+		},
+		{
 			"type": "image_picker",
 			"id": "main_image",
 			"label": "Image Title"
@@ -54,7 +58,47 @@
 			"id": "title",
 			"label": "Title Text",
 			"default": "Title"
-		}
+		},
+		{
+			"type": "header",
+			"content": "Body Section"
+		},
+		{
+			"type": "text",
+			"id": "title_body",
+			"label": "Title Body Section",
+			"default": "INCLUSION. POSITIVITY. FREEDOM OF EXPRESSION."
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle_body",
+			"label": "Subtitle Body Section",
+			"default": " Born from water, Hurley was founded in Huntington Beach, CA in 1999 on the principle of empowering and fueling the next generation. Since then, we’ve been making waves and getting loud with the world’s best surfers, skaters, musicians, artists, and tastemakers. Everything we do is put through the lens innovation and inclusion, turning the end result into a colorful celebration of the people, places, music, and art that keep us inspired — every single day. Welcome to the World of Hurley. Enjoy."
+		},
+		{
+			"type": "image_picker",
+			"id": "img_left_body",
+			"label": "Image Left Body Section"
+		},
+		{
+			"type": "image_picker",
+			"id": "img_right_body",
+			"label": "Image Right Body Section"
+		},
+		{
+			"type": "header",
+			"content": "Footer Section"
+		},
+		{
+			"type": "image_picker",
+			"id": "img_left_footer",
+			"label": "Image Left Footer Section"
+		},
+		{
+			"type": "image_picker",
+			"id": "img_right_footer",
+			"label": "Image Right Footer Section"
+		},
 	]
 }
 {% endschema %}

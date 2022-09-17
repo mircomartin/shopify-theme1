@@ -1,0 +1,150 @@
+{% if section.settings.menu.links == blank %}
+	{% assign footer_menu_linklist = linklists[section.settings.menu].links %}
+{% else %}
+	{% assign footer_menu_linklist = section.settings.menu.links %}
+{% endif %}
+
+<section class="container mx-auto p-10 md:py-10 md:px-0">
+	
+	<!--Logo-->
+	<div class="mb-10">
+	
+		<a href="{{ shop.secure_url }}" class="flex no-underline justify-center md:justify-start">
+			{% if settings.logo == blank and settings.logoSVG == blank %}
+				<h1 class="text-xl font-bold truncate">
+					{{shop.name}}
+				</h1>
+			{% else %}
+			
+				{% assign logo = settings.logoSVG %}
+				{% if logo == blank %}
+					{% assign logo = settings.logo %}
+					<figure class="m-0 max-w-xs overflow-hidden">
+						<img src="{{ logo | img_url: 'small' }}" alt="{{ logo.image.alt }}" class="w-full"/>
+					</figure>
+				{% else %}
+					{% render 'logo-svg', logo:logo %}
+				{% endif %}
+				
+			{% endif %}
+		</a>
+		
+	</div>
+
+	<!--Menu Footer Mobile-->
+	<div 
+		@click.away="mobileMenuOpen = true"
+		x-show="mobileMenuOpen"
+		class="p-2 transform origin-top-left md:hidden">
+
+		<!--Navigation Links-->
+		<div class="pt-3">
+			<nav class="grid gap-y-10">
+				
+				{% for link in footer_menu_linklist %}
+					{% if link.links != blank %}
+					{% assign mobile_link_handle = link.handle | replace: '-', '_' %}
+						<div class="relative"  x-data="{ {{ mobile_link_handle }}: false}"">
+							<button 
+							@click="{{ mobile_link_handle }} = true"
+							class="flex justify-between w-full text-sm uppercase tracking-wider font-bold">
+								{{ link.title }}
+								{% render 'icon-dropdown' %}
+							</button>
+							<div class="grid gap-y-1.5 mt-1.5"
+							x-show="{{ mobile_link_handle }}" @click.away="{{ mobile_link_handle }} = false"
+							>
+								{% for childlink in link.links %}
+									<a href="{{ childlink.url }}" class="flex text-xs uppercase tracking-wide"><span class="ml-3">{{ childlink.title }}</span></a>
+								{% endfor %}
+							</div>
+						</div>
+					{% else %}
+						<a href="{{ link.url }}" class="flex justify-between w-full text-sm uppercase tracking-wider font-bold">{{ link.title }}</a>
+					{% endif %}
+					
+				{% endfor %}
+			</nav>
+		</div>
+
+	</div>
+
+	<!--Menu Desktop-->
+	<div class="w-full hidden md:flex">
+		<div class="w-3/4">
+			<nav class="flex gap-8">
+				<ul class="flex gap-8">
+					{% for link in footer_menu_linklist %}
+					<li>
+						<span class="text-sm font-bold tracking-wider">{{ link.title | upcase }}</span>
+						<ul class="flex flex-col gap-3 mt-3">
+							{% for childlink in link.links %}
+							<li><a class="text-xs" href="{{ childlink.url }}">{{ childlink.title | upcase }}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+					{% endfor %}
+				</ul>
+				{% if section.blocks.size > 0 %}
+				{% for block in section.blocks %}
+				{% case block.type %}
+				{% when 'c-menu' %}
+				<ul class="flex gap-8">
+					{% for link in block.settings.custom_menu.links %}
+					<li>
+						<span class="text-sm font-bold tracking-wider">{{ link.title | upcase }}</span>
+						<ul class="flex flex-col gap-3 mt-3">
+							{% for childlink in link.links %}
+							<li><a class="text-xs" href="{{ childlink.url }}">{{ childlink.title | upcase }}</a></li>
+							{% endfor %}
+						</ul>
+					</li>
+					{% endfor %}
+				</ul>
+				{% endcase %}
+				{% endfor %}
+				{% endif %}
+			</nav>
+		</div>
+		<div class="w-1/4">
+			<p class="text-xs mb-3">{{ section.settings.newsletter_title | upcase }}</p>
+			<div>
+				{% render 'newsletter-form' %}
+			</div>
+		</div>
+	</div>
+
+</section>
+
+{% schema %}
+{
+	"name": "Footer",
+	"max_blocks": 3,
+	"settings": [
+		{
+			"type": "link_list",
+			"id": "menu",
+			"default": "footer",
+			"label": "Footer Navigation"
+		},
+		{
+			"type": "text",
+			"id": "newsletter_title",
+			"label": "Newsletter Heading",
+			"default": "Sign Up For 15% OFF Your First Order"
+		}
+	],
+	"blocks": [
+		{
+			"type": "c-menu",
+			"name": "Custom Menu",
+			"settings": [
+				{	"type": "link_list",
+					"id": "custom_menu",
+					"label": "Custom Menu"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

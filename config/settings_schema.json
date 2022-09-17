@@ -4,7 +4,7 @@
     "settings": [
       {
         "type": "header",
-        "content": "Logo Selection"
+        "content": "Logo Selection for Header/Footer"
       },
       {
         "type": "image_picker",
