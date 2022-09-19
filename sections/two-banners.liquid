@@ -1,27 +1,32 @@
-<section class="{% if section.settings.fullwidth == false %}
-container md:px-0{% endif %} mx-auto px-4 md:my-14">
+<section class="{% if section.settings.fullwidth == false %}container md:px-0{% endif %} mx-auto px-4 md:my-14">
     <div class="grid grid-cols-1 gap-7 md:grid-cols-2">
         <div class="banner relative">
             {% if section.settings.image_left_link != blank %}
             <div class="absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-                <a href="{{ section.settings.image_left_link }}" class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{ section.settings.image_left_text }}</a>
+                <a href="{{ section.settings.image_left_link }}"
+                    class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{
+                    section.settings.image_left_text }}</a>
             </div>
             {% endif %}
             <a href="{{ section.settings.image_left_link }}" class="">
                 <figure>
-                    <img src="{{ section.settings.image_left | img_url: 'master' }}" class="w-full h-auto object-cover" alt="{{ section.settings.image_left.alt }}">
+                    <img src="{{ section.settings.image_left | img_url: 'master' }}" class="w-full h-auto object-cover"
+                        alt="{{ section.settings.image_left.alt }}">
                 </figure>
             </a>
         </div>
         <div class="banner relative">
             {% if section.settings.image_right_link != blank %}
             <div class="absolute z-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-                <a href="{{ section.settings.image_right_link }}" class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{ section.settings.image_right_text }}</a>
+                <a href="{{ section.settings.image_right_link }}"
+                    class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{
+                    section.settings.image_right_text }}</a>
             </div>
             {% endif %}
             <a href="{{ section.settings.image_right_link }}" class="">
                 <figure>
-                    <img src="{{ section.settings.image_right | img_url: 'master' }}" class="w-full h-auto object-cover" alt="{{ section.settings.image_right.alt }}">
+                    <img src="{{ section.settings.image_right | img_url: 'master' }}" class="w-full h-auto object-cover"
+                        alt="{{ section.settings.image_right.alt }}">
                 </figure>
             </a>
         </div>

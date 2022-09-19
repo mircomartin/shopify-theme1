@@ -72,8 +72,8 @@
 	<!--Menu Desktop-->
 	<div class="w-full flex">
 
-		<div class="hidden md:block md:w-3/4">
-			<nav class="flex flex-wrap gap-8">
+		<div class="hidden md:flex md:w-3/4">
+			<nav class="flex flex-1 flex-wrap gap-8">
 				<ul class="flex gap-8">
 					{% for link in footer_menu_linklist %}
 					<li>
@@ -180,13 +180,13 @@
 			"id": "text_copyright",
 			"label": "Text Copyright",
 			"default": "© 2022 Mirco Martin. Inc. All Rights Reserved"
-		}
+		},
 		{
 			"type": "checkbox",
 			"id": "enabled_social_media",
 			"label": "Enabled Social Media",
 			"default": true
-		},
+		}
 	],
 	"blocks": [
 		{

@@ -22,16 +22,16 @@
 	{% if section.settings.show_second_image %}
 		{% for product in section.settings.featured_collection.products %}
 			{%  if product.images.size > 1 %}
-			.cardImgWrap--{{ product.id }} .imgOne {
+			.featuredCollection .cardImgWrap--{{ product.id }} .imgOne {
 				display: block;
 			}
-			.cardImgWrap--{{ product.id }}:hover .imgOne {
+			.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgOne {
 				display: none;
 			}
-			.cardImgWrap--{{ product.id }} .imgTwo {
+			.featuredCollection .cardImgWrap--{{ product.id }} .imgTwo {
 				display: none;
 			}
-			.cardImgWrap--{{ product.id }}:hover .imgTwo {
+			.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgTwo {
 				display: block;
 			}
 			{%  endif %}
@@ -42,7 +42,7 @@
 {% schema %}
 {
 	"name": "Featured Collection",
-	"class": "featured-collection-section",
+	"class": "featuredCollection",
 		"settings": [
 		{
 			"type": "checkbox",
