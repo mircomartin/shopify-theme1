@@ -8,7 +8,10 @@
 			"settings": {
 				"featured_collection": "all"
 			}
+		},
+		"two-banners":{
+			"type": "two-banners"
 		}
 	},
-	"order":["video", "featured-collection"]
+	"order":["video", "featured-collection", "two-banners"]
 }

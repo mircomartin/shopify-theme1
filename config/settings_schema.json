@@ -28,7 +28,35 @@
       },
       {
         "type": "header",
-        "content": "Topbar"
+        "content": "Social Media"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "default": "https://facebook.com/hurley",
+        "info": "Insert your url."
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "default": "https://instagram.com/hurley",
+        "info": "Insert your url."
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "You Tube",
+        "default": "https://youtube.com/hurley",
+        "info": "Insert your url."
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "Twitter",
+        "default": "https://twitter.com/hurley",
+        "info": "Insert your url."
       }
     ]
   },

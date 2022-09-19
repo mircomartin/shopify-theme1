@@ -7,7 +7,7 @@
 - json structured schema
 
 ### Libraries:
-- Tailwind CSS 
+- Tailwind CSS -> npx tailwindcss -i ./src/tailwind.css -o ./assets/application.css --watch
 - Alpine JS
 - Slick Carousel
 
@@ -26,9 +26,10 @@
 - Banner-Full-Width -> Customizable
 - Featured-Collection -> Customizable
 - Video -> Customizable
-- Template-Aboutus -> In progress...
-- Index  -> In progress ...
-- Footer -> In progress...
+- Template-Aboutus -> Customizable
+- Index  -> In progress...
+- Footer(Desktop/Mobile) -> Customizable
+- Template-Product -> In progress...
 
 ### TEMPLATES:
 - 404.json
@@ -38,4 +39,7 @@
 - collection.json
 - list-collections.json
 - about-us.json
+- page.json
+- contac.json
+- product.json
 

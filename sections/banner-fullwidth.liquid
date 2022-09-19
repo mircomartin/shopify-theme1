@@ -11,11 +11,10 @@
 			{% endif %}
 		</a>
 
+		{% if section.settings.title != blank %}
 		<div class="c-textBlock absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:max-w-lg">
 			
-			{% if section.settings.title != blank %}
 			<h2 class="tracking-wider text-2xl font-bold text-center md:text-left">{{ section.settings.title | upcase }}</h2>
-			{% endif %}
 
 			{% if section.settings.subtext_title != blank %}
 			<h3 class="text-{{ section.settings.text_color }} tracking-wider text-xs text-center md:text-left">{{ section.settings.subtext_title | upcase }}</h3>
@@ -26,6 +25,7 @@
 			{% endif %}
 			
 		</div>
+		{% endif %}
 		
 	</figure>
 </section>

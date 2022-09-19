@@ -70,9 +70,10 @@
 	</div>
 
 	<!--Menu Desktop-->
-	<div class="w-full hidden md:flex">
-		<div class="w-3/4">
-			<nav class="flex gap-8">
+	<div class="w-full flex">
+
+		<div class="hidden md:block md:w-3/4">
+			<nav class="flex flex-wrap gap-8">
 				<ul class="flex gap-8">
 					{% for link in footer_menu_linklist %}
 					<li>
@@ -106,12 +107,53 @@
 				{% endif %}
 			</nav>
 		</div>
-		<div class="w-1/4">
-			<p class="text-xs mb-3">{{ section.settings.newsletter_title | upcase }}</p>
-			<div>
-				{% render 'newsletter-form' %}
+		<div class="w-full md:w-1/4">
+			<div class="my-10 md:mb-10 md:my-0">
+				<p class="text-center md:text-left text-xs mb-3">{{ section.settings.newsletter_title | upcase }}</p>
+				<div>
+					{% render 'newsletter-form' %}
+				</div>
 			</div>
+			{% if section.settings.enabled_social_media %}
+			<div>
+				<ul class="flex gap-5 justify-center md:justify-start">
+					{% if settings.social_instagram != blank %}
+					<li>
+						<a href="{{ settings.social_instagram }}" target="_blank">
+							{% render 'icon-instagram' %}
+						</a>
+					</li>
+					{% endif %}
+					{% if settings.social_facebook != blank %}
+					<li>
+						<a href="{{ settings.social_facebook }}" target="_blank">
+							{% render 'icon-facebook' %}
+						</a>
+					</li>
+					{% endif %}
+					{% if settings.social_youtube != blank %}
+					<li>
+						<a href="{{ settings.social_youtube }}" target="_blank">
+							{% render 'icon-youtube' %}
+						</a>
+					</li>
+					{% endif %}
+					{% if settings.social_twitter != blank %}
+					<li>
+						<a href="{{ settings.social_twitter }}" target="_blank">
+							{% render 'icon-twitter' %}
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+			{% endif %}
 		</div>
+	</div>
+
+	<!--Section Copyright-->
+	<div>
+		<p class="pt-5 mt-5 text-xs text-center md:text-right">{{ section.settings.text_copyright | upcase }}</p>
 	</div>
 
 </section>
@@ -132,7 +174,19 @@
 			"id": "newsletter_title",
 			"label": "Newsletter Heading",
 			"default": "Sign Up For 15% OFF Your First Order"
+		},
+		{
+			"type": "text",
+			"id": "text_copyright",
+			"label": "Text Copyright",
+			"default": "© 2022 Mirco Martin. Inc. All Rights Reserved"
 		}
+		{
+			"type": "checkbox",
+			"id": "enabled_social_media",
+			"label": "Enabled Social Media",
+			"default": true
+		},
 	],
 	"blocks": [
 		{
