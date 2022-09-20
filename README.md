@@ -9,7 +9,7 @@
 ### Libraries:
 - Tailwind CSS -> npx tailwindcss -i ./src/tailwind.css -o ./assets/application.css --watch
 - Alpine JS
-- Slick Carousel
+- Swiper Js
 
 ## Progress:
 

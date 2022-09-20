@@ -1,28 +1,32 @@
-<script>
-$(document).ready(function () {
-	$('.responsive.topbar').slick({
-		dots: false,
-		arrows: false,
-		infinite: true,
-		autoplay: true,
-		speed: 600,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		fade: true,
-		cssEase: 'linear'
-	});
-});
-</script>
-
 <section id="topbar" class="bg-stone-100 py-5">
 	<div class="container mx-auto">
-		<div class="responsive topbar">
-			{% for block in section.blocks %}
-			{{ block.settings.message_topbar | replace: '<p', '<p class="text-center text-sm uppercase"' }}
-			{% endfor %}
+		<div class="swiper topbar">
+			<div class="swiper-wrapper">
+				{% for block in section.blocks %}
+				<div class="swiper-slide">
+					{{ block.settings.message_topbar | replace: '<p', '<p class="text-center text-sm uppercase"' }}
+				</div>
+				{% endfor %}
+			</div>
 		</div>
 	</div>
 </section>
+
+<script>
+const swiperTopbar = new Swiper('.swiper.topbar', {
+	// Optional parameters
+	direction: 'horizontal',
+	loop: true,
+	slidesPerView: 1,
+	autoplay: {
+		delay: 3000,
+	},
+	effect: 'fade',
+	fadeEffect: {
+		crossFade: true
+	},
+});
+</script>
 
 {% schema %}
 {

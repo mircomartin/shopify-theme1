@@ -23,12 +23,17 @@
 			</div>
 			<!--Mobile Gallery-->
 			<div class="md:hidden mobile-gallery">
-				<div class="responsive mobile">
-					{% for media in product.media %}
-					<div class="overflow-hidden">
-						{% render 'product-media', media: media %}
+				<div class="swiper mobile">
+					<div class="swiper-wrapper">
+						{% for media in product.media %}
+						<div class="swiper-slide">
+							<div class="overflow-hidden">
+								{% render 'product-media', media: media %}
+							</div>
+						</div>
+						{% endfor %}
 					</div>
-				{% endfor %}
+					<div class="swiper-pagination"></div>
 				</div>
 			</div>
 		</div>
@@ -36,6 +41,7 @@
 			{% form 'product', product %}
 			
 				<div class="flex flex-col gap-y-6">
+
 					<!--Add Checkbox-->
 					<span>{{ product.vendor | upcase }}</span>
 					<!--Add Checkbox-->
@@ -91,15 +97,45 @@
 									<select 
 										name="options[{{ option.name | escape | upcase }}]" 
 										id="Option-{{ section.id }}-{{ forloop.index0 }}"
-										class="w-1/3 p-2.5">
+										class="w-1/3 p-2.5 border border-slate-300 bg-stone-100"
+									>
 										{% for value in option.values %}
-											<option value="{{ value | escape }}" class="text-sm bg-stone-100">{{ value | upcase }}</option>
+											<option 
+											value="{{ value | escape }}" 
+											class="text-sm bg-stone-100"
+											{% if option.selected_value == value %}
+												selected="selected"
+											{% endif %}
+											>{{ value | upcase }}</option>
 										{% endfor %}
 									</select>
 								</div>
 							{% endfor %}
 						</div>
 						{% endunless %}
+					</div>
+
+					<div>
+						<label class="uppercase" for="Quantity-{{ section.id }}">QTY:</label>
+						<input class="bg-stone-100 border border-slate-300 p-2.5" type="number" name="quantity" id="Quantity-{{ section.id }}" value="1" min="1" max="10">
+					</div>
+
+					<!--Description-->
+					<div x-data="{ open: false }">
+						<span 
+							@click="open = true"
+							class="flex text-sm uppercase tracking-wider font-bold cursor-pointer"
+						>
+							Details:
+							<span :class="open && 'hidden'">{% render 'icon-dropdown' %}</span>
+          					<span :class="!open && 'hidden'">-</span>
+						</span>
+						<div
+							x-show="open"
+							@click.away="open = false"
+						>
+							<p>{{ product.description }}</p>
+						</div>
 					</div>
 
 				</div>
@@ -110,26 +146,35 @@
 </section>
 
 <style type="text/css">
-	.product--medias .mobile-gallery .slick-dots {
-		bottom: 0;
+	.product--medias .mobile-gallery .swiper-pagination {
+		bottom: 10px;
 		text-align: left;
+		left: 10px;
 	}
-	.product--medias .mobile-gallery .slick-dots li button:before {
-		font-size: 16px;
-    	line-height: 16px;
+	.product--medias .mobile-gallery .swiper-pagination .swiper-pagination-bullet {
+		width: 16px;
+    	height: 16px;
+		border: 1px solid #d5d5d5;
+		background: transparent;
+		opacity: unset;
+	}
+	.product--medias .mobile-gallery .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
+		background: #d5d5d5;
 	}
 </style>
 
 <script>
-$(document).ready(function () {
-	$('.responsive.mobile').slick({
-		dots: true,
-		arrows: false,
-		infinite: true,
-		autoplay: false,
-		speed: 600,
-		slidesToShow: 1,
-		slidesToScroll: 1
+	const swiperMobile = new Swiper('.swiper.mobile', {
+		// Optional parameters
+		direction: 'horizontal',
+		loop: true,
+		slidesPerView: 1,
+		autoplay: {
+			delay: 5000,
+		},
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true
+		},
 	});
-});
 </script>
