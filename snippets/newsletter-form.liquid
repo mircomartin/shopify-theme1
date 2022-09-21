@@ -5,8 +5,8 @@
 	{%- else -%}
 		<div class="w-full flex gap-2 flex-col md:flex-row md:justify-between">
 			<input type="hidden" name="contact[tags]" value="newsletter">
-			<input type="email" name="contact[email]" id="Email" class="md:flex-1 py-2 px-4 bg-white border border-slate-300" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{% if customer %}{{ customer.email }}{% else %} EMAIL ADDRESS {% endif %}" autocorrect="off" autocapitalize="off">
-			<button type="submit" class="px-5 py-2 md:py-0 border border-black bg-white uppercase hover:bg-black hover:text-white" name="commit" id="Subscribe">Submit</button>
+			<input type="email" name="contact[email]" id="Email" class="md:w-3/4 py-2 px-4 bg-white border border-slate-300" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{% if customer %}{{ customer.email }}{% else %} EMAIL ADDRESS {% endif %}" autocorrect="off" autocapitalize="off">
+			<button type="submit" class="md:w-1/4 py-2 md:py-0 border border-black bg-white uppercase hover:bg-black hover:text-white" name="commit" id="Subscribe">Submit</button>
 		</div>
 	{%- endif -%}
 {% endform %}

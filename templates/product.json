@@ -1,7 +1,47 @@
 {
     "sections": {
         "template": {
-            "type": "template-product"
+            "type": "template-product",
+            "blocks": {
+				"vendor":{
+					"type": "vendor"
+				},
+				"title":{
+					"type": "title"
+				},
+                "fake_watches":{
+					"type": "fake_watches"
+				},
+                "price":{
+					"type": "price"
+				},
+                "tags":{
+					"type": "tags"
+				},
+                "variant_selector":{
+					"type": "variant_selector"
+				},
+                "quantity":{
+					"type": "quantity"
+				},
+                "description":{
+					"type": "description"
+				},
+                "checkout_buttons":{
+					"type": "checkout_buttons"
+				}
+			},
+			"block_order": [
+                "vendor",
+				"title",
+                "fake_watches",
+				"price",
+                "tags",
+                "variant_selector",
+                "quantity",
+                "checkout_buttons",
+                "description"
+			]
         }
     },
     "order": ["template"]
