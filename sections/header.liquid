@@ -87,8 +87,41 @@
 				{% endfor %}
 			</nav>
 
-			<!-- Cart/User -->
+			<!-- Search/Cart/User -->
 			<section class="flex items-center justify-end md:flex-1 gap-x-2.5">
+
+				
+				<div
+					x-data="{ open: false }"
+				>
+					<button
+						@click="open = true"
+						class="flex"
+					>
+						{% render 'icon-search' %}
+					</button>
+
+					<!--Search Container-->
+					<div
+						x-show="open"
+						@click.away="open = false"
+						x-transition:enter="transition ease-out duration-300"
+						x-transition:enter-start="opacity-0 transform scale-90"
+						x-transition:enter-end="opacity-100 transform scale-100"
+						x-transition:leave="transition ease-in duration-300"
+						x-transition:leave-start="opacity-100 transform scale-100"
+						x-transition:leave-end="opacity-0 transform scale-90"
+						class="absolute left-0 top-full w-full flex justify-center"
+					>
+						<form action="{{ routes.search_url }}" method="get" class="w-5/6 md:w-1/2">
+							<label class="flex gap-2">
+								<input type="search" name="q" placeholder="SEARCH" class="flex-1 border-b border-b-slate-300 p-2.5" />
+								<button class="border-0" type="submit">{% render 'icon-search' %}</button>
+							</label>
+						</form>
+					</div>
+					
+				</div>
 
 				{% if shop.customer_accounts_enabled %}
 					{% if customer %}

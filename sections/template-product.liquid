@@ -84,26 +84,30 @@
 
 				<div id="price-{{ section.id }}" class="flex gap-1.5">
 					{% assign product_price = selected_variant %}
-					<span id="priceO" class="text-xl">{{ product_price.price | money }}</span>
+					<span id="price-data" class="text-xl">{{ product_price.price | money }}</span>
 					{% if product_price.compare_at_price > product_price.price %}
 					<span class="text-xl line-through text-stone-500">{{ product_price.compare_at_price | money	}}</span>
 					{% endif %}
 				</div>
 
-				<!--Create Block Klarma with + CM -->
+				<!--Klarma Block-->
+				{% assign klarma_number = block.settings.klarma_number %}
+				{% if block.settings.klarma_enabled %}
 				<div>
-					{% assign results = product_price.price | divided_by: 4 %}
-					<span class="text-xs border border-slate-300 p-1">4 interest-free payments of <span id="klarma">{{ results | money }}</span>
+					{% assign results = product_price.price | divided_by: block.settings.klarma_number %}
+					<span class="text-xs border border-slate-300 p-1">{{klarma_number}} interest-free payments of <span id="klarma">{{ results | money }}</span>
 						with <strong>Klarna</strong>.</span>
 				</div>
-				<!--Create Block Klarma with product metafield-->
+				{% endif %}
 
+				{% if block.settings.savings %}
 				<div class="">
 					{% if product_price.compare_at_price > product_price.price %}
 					<span class="text-cyan-400 uppercase">{{ product.compare_at_price | minus: product.price | times:
 						100 | divided_by: product.compare_at_price }}% SAVINGS</span>
 					{% endif %}
 				</div>
+				{% endif %}
 
 				{% when 'tags' %}
 
@@ -301,6 +305,7 @@
 			fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
 			.then((response) => response.text())
 			.then((responseText) => {
+
 				const id = `price-${this.dataset.section}`;
 				const html = new DOMParser().parseFromString(responseText, 'text/html');
 
@@ -309,12 +314,11 @@
 
 				if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
 
-				const priceO = document.querySelector('#priceO').innerHTML
-				const klarmaPartial = (priceO.split('$')[1].replace(',','.') / 4).toFixed(2).replace('.00',' ').replace('.',',')
-
-				let klarma = document.querySelector('#klarma')
-				klarma.textContent = `$${klarmaPartial}`
-
+				/* Klarma Block */
+				let klarma = document.querySelector('#klarma');
+				const klarmaPartial = (((this.currentVariant.price / 100) / {{klarma_number}} ).toFixed(2)).toString().replace('.',',');
+				klarma.textContent = `$${klarmaPartial}`;
+				
 			})
 		}
 	}
@@ -371,7 +375,30 @@
 		{
 			"type": "price",
 			"name": "Price",
-			"limit": 1
+			"limit": 1,
+			"settings": [
+				{
+					"type": "checkbox",
+					"id": "klarma_enabled",
+					"label": "Enabled Klarma Block",
+					"default": true
+				},
+				{
+					"type": "range",
+					"id": "klarma_number",
+					"label": "Klarma quantity",
+					"min": 2,
+					"max": 12,
+					"step": 1,
+					"default": 4
+				},
+				{
+					"type": "checkbox",
+					"id": "savings",
+					"label": "Active Savings Label",
+					"default": true
+				}
+			]
 		},
 		{
 			"type": "tags",
