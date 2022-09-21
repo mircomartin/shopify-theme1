@@ -82,25 +82,18 @@
 
 				{% when 'price' %}
 
-				<div class="flex gap-1.5">
+				<div id="price-{{ section.id }}" class="flex gap-1.5">
 					{% assign product_price = selected_variant %}
-					<span class="text-xl">{{ product_price.price | money }}</span>
-					{% if product_price.compare_at_price > 0 %}
-					<span class="text-xl line-through text-stone-500">{{ product_price.compare_at_price | money
-						}}</span>
+					<span id="priceO" class="text-xl">{{ product_price.price | money }}</span>
+					{% if product_price.compare_at_price > product_price.price %}
+					<span class="text-xl line-through text-stone-500">{{ product_price.compare_at_price | money	}}</span>
 					{% endif %}
 				</div>
 
 				<!--Create Block Klarma with + CM -->
 				<div>
-					{% if product_price.compare_at_price > product_price.price %}
-					{% assign product_price_klarma = product_price.compare_at_price %}
-					{% else %}
-					{% assign product_price_klarma = product_price.price %}
-					{% endif %}
-
-					{% assign results = product_price_klarma | divided_by: 4 %}
-					<span class="text-xs border border-slate-300 p-1">4 interest-free payments of {{ results | money }}
+					{% assign results = product_price.price | divided_by: 4 %}
+					<span class="text-xs border border-slate-300 p-1">4 interest-free payments of <span id="klarma">{{ results | money }}</span>
 						with <strong>Klarna</strong>.</span>
 				</div>
 				<!--Create Block Klarma with product metafield-->
@@ -270,6 +263,7 @@
 			if(this.currentVariant) {
 				this.updateURL();
 				this.updateFormID();
+				this.updatePrice();
 			}
 		}
 		getSelectedOptions() {
@@ -297,11 +291,31 @@
 		}
 		updateURL() {
 			if(!this.currentVariant) return;
-			window.history.replaceState({}, `${this.dataset.url}?variant=${this.currentVariant.id}`);
+			window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
 		}
 		updateFormID() {
 			const form_input = document.querySelector("#product-form").querySelector('input[name="id"]');
 			form_input.value = this.currentVariant.id;
+		}
+		updatePrice() {
+			fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+			.then((response) => response.text())
+			.then((responseText) => {
+				const id = `price-${this.dataset.section}`;
+				const html = new DOMParser().parseFromString(responseText, 'text/html');
+
+				const oldPrice = document.getElementById(id);
+				const newPrice = html.getElementById(id);
+
+				if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+
+				const priceO = document.querySelector('#priceO').innerHTML
+				const klarmaPartial = (priceO.split('$')[1].replace(',','.') / 4).toFixed(2).replace('.00',' ').replace('.',',')
+
+				let klarma = document.querySelector('#klarma')
+				klarma.textContent = `$${klarmaPartial}`
+
+			})
 		}
 	}
 	customElements.define("variant-selector", VariantSelector)
