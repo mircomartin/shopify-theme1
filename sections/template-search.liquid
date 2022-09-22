@@ -1,0 +1,119 @@
+<section class="px-4 my-5" style="min-height: 500px;">
+
+    {% for block in section.blocks %}
+
+    {% case block.type %}
+
+    {% when "title" %}
+
+    <h1 class="text-center text-4xl my-4 tracking-widest uppercase">Search results for "{{ search.terms | upcase }}" ({{search.results.size}})</h1>
+
+    {% else %}
+
+    {% endcase %}
+
+    {% endfor %}
+
+    {% paginate search.results by section.settings.number_of_products_per_page %}
+
+    <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+
+        {% for item in search.results %}
+
+        {% case item.object_type %}
+
+        {% when 'product' %}
+
+        {% render 'product-card', product: item %}
+
+        {% else %}
+
+        <div>
+            <p class="uppercase">THERE ARE NO PRODUCTS THAT MATCH YOUR SELECTION.</p>
+        </div>
+
+        {% endcase %}
+
+        {% else %}
+
+        <div>
+            <p class="uppercase">THERE ARE NO PRODUCTS THAT MATCH YOUR SELECTION.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="container mx-auto">
+        {% render 'pagination', pagination: paginate %}
+    </div>
+
+    {% endpaginate %}
+
+</section>
+
+<style type="text/css">
+    {% if section.settings.show_second_image %}
+        {% for item in search.results %}
+        {% if item.object_type == 'product' %}
+            {%  if item.images.size > 1 %}
+            .cardImgWrap--{{ item.id }} .imgOne {
+                display: block;
+            }
+            .cardImgWrap--{{ item.id }}:hover .imgOne {
+                display: none;
+            }
+            .cardImgWrap--{{ item.id }} .imgTwo {
+                display: none;
+            }
+            .cardImgWrap--{{ item.id }}:hover .imgTwo {
+                display: block;
+            }
+            {%  endif %}
+        {%  endif %}
+        {% endfor %}
+    {% endif %}
+</style>
+
+{% schema %}
+{
+    "name": "Template Search",
+    "settings": [
+        {
+            "type": "range",
+            "id": "number_of_products_per_page",
+            "label": "Number of products per page.",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "default": 8
+        },
+        {
+			"type": "checkbox",
+			"id": "show_vendor",
+			"label": "Show Vendor",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_second_image",
+			"label": "Show Second Image",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "active_zoom_image",
+			"label": "Active Zoom Image",
+			"default": false,
+			"info": "If you active this option Second Image must be desactivated"
+		}
+    ],
+    "blocks": [
+        {
+            "type": "title",
+            "name": "Title",
+            "limit": 1
+        }
+    ]
+}
+{% endschema %}

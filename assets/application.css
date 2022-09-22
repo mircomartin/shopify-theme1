@@ -765,6 +765,10 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .block {
   display: block;
 }
@@ -831,6 +835,16 @@ video {
 
 .h-80 {
   height: 20rem;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.min-h-fit {
+  min-height: -webkit-fit-content;
+  min-height: -moz-fit-content;
+  min-height: fit-content;
 }
 
 .w-full {

@@ -29,7 +29,7 @@
 - Template-Aboutus -> Customizable
 - Index  -> In progress...
 - Footer(Desktop/Mobile) -> Customizable
-- Template-Product -> In progress...
+- Template-Product -> Customizable
 
 ### TEMPLATES:
 - 404.json
@@ -42,4 +42,5 @@
 - page.json
 - contac.json
 - product.json
+- search
 

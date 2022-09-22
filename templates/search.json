@@ -1,0 +1,14 @@
+{
+    "sections": {
+        "template": {
+            "type": "template-search",
+            "blocks": {
+                "title":{
+					"type": "title"
+				}
+            },
+            "block_order": ["title"]
+        }
+    },
+    "order": ["template"]
+}
