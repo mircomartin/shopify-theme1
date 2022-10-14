@@ -1,105 +1,150 @@
-<section class="container mx-auto py-10 px-2 md:px-0">
+<!-- Breadcrumb -->
+{% if section.settings.breadcrumb %}
+	{% render 'breadcrumb' %}
+{% endif %}
+<!-- Breadcrumb -->
+
+<section class="container mx-auto py-10 px-2 md:px-0" data-ajax-cart-section>
 	<h2 class="text-base tracking-widest uppercase mb-4 text-center">My Cart</h2>
 
 	{% if cart.item_count > 0 %}
+		<div>
+			<div class="flex justify-between bg-stone-100 px-3 py-2">
+				<h5 class="uppercase text-sm tracking-wider font-bold">Product</h5>
+				<h5 class="uppercase text-sm tracking-wider font-bold">Price</h5>
+			</div>
 
-	<div>
-		<div class="flex justify-between bg-stone-100 px-3 py-2">
-			<h5 class="uppercase text-sm tracking-wider font-bold">Product</h5>
-			<h5 class="uppercase text-sm tracking-wider font-bold">Price</h5>
-		</div>
+			<form action="{{ routes.cart_url }}" method="post" novalidate>
+				{% for item in cart.items %}
+					{% assign item_index = forloop.index %}
+					<div class="flex items-center gap-4 px-3 py-3 border-b border-b-slate-300 border-x-0 border-t-0">
+						<a href="{{ item.url }}">
+							{% if item.image %}
+								<img
+									loading="lazy"
+									src="{{ item.image | img_url: 'small' }}"
+									alt="{{ item.title | escape }}"
+									class="w-20 h-auto object-cover"
+								>
+							{% else %}
+								{{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
+							{% endif %}
+						</a>
+						<div class="flex flex-col w-full md:flex-row md:justify-between gap-4 md:flex-1">
+							<div class="flex flex-col justify-center md:w-3/4">
+								<a href="{{ item.url }}" class="text-xl	tracking-wider font-medium">
+									{{- item.product.title | truncatewords: 5 -}}
+								</a>
 
-		<form action="{{ routes.cart_url }}" method="post" novalidate>
-			{% for item in cart.items %}
-			
-			<div class="flex items-center gap-4 px-3 py-3 border border-l-white border-t-white border-r-white border-b-stone-600">
-				<a href="{{ item.url }}">
-					{% if item.image %}
-						<img src="{{ item.image | img_url: 'small' }}" alt="{{ item.title | escape }}" class="w-20 h-auto object-cover"/>
-					{% else %}
-						{{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
-					{% endif %}
-				</a>
-				<div class="flex flex-col w-full md:flex-row md:justify-between gap-4 md:flex-1">
-					<div class="flex flex-col justify-center md:w-3/4">
-						<a href="{{ item.url }}" class="text-xl	tracking-wider font-medium">{{ item.product.title | truncatewords: 5 }}</a>
-
-						{% if item.product.has_only_default_variant == false %}
-						<p class="text-stone-500 font-medium">{{ item.variant.option1 | upcase }}</p>	
-						<p class="text-stone-500 font-medium">{{ item.variant.option2 | upcase }}</p>	
-						<p class="text-stone-500 font-medium">{{ item.variant.option3 | upcase }}</p>
-						{% endif %}
-
-					</div>
-					<div class="flex justify-between md:w-1/4">
-						<div class="flex flex-col gap-4">
-							<div>
-								<input type="number" name="updates[]" value="{{ item.quantity }}" min="1" max="5" id="updates_{{ forloop.index }}" class="w-20 border p-2 text-center" />
+								{% if item.product.has_only_default_variant == false %}
+									<p class="text-stone-500 font-medium">
+										{{ item.variant.title | upcase }}
+									</p>
+								{% endif %}
 							</div>
-							<a class="text-stone-500 tracking-wider uppercase text-xs underline" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
-							<button type="submit" name="update" class="text-stone-500 tracking-wider uppercase text-xs underline text-left">Update</button>
-						</div>
-						<div>
-							<p>{{ item.line_price | money }}</p>
+							<div class="flex justify-between md:w-1/4">
+								<div class="flex flex-col gap-4">
+									<div class="flex items-center border">
+										<a
+											data-ajax-cart-request-button
+											class="w-1/3 flex justify-center"
+											href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | minus: 1 }}"
+										>
+											{% render 'icon-minus' %}
+										</a>
+										<input
+											data-ajax-cart-quantity-input="{{ item_index }}"
+											type="number"
+											name="updates[]"
+											value="{{ item.quantity }}"
+											min="1"
+											max="5"
+											class="border border-y-0 text-center font-medium flex-1"
+										>
+										<a
+											data-ajax-cart-request-button
+											class="w-1/3 flex justify-center"
+											href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | plus: 1 }}"
+										>
+											{% render 'icon-plus' %}
+										</a>
+									</div>
+									<a
+										class="text-stone-500 tracking-wider uppercase text-xs underline"
+										href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity=0"
+										data-ajax-cart-request-button
+										>Remove</a
+									>
+								</div>
+								<div>
+									<p>{{ item.line_price | money }}</p>
+								</div>
+							</div>
 						</div>
 					</div>
+				{% endfor %}
+
+				<div class="mt-10 px-3 flex flex-col gap-5 md:flex-row md:justify-between justify-start">
+					<div class="w-full flex flex-col gap-y-1">
+						{% if section.settings.disabled_cart_notes %}
+							<label for="cart_notes" class="text-xl font-medium">Cart Notes:</label>
+							<textarea
+								name="note"
+								id="cart_notes"
+								class="w-full border-stone-600 md:max-w-lg resize-none border h-20"
+							></textarea>
+						{% endif %}
+					</div>
+					<div class="flex flex-col gap-y-5 w-full md:w-1/4">
+						{% for block in section.blocks %}
+							{% case block.type %}
+								{% when 'subtotal' %}
+									<p class="flex justify-between text-2xl	font-bold">
+										Subtotal: <span>{{ cart.total_price | money }}</span>
+									</p>
+								{% when 'checkout_button' %}
+									<button
+										class="w-full border border-stone-600 uppercase p-4 hover:bg-black hover:text-white hover:border-black"
+										type="submit"
+										name="checkout"
+									>
+										Check Out
+									</button>
+							{% endcase %}
+						{% endfor %}
+
+						<p class="font-bold">Shipping calculated at checkout.</p>
+					</div>
 				</div>
-			</div>
-
-			{% endfor %}
-
-			<div class="mt-10 px-3 flex flex-col gap-5 md:flex-row md:justify-between justify-start">
-				<div class="w-full flex flex-col gap-y-1">
-					{% if section.settings.disabled_cart_notes %}
-					<label for="cart_notes" class="text-xl font-medium">Cart Notes:</label>
-					<textarea name="note" id="cart_notes" class="w-full border-stone-600 md:max-w-lg resize-none border h-20"></textarea>
-					{% endif %}
-				</div>
-				<div class="flex flex-col gap-y-5 w-full md:w-1/4">
-					{% for block in section.blocks %}
-
-						{% case block.type %}
-
-							{% when 'subtotal' %}
-
-							<p class="flex justify-between text-2xl	font-bold">Subtotal: <span>{{ cart.total_price | money }}</span></p>
-								
-							{% when 'checkout_button' %}
-
-							<button class="w-full border border-stone-600 uppercase p-4 hover:bg-black hover:text-white hover:border-black" type="submit" name="checkout">Check Out</button>
-							
-						{% endcase %}
-						
-					{% endfor %}
-					
-					<p class="font-bold">Shipping calculated at checkout.</p>
-				</div>
-			</div>
-
-		</form>
-
-	</div>
-	
+			</form>
+		</div>
 	{% else %}
-		
-	<div class="flex flex-col gap-5">
-		<p class="text-xl tracking-wider uppercase">Your cart is currently empty.</p>
-		<a href="{{ routes.all_products_collection_url }}" class="bg-white text-sm text-center border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider md:max-w-sm">Continue Shopping</a>
-	</div>
-	
+		<div class="flex flex-col gap-5">
+			<p class="text-xl tracking-wider uppercase">Your cart is currently empty.</p>
+			<a
+				href="{{ routes.all_products_collection_url }}"
+				class="bg-white text-sm text-center border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider md:max-w-sm"
+				>Continue Shopping</a
+			>
+		</div>
 	{% endif %}
-
 </section>
 
 {% schema %}
 {
-	"name": "Template Blog",
+	"name": "Cart",
 	"settings": [
 		{
 			"type": "checkbox",
 			"id": "disabled_cart_notes",
 			"label": "Disabled Cart Notes",
 			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "breadcrumb",
+			"label": "Show breadcrumb",
+			"default": true
 		}
 	],
 	"blocks": [

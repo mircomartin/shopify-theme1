@@ -1,49 +1,47 @@
 <section class="px-4 {% unless section.settings.fullwidth %}container px-4 md:px-0{% endunless %} mx-auto my-7 md:my-14">
-
 	{% if section.settings.show_title %}
-	<h1 class="text-center text-4xl my-4 tracking-widest">{{ section.settings.title | upcase }}</h1>		
+		<h1 class="text-center text-4xl my-4 tracking-widest">
+			{{ section.settings.title | upcase }}
+		</h1>
 	{% endif %}
 
 	<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-
-	{% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
-		{% render 'product-card' product: product %}
-	{% else %}
-		{% for item in (1..4) %}
-			{% render 'product-card-placeholder' %}
-		{% endfor %}		
-	{% endfor %}
-
+		{% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
+			{% render 'product-card', product: product %}
+		{% else %}
+			{% for item in (1..4) %}
+				{% render 'product-card-placeholder' %}
+			{% endfor %}
+		{% endfor %}
 	</div>
-
 </section>
 
 <style type="text/css">
-	{% if section.settings.show_second_image %}
-		{% for product in section.settings.featured_collection.products %}
-			{%  if product.images.size > 1 %}
-			.featuredCollection .cardImgWrap--{{ product.id }} .imgOne {
-				display: block;
-			}
-			.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgOne {
-				display: none;
-			}
-			.featuredCollection .cardImgWrap--{{ product.id }} .imgTwo {
-				display: none;
-			}
-			.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgTwo {
-				display: block;
-			}
-			{%  endif %}
-		{% endfor %}
-	{% endif %}
+{% if section.settings.show_second_image %}
+	{% for product in section.settings.featured_collection.products %}
+		{% if product.images.size > 1 %}
+		.featuredCollection .cardImgWrap--{{ product.id }} .imgOne {
+			display: block;
+		}
+		.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgOne {
+			display: none;
+		}
+		.featuredCollection .cardImgWrap--{{ product.id }} .imgTwo {
+			display: none;
+		}
+		.featuredCollection .cardImgWrap--{{ product.id }}:hover .imgTwo {
+			display: block;
+		}
+		{%  endif %}
+	{% endfor %}
+{% endif %}
 </style>
 
 {% schema %}
 {
 	"name": "Featured Collection",
 	"class": "featuredCollection",
-		"settings": [
+	"settings": [
 		{
 			"type": "checkbox",
 			"id": "fullwidth",
@@ -99,9 +97,8 @@
 	"presets": [
 		{
 			"category": "Collection",
-			"name":"Featured-Collection"
+			"name": "Featured-Collection"
 		}
 	]
-
 }
 {% endschema %}

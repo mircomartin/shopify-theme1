@@ -12,7 +12,7 @@
 		<a href="{{ shop.secure_url }}" class="flex no-underline justify-center md:justify-start">
 			{% if settings.logo == blank and settings.logoSVG == blank %}
 				<h1 class="text-xl font-bold truncate">
-					{{shop.name}}
+					{{ shop.name }}
 				</h1>
 			{% else %}
 			
@@ -20,10 +20,10 @@
 				{% if logo == blank %}
 					{% assign logo = settings.logo %}
 					<figure class="m-0 max-w-xs overflow-hidden">
-						<img src="{{ logo | img_url: 'small' }}" alt="{{ logo.image.alt }}" class="w-full"/>
+						<img loading="lazy" src="{{ logo | img_url: 'small' }}" alt="{{ logo.image.alt }}" class="w-full"/>
 					</figure>
 				{% else %}
-					{% render 'logo-svg', logo:logo %}
+					{% render 'logo-svg', logo: logo %}
 				{% endif %}
 				
 			{% endif %}
@@ -33,8 +33,7 @@
 
 	<!--Menu Footer Mobile-->
 	<div 
-		@click.away="mobileMenuOpen = true"
-		x-show="mobileMenuOpen"
+		
 		class="p-2 transform origin-top-left md:hidden">
 
 		<!--Navigation Links-->

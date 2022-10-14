@@ -1,0 +1,39 @@
+{% unless template == 'index' %}
+	<div class="bredcrumbWrap {% if settings.breadcrumb %}hidden{% endif %}">
+		<nav class="px-4 my-5" role="navigation" aria-label="breadcrumbs">
+			<a class="text-xs uppercase font-medium" href="{{routes.root_url}}" title="Home">Home</a>
+
+			{% if template contains 'product' %}
+				{% if collection %}
+					<span aria-hidden="true" class="text-xs font-medium">/</span>
+					{% if collection.handle %}
+						{% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+						{{ collection.title | link_to: url }}
+					{% endif %}
+				{% endif %}
+				<span aria-hidden="true" class="text-xs font-medium">/</span>
+				<span class="text-xs uppercase font-medium">{{ product.title }}</span>
+			{% elsif template contains 'collection' and collection.handle %}
+				<span aria-hidden="true" class="text-xs font-medium">/</span>
+				{% if current_tags %}
+					{% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+					{{ collection.title | link_to: url }}
+					<span aria-hidden="true" class="text-xs font-medium">/</span>
+					<span class="text-xs uppercase font-medium">{{ current_tags | join: ' + ' }}</span>
+				{% else %}
+					<span class="text-xs uppercase font-medium">{{ collection.title }}</span>
+				{% endif %}
+			{% elsif template contains 'page' %}
+				<span aria-hidden="true" class="text-xs font-medium">/</span>
+				<span class="text-xs uppercase font-medium">{{ page.title }}</span>
+			{% elsif template contains 'cart' %}
+				<span aria-hidden="true" class="text-xs font-medium">/</span>
+				<span class="text-xs uppercase font-medium">Cart</span>
+			{% else %}
+				<span aria-hidden="true" class="text-xs font-medium">/</span>
+				<span class="text-xs uppercase font-medium">{{ page_title }}</span>
+			{% endif %}
+
+		</nav>
+	</div>
+{% endunless %}

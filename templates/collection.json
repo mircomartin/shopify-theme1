@@ -4,7 +4,10 @@
 			"type": "template-collection",
 			"blocks": {},
 			"block_order": []
+		},
+		"carousel-products": {
+			"type": "carousel-products"
 		}
 	},
-	"order": ["template"]
+	"order": ["template", "carousel-products"]
 }

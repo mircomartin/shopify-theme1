@@ -31,6 +31,12 @@
         "content": "Social Media"
       },
       {
+        "type": "checkbox",
+        "id": "breadcrumb",
+        "label": "Hide breadcrumb in all the site",
+        "default": false
+      },
+      {
         "type": "text",
         "id": "social_facebook",
         "label": "Facebook",

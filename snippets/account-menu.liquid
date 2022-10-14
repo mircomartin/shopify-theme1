@@ -1,0 +1,31 @@
+<!--Desktop Menu-->
+<div class="hidden md:block">
+	<h3 class="font-bold text-xs uppercase">{{ menu.title }}</h3>
+	<ul class="flex flex-col gap-6 mt-6">
+		{% for link in menu.links %}
+			<li>
+				<a href="{{ link.url }}" class="text-xs uppercase">{{ link.title }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+</div>
+
+<!--Mobile Menu-->
+<div x-data="{ mobileMenu: false }" class="block md:hidden">
+	<button @click="mobileMenu = true" class="flex w-full items-center text-3xl justify-between uppercase pb-4 border-b-slate-300 border border-x-0 border-t-0">
+		Login
+		{% render 'icon-dropdown' %}
+	</button>
+
+	<ul
+		x-show="mobileMenu"
+		@click.away="mobileMenu = false"
+		class="flex flex-col gap-3 mt-3"
+	>
+		{% for link in menu.links %}
+			<li>
+				<a href="{{ link.url }}" class="text-xs uppercase">{{ link.title }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+</div>

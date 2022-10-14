@@ -1,53 +1,69 @@
 <!doctype html>
 <html>
-<head>
+	<head>
+		<title>{{ page_title }}</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="description" content="{{ page_description | escape }}">
+		<link rel="canonical" href="{{ canonical_url }}">
+		<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
 
-  <title>{{ page_title }}</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="description" content="{{ page_description | escape }}">
-  <link rel="canonical" href="{{ canonical_url }}">
-  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ settings.favicon | img_url: 'smallicon' }}">
 
-  <!--Favicon-->
-  <link rel="shortcut icon" href="{{settings.favicon | img_url: 'smallicon'}}">
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+			rel="stylesheet"
+		>
 
-  {{ content_for_header }} <!-- Header hook for plugins -->
-  {{ 'application.css' | asset_url | stylesheet_tag }}
-  {{ 'application.js' | asset_url | script_tag }}
+		<!-- Header hook for plugins -->
+		{{ content_for_header }}
+		{{ 'application.css' | asset_url | stylesheet_tag }}
+		<script src="{{ 'application.js' | asset_url }}" defer></script>
 
-  <!--Libraries-->
-  <!-- {{ 'jquery.min.js' | asset_url | script_tag }} -->
-  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+		<!-- Libraries -->
+		<!-- {{ 'jquery.min.js' | asset_url | script_tag }} -->
+		<script
+			src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"
+			defer
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+		>
+		<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+	</head>
 
-</head>
+	<body class="font-body text-black font-normal text-sm template-{{ template | replace: '.', '-' | replace: '/', '-' }}">
+		{% if settings.hide_topbar == false %}
+			{% section 'topbar' %}
+		{% endif %}
 
-<body
-  class="font-sans text-black font-normal text-sm"
->
+		<header class="sticky top-0 z-50">
+			{% section 'header' %}
 
-  {% if settings.hide_topbar == false %}
-  {% section 'topbar' %}      
-  {% endif %}
+			<!-- Cart Drawer -->
+			{% section 'cart-drawer' %}
+			<!-- Cart Drawer -->
+		</header>
 
-  <header class="sticky top-0 z-50">
-    {% section 'header' %}
-  </header>
+		{% if settings.hide_marquee == false %}
+			{% section 'marquee-announcement' %}
+		{% endif %}
 
-  {% if settings.hide_marquee == false%}
-  {% section 'marquee-announcement' %}  
-  {% endif %}
+		<main role="main">
+			{{ content_for_layout }}
+		</main>
 
-  <main role="main">
-    {{ content_for_layout }}
-  </main>
+		<footer class="bg-stone-100">
+			{% section 'footer' %}
+		</footer>
 
-  <footer class="bg-stone-100">
-    {% section 'footer' %}
-  </footer>
-  
-</body>
-
+		/*Liquid Ajax Cart Library*/
+		{% render 'cart-scripts' %}
+		/*Liquid Ajax Cart Library*/
+	</body>
 </html>

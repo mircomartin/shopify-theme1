@@ -1,0 +1,97 @@
+<section class="container mx-auto my-8 px-8 md:px-0 md:my-14 min-h-500">
+	<div class="flex flex-col gap-5 md:gap-10 md:flex-row md:justify-center">
+		{% if section.settings.menu %}
+		<div class="md:w-1/3">
+			{% render 'account-menu', menu: section.settings.menu %}
+		</div>
+		{% endif %}
+		<div class="md:w-2/3">
+			<h2 class="uppercase font-bold tracking-widest text-xl mb-4">Account</h2>
+
+			<div class="flex flex-col p-5 gap-1 bg-gray-100">
+				<h5 class="uppercase">{{ customer.first_name }} {{ customer.last_name	}}</h5>
+				<p class="uppercase">{{ customer.email }}</p>
+				<address>
+					<p class="uppercase">{{ customer.addresses[0].address1 }}</p>
+					<p class="uppercase">{{ customer.addresses[0].city }}</p>
+					<p class="uppercase">{{ customer.addresses[0].country	}}</p>
+					<a href="{{ routes.account_addresses_url }}" class="uppercase">View Addresses ({{ customer.addresses_count }})</a>
+				</address>
+			</div>
+
+			<div class="my-8">
+				<h4 class="uppercase font-medium mb-4">Your Orders</h4>
+
+				<div>
+					{% assign number_of_orders = customer.orders | size %}
+					{% if number_of_orders > 0 %}
+						{% paginate customer.orders by {{ section.settings.paginate_number }} %}
+
+							{% for order in customer.orders %}
+								<div class="flex flex-col md:flex-row gap-5 md:gap-8 py-4 border-b border-b-slate-300 border-x-0 border-t-0">
+									<div class="flex flex-col items-start">
+										<span class="uppercase font-medium">Order Number:</span>
+										<p class="uppercase">{{ order.order_name | link_to: order.customer_url }}</p>
+									</div>
+									<div class="flex-1 flex flex-col items-start">
+										<span class="uppercase font-medium">Order:</span>
+										<ul class="list-disc">
+											{% for item in order.line_items %}
+												<li class="uppercase text-xs">{{ item.title }}</li>
+											{% endfor %}
+										</ul>
+									</div>
+									<div class="flex flex-col items-start">
+										<span class="uppercase font-medium">Fulfillment Status:</span>
+										<p class="uppercase">{{ order.fulfillment_status }}</p>
+									</div>
+									<div class="flex flex-col items-start">
+										<span class="uppercase font-medium">Paid Status:</span>
+										<p class="uppercase">{{ order.financial_status_label }}</p>
+									</div>
+									<div class="flex flex-col items-end md:w-1/12">
+										<span class="uppercase font-medium">Total:</span>
+										<p class="uppercase">{{ order.total_price | money }}</p>
+									</div>
+								</div>
+							{% endfor %}
+
+							<div class="mx-auto my-10">
+								{% render 'pagination', pagination: paginate %}
+							</div>
+
+						{% endpaginate %}
+					{% else %}
+						<p class="uppercase">You haven't placed any orders yet.</p>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="flex justify-center md:justify-start">
+				<a href="{{ routes.account_logout_url }}" class="py-4 px-6 tracking-wider uppercase border border-black bg-white hover:bg-black hover:text-white">Sign Out</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Template Account",
+	"settings": [
+		{
+			"type": "link_list",
+			"id": "menu",
+			"label": "Account Menu"
+		},
+		{
+			"type": "range",
+			"id": "paginate_number",
+			"label": "Number of orders per page.",
+			"min": 5,
+			"max": 10,
+			"step": 1,
+			"default": 5
+		}
+	]
+}
+{% endschema %}

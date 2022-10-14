@@ -1,32 +1,34 @@
+<!--Breadcrumb-->
+{% if section.settings.breadcrumb %}
+	{% render 'breadcrumb' %}	
+{% endif %}
+<!--Breadcrumb-->
 <section class="px-4 my-5">
-
 	{% if section.settings.show_title_collection %}
-	<h1 class="text-center text-4xl my-4 tracking-widest">{{ collection.title | upcase }}</h1>
+		<h1 class="text-center text-4xl my-4 tracking-widest">
+			{{ collection.title | upcase }}
+		</h1>
 	{% endif %}
 
 	{% paginate collection.products by section.settings.number_of_products_per_page %}
+		<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+			{% for product in collection.products %}
+				{% render 'product-card', product: product %}
+			{% else %}
+				<p>There are no products inside of this collection.</p>
+			{% endfor %}
+		</div>
 
-	<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-
-		{% for product in collection.products %}
-		{% render 'product-card', product: product %}
-		{% else %}
-		<p>There are no products inside of this collection.</p>
-		{% endfor %}
-
-	</div>
-
-	<div class="container mx-auto">
-		{% render 'pagination', pagination: paginate %}
-	</div>
+		<div class="container mx-auto my-10">
+			{% render 'pagination', pagination: paginate %}
+		</div>
 	{% endpaginate %}
-
 </section>
 
 <style type="text/css">
 {% if section.settings.show_second_image %}
 	{% for product in collection.products %}
-		{%  if product.images.size > 1 %}
+		{% if product.images.size > 1 %}
 		.cardImgWrap--{{ product.id }} .imgOne {
 			display: block;
 		}
@@ -46,8 +48,14 @@
 
 {% schema %}
 {
-	"name": "Template Collection",
+	"name": "Collection",
 	"settings": [
+		{
+			"type": "checkbox",
+			"id": "breadcrumb",
+			"label": "Show breadcrumb",
+			"default": true
+		},
 		{
 			"type": "number",
 			"id": "number_of_products_per_page",
@@ -58,7 +66,7 @@
 			"type": "checkbox",
 			"id": "show_title_collection",
 			"label": "Show Title Collection",
-			"default": true
+			"default": false
 		},
 		{
 			"type": "checkbox",

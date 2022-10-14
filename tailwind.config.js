@@ -10,8 +10,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      height: {
-        '94': '22rem'
+      minHeight: {
+        '500': '500px',
+      },
+      fontFamily: {
+        'body': ["'Roboto', sans-serif"]
       }
     },
   },

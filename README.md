@@ -9,7 +9,8 @@
 ### Libraries:
 - Tailwind CSS -> npx tailwindcss -i ./src/tailwind.css -o ./assets/application.css --watch
 - Alpine JS
-- Swiper Js
+- Swiper JS
+- Liquid Ajax Cart
 
 ## Progress:
 
@@ -30,6 +31,7 @@
 - Index  -> In progress...
 - Footer(Desktop/Mobile) -> Customizable
 - Template-Product -> Customizable
+- Customer - Register, Login, Recover_Password
 
 ### TEMPLATES:
 - 404.json
@@ -43,4 +45,5 @@
 - contac.json
 - product.json
 - search
+- Customer - Register, Login, Recover_Password
 

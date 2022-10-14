@@ -1,38 +1,44 @@
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
+<!-- Breadcrumb -->
+{% if section.settings.breadcrumb %}
+	{% render 'breadcrumb' %}
+{% endif %}
+<!-- Breadcrumb -->
+
 <section class="container mx-auto my-0 md:my-14">
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-9">
 		<div class="product--medias relative">
-			<!--Labels-->
+			<!-- Labels -->
 			<div class="absolute flex">
 				{% for tag in product.tags %}
-				{% if tag == 'sale' %}
-				<span class="text-white bg-red-500 py-1 px-2.5 uppercase text-xs">SALE</span>
-				{% endif %}
-				{% if tag == 'new' %}
-				<span class="text-white bg-black py-1 px-2.5 uppercase text-xs">NEW</span>
-				{% endif %}
+					{% if tag == 'sale' %}
+						<span class="text-white bg-red-500 py-1 px-2.5 uppercase text-xs">SALE</span>
+					{% endif %}
+					{% if tag == 'new' %}
+						<span class="text-white bg-black py-1 px-2.5 uppercase text-xs">NEW</span>
+					{% endif %}
 				{% endfor %}
 			</div>
 
-			<!--Desktop Gallery-->
+			<!-- Desktop Gallery -->
 			<div class="hidden md:flex md:flex-col md:gap-y-1">
 				{% for media in product.media %}
-				<div class="h-100 overflow-hidden">
-					{% render 'product-media', media: media %}
-				</div>
+					<div class="h-100 overflow-hidden">
+						{% render 'product-media', media: media %}
+					</div>
 				{% endfor %}
 			</div>
-			<!--Mobile Gallery-->
+			<!-- Mobile Gallery -->
 			<div class="md:hidden mobile-gallery">
 				<div class="swiper mobile">
 					<div class="swiper-wrapper">
 						{% for media in product.media %}
-						<div class="swiper-slide">
-							<div class="overflow-hidden">
-								{% render 'product-media', media: media %}
+							<div class="swiper-slide">
+								<div class="overflow-hidden">
+									{% render 'product-media', media: media %}
+								</div>
 							</div>
-						</div>
 						{% endfor %}
 					</div>
 					<div class="swiper-pagination"></div>
@@ -40,186 +46,226 @@
 			</div>
 		</div>
 
-		<!--Product Information-->
+		<!-- Product Information -->
 		<div class="product--information px-4 md:px-0 md:sticky">
-			{% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
-			<input type="hidden" name="id" value="{{ selected_variant.id }}">
-			<div class="flex flex-col gap-y-6">
+			{% form 'product', product, id: 'product-form', novalidate: 'novalidate', x-ref: 'product_form' %}
+				<input type="hidden" name="id" value="{{ selected_variant.id }}">
+				<div class="flex flex-col gap-y-6">
+					{% for block in section.blocks %}
+						{% case block.type %}
+							{% when 'vendor' %}
+								<span>{{ product.vendor | upcase }}</span>
+							{% when 'title' %}
+								<h1 class="text-2xl tracking-widest">{{ product.title | upcase }}</h1>
+							{% when 'fake_watches' %}
+								{% if block.settings.active_fake %}
+									<span class="text-xs font-bold text-blue-700 uppercase">
+										{% assign min = 10 %}
+										{% assign max = 25 %}
+										{% assign diff = max | minus: min %}
+										{% assign randomNumber = 'now' | date: '%N' | modulo: diff | plus: min %}
+										{{ randomNumber }} People have this in their cart right now!
+									</span>
+								{% else %}
+									{% if product.metafields.custom.fake_watches %}
+										<span class="text-xs font-bold text-blue-700 uppercase">
+											{% assign min = 10 %}
+											{% assign max = 25 %}
+											{% assign diff = max | minus: min %}
+											{% assign randomNumber = 'now' | date: '%N' | modulo: diff | plus: min %}
+											{{ randomNumber }} People have this in their cart right now!
+										</span>
+									{% endif %}
+								{% endif %}
+							{% when 'price' %}
+								<div id="price-{{ section.id }}" class="flex gap-1.5">
+									{% assign product_price = selected_variant %}
+									<span id="price-data" class="text-xl">
+										{{- product_price.price | money -}}
+									</span>
+									{% if product_price.compare_at_price > product_price.price %}
+										<span class="text-xl line-through text-stone-500">
+											{{- product_price.compare_at_price | money -}}
+										</span>
+									{% endif %}
+								</div>
 
-				{% for block in section.blocks %}
+								<!-- Klarma Block -->
+								{% assign klarma_number = block.settings.klarma_number %}
+								{% if block.settings.klarma_enabled %}
+									<div>
+										{% assign results = product_price.price | divided_by: block.settings.klarma_number %}
+										<span class="text-xs border border-slate-300 p-1">
+											{{- klarma_number }} interest-free payments of
+											<span id="klarma">
+												{{- results | money -}}
+											</span>
+											with <strong>Klarna</strong>.</span
+										>
+									</div>
+								{% endif %}
 
-				{% case block.type %}
+								{% if block.settings.savings %}
+									<div class="">
+										{% if product_price.compare_at_price > product_price.price %}
+											<span class="text-cyan-400 uppercase">
+												{{- product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -}}
+												% SAVINGS</span
+											>
+										{% endif %}
+									</div>
+								{% endif %}
+							{% when 'tags' %}
+								{% if block.settings.tag_text != blank %}
+									<div>
+										<span class="text-green-400	uppercase">
+											{{- block.settings.tag_text -}}
+										</span>
+									</div>
+								{% endif %}
+							{% when 'variant_selector' %}
+								{% unless product.has_only_default_variant %}
+									<variant-selector
+										data-url="{{ product.url }}"
+										data-section="{{ section.id }}"
+									>
+										{% for option in product.options_with_values %}
+											<label
+												for="Option-{{ section.id }}-{{ forloop.index0 }}"
+												class="text-sm"
+											>
+												{{- option.name | upcase }}:</label
+											>
+											<div class="my-2">
+												<select
+													name="options[{{ option.name | escape | upcase }}]"
+													id="Option-{{ section.id }}-{{ forloop.index0 }}"
+													class="md:w-1/3 p-2.5 border border-slate-300 bg-stone-100"
+												>
+													{% for value in option.values %}
+														<option
+															value="{{ value | escape }}"
+															class="text-sm bg-stone-100"
+															{% if option.selected_value == value %}
+																selected="selected"
+															{% endif %}
+														>
+															{{ value | upcase }}
+														</option>
+													{% endfor %}
+												</select>
+											</div>
 
-				{% when 'vendor' %}
+											<script type="application/json">
+												{{ product.variants | json }}
+											</script>
 
-				<span>{{ product.vendor | upcase }}</span>
+										{% endfor %}
+									</variant-selector>
+								{% endunless %}
+							{% when 'quantity' %}
+								<div>
+									<label
+										class="uppercase mr-1"
+										for="Quantity-{{ section.id }}"
+										>QTY:</label
+									>
+									<input
+										class="bg-stone-100 border border-slate-300 p-2.5"
+										type="number"
+										name="quantity"
+										id="Quantity-{{ section.id }}"
+										value="1"
+										min="1"
+										max="5"
+									>
+								</div>
+							{% when 'checkout_buttons' %}
+								<div class="flex flex-col gap-2 md:w-3/5">
+									<button
+										type="submit"
+										class="flex-1 p-4 uppercase bg-black text-white text-center"
+										{% if selected_variant.variant.available == false %}
+											disabled
+										{% endif %}
+									>
+										{% if selected_variant.variant.available == false %}
+											Sold Out
+										{% else %}
+											Add to cart
+										{% endif %}
+									</button>
+									<div
+										data-ajax-cart-messages="form"
+										id="errorMessage"
+										class="hidden uppercase font-medium text-xs bg-red-500 rounded-full p-1 text-white text-center"
+									></div>
+								</div>
+							{% when 'description' %}
+								<!-- Tabs Zone -->
+								<div class="md:w-3/5 border-y border-y-slate-300 py-4 c-tabs">
+									<!-- Description -->
+									<div x-data="{ open: false }" class="py-4 border-b border-b-slate-300">
+										<span
+											@click="open = true"
+											class="flex justify-between items-center uppercase cursor-pointer"
+										>
+											Details
+											<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
+											<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
+										</span>
+										<div x-show="open" @click.away="open = false" class="pt-4 ">
+											<p class="text-xs">{{ product.description | upcase }}</p>
+										</div>
+									</div>
+									<!-- Description -->
 
-				{% when 'title' %}
+									<!-- Features -->
+									{% if block.settings.feature_content != blank %}
+										<div
+											x-data="{ open: false }"
+											class="py-4 border-b border-b-slate-300"
+										>
+											<span
+												@click="open = true"
+												class="flex justify-between items-center uppercase cursor-pointer"
+											>
+												Features
+												<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
+												<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
+											</span>
+											<div x-show="open" @click.away="open = false" class="pt-4">
+												<p class="text-xs">
+													{{ block.settings.feature_content | upcase }}
+												</p>
+											</div>
+										</div>
+									{% endif %}
+									<!-- Features -->
 
-				<h1 class="text-2xl tracking-widest">{{ product.title | upcase }}</h1>
-
-				{% when 'fake_watches' %}
-
-				{% if block.settings.active_fake %}
-					<span class="text-xs font-bold text-blue-700 uppercase">
-						{% assign min = 10 %}
-						{% assign max = 25 %}
-						{% assign diff = max | minus: min %}
-						{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
-						{{ randomNumber }} People have this in their cart right now!
-					</span>
-				{% else %}
-					{% if product.metafields.custom.fake_watches %}
-						<span class="text-xs font-bold text-blue-700 uppercase">
-							{% assign min = 10 %}
-							{% assign max = 25 %}
-							{% assign diff = max | minus: min %}
-							{% assign randomNumber = "now" | date: "%N" | modulo: diff | plus: min %}
-							{{ randomNumber }} People have this in their cart right now!
-						</span>
-					{% endif %}
-				{% endif %}
-
-				{% when 'price' %}
-
-				<div id="price-{{ section.id }}" class="flex gap-1.5">
-					{% assign product_price = selected_variant %}
-					<span id="price-data" class="text-xl">{{ product_price.price | money }}</span>
-					{% if product_price.compare_at_price > product_price.price %}
-					<span class="text-xl line-through text-stone-500">{{ product_price.compare_at_price | money	}}</span>
-					{% endif %}
-				</div>
-
-				<!--Klarma Block-->
-				{% assign klarma_number = block.settings.klarma_number %}
-				{% if block.settings.klarma_enabled %}
-				<div>
-					{% assign results = product_price.price | divided_by: block.settings.klarma_number %}
-					<span class="text-xs border border-slate-300 p-1">{{klarma_number}} interest-free payments of <span id="klarma">{{ results | money }}</span>
-						with <strong>Klarna</strong>.</span>
-				</div>
-				{% endif %}
-
-				{% if block.settings.savings %}
-				<div class="">
-					{% if product_price.compare_at_price > product_price.price %}
-					<span class="text-cyan-400 uppercase">{{ product.compare_at_price | minus: product.price | times:
-						100 | divided_by: product.compare_at_price }}% SAVINGS</span>
-					{% endif %}
-				</div>
-				{% endif %}
-
-				{% when 'tags' %}
-
-				{% if block.settings.tag_text != blank %}
-				<div>
-					<span class="text-green-400	uppercase">{{ block.settings.tag_text }}</span>
-				</div>
-				{% endif %}
-
-				{% when 'variant_selector' %}
-
-				{% unless product.has_only_default_variant %}
-				<variant-selector data-url="{{ product.url }}" data-section="{{ section.id }}">
-					{% for option in product.options_with_values %}
-					<label for="Option-{{ section.id }}-{{ forloop.index0 }}" class="text-sm">{{ option.name |
-						upcase }}:</label>
-					<div class="my-2">
-						<select name="options[{{ option.name | escape | upcase }}]"
-							id="Option-{{ section.id }}-{{ forloop.index0 }}"
-							class="md:w-1/3 p-2.5 border border-slate-300 bg-stone-100">
-							{% for value in option.values %}
-							<option value="{{ value | escape }}" class="text-sm bg-stone-100" {% if
-								option.selected_value==value %} selected="selected" {% endif %}>{{ value | upcase }}
-							</option>
-							{% endfor %}
-						</select>
-					</div>
-
-					<script type="application/json">
-						{{ product.variants | json }}
-					</script>
-
+									{% if block.settings.shipping_return_content != blank %}
+										<!-- Return Shippings create section text area -->
+										<div x-data="{ open: false }" class="py-4">
+											<span
+												@click="open = true"
+												class="flex justify-between items-center uppercase cursor-pointer"
+											>
+												SHIPPING & RETURNS POLICY
+												<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
+												<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
+											</span>
+											<div x-show="open" @click.away="open = false" class="pt-4 ">
+												<p class="text-xs">
+													{{ block.settings.shipping_return_content | upcase }}
+												</p>
+											</div>
+										</div>
+										<!-- Return Shippings -->
+									{% endif %}
+								</div>
+						{% endcase %}
 					{% endfor %}
-				</variant-selector>
-				{% endunless %}
-
-				{% when 'quantity' %}
-
-				<div>
-					<label class="uppercase mr-1" for="Quantity-{{ section.id }}">QTY:</label>
-					<input class="bg-stone-100 border border-slate-300 p-2.5" type="number" name="quantity"
-						id="Quantity-{{ section.id }}" value="1" min="1" max="10">
 				</div>
-
-				{% when 'checkout_buttons' %}
-
-				<div class="flex md:w-1/2">
-					<button type="submit" class="flex-1 p-4 uppercase bg-black text-white text-center" {% if
-						selected_variant.variant.available==false %} disabled {% endif %}>
-						{% if selected_variant.variant.available == false %}
-						Sold Out
-						{% else %}
-						Add to cart
-						{% endif %}
-					</button>
-				</div>
-
-				{% when 'description' %}
-
-				<!--Tabs Zone-->
-				<div class="md:w-1/2 border-y border-y-slate-300 py-4 c-tabs">
-
-					<!--Description-->
-					<div x-data="{ open: false }" class="py-4 border-b border-b-slate-300">
-						<span @click="open = true" class="flex justify-between items-center uppercase cursor-pointer">
-							Details
-							<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
-							<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
-						</span>
-						<div x-show="open" @click.away="open = false" class="pt-4 ">
-							<p class="text-xs">{{ product.description | upcase }}</p>
-						</div>
-					</div>
-					<!--Description-->
-
-					<!--Features-->
-					{% if block.settings.feature_content != blank %}
-					<div x-data="{ open: false }" class="py-4 border-b border-b-slate-300">
-						<span @click="open = true" class="flex justify-between items-center uppercase cursor-pointer">
-							Features
-							<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
-							<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
-						</span>
-						<div x-show="open" @click.away="open = false" class="pt-4">
-							<p class="text-xs">{{ block.settings.feature_content | upcase }}</p>
-						</div>
-					</div>
-					{% endif %}
-					<!--Features-->
-
-					{% if block.settings.shipping_return_content != blank %}
-					<!--Return Shippings create section text area-->
-					<div x-data="{ open: false }" class="py-4">
-						<span @click="open = true" class="flex justify-between items-center uppercase cursor-pointer">
-							SHIPPING & RETURNS POLICY
-							<span :class="open && 'hidden'">{% render 'icon-plus' %}</span>
-							<span :class="!open && 'hidden'">{% render 'icon-minus' %}</span>
-						</span>
-						<div x-show="open" @click.away="open = false" class="pt-4 ">
-							<p class="text-xs">{{ block.settings.shipping_return_content | upcase }}</p>
-						</div>
-					</div>
-					<!--Return Shippings-->
-					{% endif %}
-				</div>
-
-				{% endcase %}
-
-				{% endfor %}
-
-			</div>
-
 			{% endform %}
 		</div>
 	</div>
@@ -244,7 +290,7 @@
 	}
 	.product--medias .mobile-gallery .swiper-pagination .swiper-pagination-bullet {
 		width: 16px;
-    	height: 16px;
+		height: 16px;
 		border: 1px solid #d5d5d5;
 		background: transparent;
 		opacity: unset;
@@ -288,7 +334,7 @@
 					).includes(false);
 
 					if(findings) return variant;
-					
+
 				}
 			)
 			console.log(this.currentVariant)
@@ -316,9 +362,9 @@
 
 				/* Klarma Block */
 				let klarma = document.querySelector('#klarma');
-				const klarmaPartial = (((this.currentVariant.price / 100) / {{klarma_number}} ).toFixed(2)).toString().replace('.',',');
+				const klarmaPartial = (((this.currentVariant.price / 100) / {{ klarma_number }} ).toFixed(2)).toString().replace('.',',');
 				klarma.textContent = `$${klarmaPartial}`;
-				
+
 			})
 		}
 	}
@@ -336,7 +382,7 @@
 		},
 		pagination: {
 			el: '.swiper-pagination',
-			clickable: true
+			clickable: true,
 		},
 	});
 </script>
@@ -345,9 +391,14 @@
 {
 	"name": "Product",
 	"settings": [
-		
+		{
+			"type": "checkbox",
+			"id": "breadcrumb",
+			"label": "Show breadcrumb",
+			"default": true
+		}
 	],
-	"blocks":[
+	"blocks": [
 		{
 			"type": "vendor",
 			"name": "Vendor",

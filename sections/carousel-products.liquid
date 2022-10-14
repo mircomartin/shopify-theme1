@@ -1,0 +1,170 @@
+<section class="container px-4 md:px-0 mx-auto my-5 relative">
+	{% if section.settings.title != blank %}
+		<h1 class="font-bold text-xl mb-2 tracking-widest text-{{ section.settings.align }}">{{ section.settings.title | upcase }}</h1>
+	{% endif %}
+
+	<div class="swiper carouselProduct-{{ section.id }}" style="position: unset">
+		<div class="swiper-wrapper">
+			{% for product in section.settings.collection.products %}
+				<div class="swiper-slide card-{{ product.id }}">
+					<a href="{{ product.url }}">
+						<div class="wrapImgs">
+							<figure class="img1"></figure>
+							<figure class="img2"></figure>
+						</div>
+						<div class="flex flex-col justify-center items-center mt-4">
+							<span class="text-xs text-center">{{ product.title | upcase }}</span>
+							<div class="flex gap-2 mt-1">
+								{% if product.compare_at_price > product.price %}
+									<span class="text-red-700 font-bold text-xs">{{ product.price | money }}</span>
+									<span class="text-gray-400 font-bold line-through text-xs">{{ product.compare_at_price | money }}</span>
+								{% else %}
+									<span class="font-bold text-xs">{{ product.price | money }}</span>
+								{% endif %}
+							</div>
+						</div>
+					</a>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>
+	</div>
+</section>
+
+<style type="text/css">
+	.carouselProducts .swiper:not(.swiper-initialized){
+		display: none;
+	}
+	@media (min-width: 769px) {
+		.carouselProducts .swiper-button-prev {
+			left: -30px;
+		}
+		.carouselProducts .swiper-button-next {
+			right: -30px;
+		}
+	}
+	.carouselProducts .swiper-slide {
+		width: auto;
+	}
+	.carouselProducts .swiper-button-next,
+	.carouselProducts .swiper-button-prev {
+		color: #D5D5D5;
+	}
+	.carouselProducts .swiper-button-next:hover,
+	.carouselProducts .swiper-button-prev:hover {
+		color: #000;
+	}
+	.carouselProducts .swiper-button-disabled {
+		display: none!important;
+	}
+
+	{% for product in section.settings.collection.products %}
+		.carouselProducts .card-{{ product.id }} a .wrapImgs {
+			position: relative;
+			width: 100%;
+			padding-bottom: 122.9508196721%;
+		}
+		.carouselProducts .card-{{ product.id }} figure {
+			content: "";
+			position: absolute;
+			background-position: center center;
+			top: 0px;
+			right: 0px;
+			bottom: 0px;
+			left: 0px;
+			opacity: 1;
+			z-index: 1;
+		}
+		.carouselProducts .card-{{ product.id }} figure.img1 {
+			background-image: url('{{ product.images[0] | img_url: 'large' }}');
+			background-size: contain !important;
+			background-repeat: no-repeat;
+			transition: opacity 0.3s;
+			z-index: 2;
+		}
+		{% if product.images.size > 1 %}
+		.carouselProducts .card-{{ product.id }} figure.img1:hover {
+			opacity: 0;
+		}
+		.carouselProducts .card-{{ product.id }} figure.img2 {
+			background-image: url("{{ product.images[1] | img_url: 'large' }}");
+			background-size: contain !important;
+			background-repeat: no-repeat;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+		.carouselProducts .card-{{ product.id }} a:hover figure.img2 {
+			opacity: 1!important;
+		}
+		{% endif %}
+	{% endfor %}
+</style>
+
+<script>
+	window.addEventListener('load', function () {
+		const carouselProduct = new Swiper('.swiper.carouselProduct-{{ section.id }}', {
+			// Optional parameters
+			speed: 600,
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+				disabledClass: 'swiper-button-disabled',
+			},
+			// Responsive breakpoints
+			breakpoints: {
+				// when window width is >= 480px
+				375: {
+					slidesPerView: 2,
+					spaceBetween: 3,
+				},
+				769: {
+					slidesPerView: 4,
+					spaceBetween: 10,
+				},
+			},
+		});
+	});
+</script>
+
+{% schema %}
+{
+	"name": "Carousel Products",
+	"class": "carouselProducts",
+	"settings": [
+		{
+			"type": "collection",
+			"id": "collection",
+			"label": "Collection",
+			"info": "Collection products"
+		},
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading Title"
+		},
+		{
+			"type": "select",
+			"id": "align",
+			"label": "Align Title",
+			"default": "left",
+			"options": [
+				{
+					"value": "center",
+					"label": "Center"
+				},
+				{
+					"value": "left",
+					"label": "Left"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"category": "Carousel",
+			"name": "Carousel Products"
+		}
+	]
+}
+{% endschema %}

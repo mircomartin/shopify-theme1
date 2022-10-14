@@ -1,40 +1,49 @@
 <section>
 	<div class="container mx-auto px-4 md:px-0 md:w-3/5 py-16">
-
 		<div class="flex flex-col items-center gap-y-4 mb-4">
 			{% if section.settings.show_title_collection %}
-			<h1 class="text-center text-4xl tracking-widest">{{ section.settings.title | upcase }}</h1>		
+				<h1 class="text-center text-4xl tracking-widest">
+					{{ section.settings.title | upcase }}
+				</h1>
 			{% endif %}
 			{% if section.settings.show_subtitle_collection %}
-			<h3 class="text-xs">{{ section.settings.subtitle_text | upcase }}</h3>				
+				<h3 class="text-xs">{{ section.settings.subtitle_text | upcase }}</h3>
 			{% endif %}
 		</div>
 
 		<div class="grid grid-cols-2 md:grid-cols-3 gap-12 md:gap-28">
 			{% for collection in collections %}
-			{% if collection.all_products_count > 0 %}
-			<div class="flex flex-col gap-2">
-				<figure class="overflow-hidden h-96">
-					<a href="{{ collection.url }}">
-						{% if collection.featured_image != blank %}
-						{% assign collection_image = collection.featured_image %}
-						{% else %}		
-						{% assign collection_image = collection.products.first.image %}
-						{% endif %}
-						<img src="{{ collection_image | img_url: 'large' }}" alt="{{ collection_image.alt }}" class="w-full h-full object-cover transition duration-1000 ease-in-out hover:scale-105 transform">
-					</a>
-				</figure>
-				<div class="flex flex-col gap-2">
-					<h3 class="text-sm tracking-wide">{{ collection.title }}</h3>
-					<a href="{{ collection.url }}" class="text-sm underline tracking-wide">Shop {{collection.title}} ></a>
-				</div>
-			</div>
-			{% endif %}
+				{% if collection.all_products_count > 0 %}
+					<div class="flex flex-col gap-2">
+						<figure class="overflow-hidden h-96">
+							<a href="{{ collection.url }}">
+								{% if collection.featured_image != blank %}
+									{% assign collection_image = collection.featured_image %}
+								{% else %}
+									{% assign collection_image = collection.products.first.image %}
+								{% endif %}
+								<img
+									loading="lazy"
+									src="{{ collection_image | img_url: 'large' }}"
+									alt="{{ collection_image.alt }}"
+									class="w-full h-full object-cover transition duration-1000 ease-in-out hover:scale-105 transform"
+								>
+							</a>
+						</figure>
+						<div class="flex flex-col gap-2">
+							<h3 class="text-sm tracking-wide">{{ collection.title }}</h3>
+							<a
+								href="{{ collection.url }}"
+								class="text-sm underline tracking-wide"
+								>Shop {{ collection.title }} ></a
+							>
+						</div>
+					</div>
+				{% endif %}
 			{% else %}
-			{% render 'product-card-placeholder' %}
+				{% render 'product-card-placeholder' %}
 			{% endfor %}
 		</div>
-
 	</div>
 </section>
 

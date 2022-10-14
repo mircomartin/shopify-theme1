@@ -1,0 +1,34 @@
+{% form 'customer_login', return_to: routes.account_url %}
+	{% if form.errors %}
+		<div class="relative border border-red-400 bg-red-100 text-red-700 px-4 py-3 mb-4" role="alert">
+			<strong class="font-bold uppercase">Error!</strong>
+			<p class="block sm:inline">{{ form.errors | default_errors | upcase }}</p>
+		</div>
+	{% endif %}
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="email_address" class="uppercase">Email</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="email" 
+			name="customer[email]" 
+			id="email_address"
+			autocomplete="email">
+	</div>
+
+	{% if form.password_needed %}
+	<div class="flex flex-col gap-1.5">
+		<label for="password" class="uppercase">Password</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="password" 
+			name="customer[password]" 
+			id="password"
+			autocomplete="current-password">
+	</div>
+	{% endif %}
+
+	<div class="flex justify-center md:justify-start mt-4">
+		<button type="submit" class="py-4 px-6 tracking-wider uppercase border border-black bg-white hover:bg-black hover:text-white">Sign In</button>
+	</div>
+{% endform %}

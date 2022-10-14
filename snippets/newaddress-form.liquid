@@ -1,0 +1,121 @@
+{% form 'customer_address', customer.new_address %}
+	{% if form.errors %}
+		<div class="relative border border-red-400 bg-red-100 text-red-700 px-4 py-3 mb-4" role="alert">
+			<strong class="font-bold uppercase">Error!</strong>
+			<p class="block sm:inline">{{ form.errors | default_errors | upcase }}</p>
+		</div>
+	{% endif %}
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_fname_{{ form.id }}" class="uppercase">First Name</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[first_name]" 
+			id="address_fname_{{ form.id }}"
+			value="{{ form.first_name }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_lname_{{ form.id }}" class="uppercase">Last Name</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[last_name]" 
+			id="address_lname_{{ form.id }}"
+			value="{{ form.last_name }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_company_{{ form.id }}" class="uppercase">Company</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[company]" 
+			id="address_company_{{ form.id }}"
+			value="{{ form.company }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_address1_{{ form.id }}" class="uppercase">Address 1</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[address1]" 
+			id="address_address1_{{ form.id }}"
+			value="{{ form.address1 }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_address2_{{ form.id }}" class="uppercase">Address 2</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[address2]" 
+			id="address_address2_{{ form.id }}"
+			value="{{ form.address2 }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_city_{{ form.id }}" class="uppercase">City</label>
+		<input 
+			class="p-2.5 border border-slate-300"
+			type="text" 
+			name="address[city]" 
+			id="address_city_{{ form.id }}"
+			value="{{ form.city }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_country_{{ form.id }}" class="uppercase">Country</label>
+		<select 
+			class="p-2.5 border border-slate-300"
+			name="address[country]" 
+			id="address_country_{{ form.id }}"
+			value="{{ form.country }}"
+			data-country-selector
+			data-id="{{ form.id }}">
+			{{ all_country_option_tags }}
+		</select>
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_province_{{ form.id }}" class="uppercase">Province</label>
+		<select 
+			class="p-2.5 border border-slate-300"
+			name="address[province]" 
+			id="address_province_{{ form.id }}"
+			value="{{ form.province }}">
+		</select>
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_zip_{{ form.id }}" class="uppercase">Postal/Zip Code</label>
+		<input 
+			type="text"
+			class="p-2.5 border border-slate-300"
+			name="address[zip]" 
+			id="address_zip_{{ form.id }}"
+			value="{{ form.zip }}">
+	</div>
+
+	<div class="flex flex-col gap-1.5 mb-4">
+		<label for="address_phone_{{ form.id }}" class="uppercase">Phone Number</label>
+		<input 
+			type="tel"
+			class="p-2.5 border border-slate-300"
+			name="address[phone]" 
+			id="address_phone_{{ form.id }}"
+			value="{{ form.phone }}">
+	</div>
+
+	<div class="mb-4">
+		{{ form.set_as_default_checkbox }}
+		<label for="address_default_address_{{ form.id }}" class="uppercase">Set as Default Address</label>
+	</div>
+
+	<div class="flex flex-col w-100 items-center gap-3">
+		<button type="submit" class="py-4 px-6 tracking-wider uppercase border border-black bg-white hover:bg-black hover:text-white">Create</button>
+		<button type="reset" class="py-4 px-6 text-white tracking-wider uppercase border border-black bg-black hover:bg-white hover:text-black" >Cancel</button>
+	</div>
+{% endform %}

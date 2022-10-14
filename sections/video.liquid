@@ -24,7 +24,7 @@
 
 		{% if section.settings.video_url == blank and section.settings.mp4url != blank %}
 		<video width="100%" {% if section.settings.autoplay %} autoplay {% endif %}loop muted playsinline>
-			<source src="{{section.settings.mp4url}}" codecs="avc1.4d002a, mp4a.40.2" type="video/mp4">
+			<source src="{{ section.settings.mp4url }}" codecs="avc1.4d002a, mp4a.40.2" type="video/mp4">
 			Your browser does not support the video tag.
 			</source>
 		</video>

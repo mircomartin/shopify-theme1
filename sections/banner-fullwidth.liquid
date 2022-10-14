@@ -1,44 +1,64 @@
 <section class="w-full my-10">
 	<figure class="relative">
-
 		<a href="{{ section.settings.button_link }}">
-			<img src="{{ section.settings.image_desktop | img_url: 'master' }}" alt="{{ section.settings.image_desktop.alt }}" class="h-auto w-full	object-cover hidden md:block" />
+			<img
+				loading="lazy"
+				src="{{ section.settings.image_desktop | img_url: 'master' }}"
+				alt="{{ section.settings.image_desktop.alt }}"
+				class="h-auto w-full object-cover hidden md:block"
+			>
 
 			{% if section.settings.image_mobile != blank %}
-			<img src="{{ section.settings.image_mobile | img_url: 'large' }}" alt="{{ section.settings.image_mobile.alt }}" class="h-auto w-full object-cover block md:hidden" />
+				<img
+					loading="lazy"
+					src="{{ section.settings.image_mobile | img_url: 'large' }}"
+					alt="{{ section.settings.image_mobile.alt }}"
+					class="h-auto w-full object-cover block md:hidden"
+				>
 			{% else %}
-			<img src="{{ section.settings.image_desktop | img_url: 'master' }}" alt="{{ section.settings.image_desktop.alt }}" class="h-auto w-full	object-cover hidden md:block" />
+				<img
+					loading="lazy"
+					src="{{ section.settings.image_desktop | img_url: 'master' }}"
+					alt="{{ section.settings.image_desktop.alt }}"
+					class="h-auto w-full object-cover hidden md:block"
+				>
 			{% endif %}
 		</a>
 
 		{% if section.settings.title != blank %}
-		<div class="c-textBlock absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:max-w-lg">
-			
-			<h2 class="tracking-wider text-2xl font-bold text-center md:text-left">{{ section.settings.title | upcase }}</h2>
+			<div class="c-textBlock absolute flex flex-col gap-2 md:gap-5 bottom-0 md:top-2/4 md:bottom-2/4 md:-translate-y-1/2 items-center w-full md:items-start py-2 md:max-w-lg">
+				<h2 class="tracking-wider text-2xl font-bold text-center md:text-left">
+					{{ section.settings.title | upcase }}
+				</h2>
 
-			{% if section.settings.subtext_title != blank %}
-			<h3 class="text-{{ section.settings.text_color }} tracking-wider text-xs text-center md:text-left">{{ section.settings.subtext_title | upcase }}</h3>
-			{% endif %}
+				{% if section.settings.subtext_title != blank %}
+					<h3 class="text-{{ section.settings.text_color }} tracking-wider text-xs text-center md:text-left">
+						{{ section.settings.subtext_title | upcase }}
+					</h3>
+				{% endif %}
 
-			{% if section.settings.button_link != blank %}
-			<a href="{{ section.settings.button_link }}" class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider">{{ section.settings.text_button | upcase }}</a>
-			{% endif %}
-			
-		</div>
+				{% if section.settings.button_link != blank %}
+					<a
+						href="{{ section.settings.button_link }}"
+						class="bg-white text-sm border border-black hover:bg-black hover:text-white px-3 py-2 md:px-6 md:py-4 uppercase tracking-wider"
+					>
+						{{- section.settings.text_button | upcase -}}
+					</a>
+				{% endif %}
+			</div>
 		{% endif %}
-		
 	</figure>
 </section>
 
 <style type="text/css">
-	@media (min-width: 768px) { 
-		.bannerFullWidth .c-textBlock {
-			{{ section.settings.location }}: 4rem; 
-		}
-		.bannerFullWidth .c-textBlock h2 {
-			color: {{ section.settings.text_color }};
-		}
-	 }
+    @media (min-width: 768px) {
+        .bannerFullWidth .c-textBlock {
+            {{ section.settings.location }}: 4rem;
+        }
+        .bannerFullWidth .c-textBlock h2 {
+            color: {{ section.settings.text_color }};
+        }
+    }
 </style>
 
 {% schema %}
@@ -117,7 +137,7 @@
 	"presets": [
 		{
 			"category": "Banners",
-			"name":"Banner Full-Width"
+			"name": "Banner Full-Width"
 		}
 	]
 }

@@ -1,0 +1,97 @@
+<!-- Overlay -->
+<div
+	data-ajax-cart-toggle-class-button="js-my-cart-open | remove"
+	class="fixed inset-0 c_overlay w-full h-screen bg-gray-200 bg-opacity-80"
+	aria-hidden="true"
+></div>
+<!-- Overlay -->
+<div class="fixed inset-y-0 right-0 max-w-full flex overflow-hidden drawer">
+	<div class="w-screen max-w-xs bg-white drawer__wrapper" data-ajax-cart-section>
+		<div class="flex items-center p-4 border-b border-b-slate-300 border-x-0 border-t-0 mb-4">
+			<h2 class="flex-1 uppercase">My cart</h2>
+			<button
+				type="button"
+				class="text-gray-400"
+				data-ajax-cart-toggle-class-button="js-my-cart-open | remove"
+			>
+				<span class="sr-only">Close panel</span>
+				{% render 'icon-close' %}
+			</button>
+		</div>
+
+		<div class="h-full flex flex-col overflow-y-scroll">
+			{% render 'form-cart-drawer' %}
+		</div>
+	</div>
+</div>
+
+<style>
+	.js-ajax-cart-empty .cartIcon {
+		display: none;
+	}
+	.js-ajax-cart-not-empty .cartIcon {
+		display: block;
+	}
+	.drawer {
+		transform: translateX(100%);
+		transition: transform 0.3s ease-in;
+	}
+	.js-my-cart-open .drawer {
+		transform: translateX(0);
+		transition: transform 0.3s ease-out;
+	}
+	.js-my-cart-open .c_overlay {
+		display: block;
+	}
+	.c_overlay {
+		display: none;
+	}
+	@keyframes spinner {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	.js-ajax-cart-request-in-progress .drawer__content {
+		opacity: 0.5;
+	}
+	.js-ajax-cart-request-in-progress .drawer:before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 20px;
+		height: 20px;
+		margin-top: -10px;
+		margin-left: -10px;
+		border-radius: 50%;
+		border: 2px solid #ccc;
+		border-top-color: #000;
+		animation: spinner 0.6s linear infinite;
+	}
+	form.js-ajax-cart-form-in-progress [type='submit'],
+	form.js-ajax-cart-form-in-progress input[type='submit'] {
+		font-size: 0;
+		line-height: initial;
+		opacity: 0.5;
+	}
+	form.js-ajax-cart-form-in-progress [type='submit']:after,
+	form.js-ajax-cart-form-in-progress input[type='submit']:after {
+		content: 'Adding to cart…';
+		display: block;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		color: white;
+	}
+	.drawer input::-webkit-outer-spin-button,
+	.drawer input::-webkit-inner-spin-button,
+	.template-cart input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	/* Firefox */
+	.drawer input[type='number'],
+	.template-cart input[type='number'] {
+		-moz-appearance: textfield;
+	}
+</style>

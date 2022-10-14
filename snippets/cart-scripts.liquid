@@ -1,0 +1,94 @@
+<script type='application/json' data-ajax-cart-initial-state>
+	{{ cart | json }}
+</script>
+<script type='module'>
+	import '{{ "liquid-ajax-cart-v1.10.3.js" | asset_url }}';
+</script>
+<script type='application/json' data-ajax-cart-configuration>
+	{
+		"addToCartCssClass": "js-my-cart-open"
+	}
+</script>
+<script type='module'>
+	import { subscribeToCartAjaxRequests, getCartState, subscribeToCartStateUpdate } from '{{ "liquid-ajax-cart-v1.10.3.js" | asset_url }}';
+
+	const limit = 2;
+
+	// Returns object { 'variant_id': quantity } from the current cart
+	function getCartVariants() {
+		const result = {};
+		const state = getCartState();
+		for (let i in state.cart.items) {
+		const item = state.cart.items[i];
+		if (!(item.variant_id in result)) {
+			result[item.variant_id] = 0;
+		}
+		result[item.variant_id] += item.quantity;
+		}
+		return result;
+	}
+
+	// Go through all the variants in the cart and find those that quantity is equal to the limit
+	subscribeToCartStateUpdate(() => {
+		const cartVariants = getCartVariants();
+		for (let variant in cartVariants) {
+		if (cartVariants[variant] >= limit) {
+			// Disable all the "add to cart", "Plus 1" buttons related to the variant
+
+			// If you want you can run a cartRequestUpdate to reduce the quantity for those variants that exceed the limit
+			// But it might be tricky if your items have properties, then your cart might contain few items with the same variant_id
+		}
+		}
+	})
+
+	// If an "Add to cart" request happens — reduce the request quantity not to exceed the limit
+	subscribeToCartAjaxRequests(requestState => {
+		if ( requestState.requestType === 'add' ) {
+		let variant = undefined; // current variant that is going to be added to the cart
+		let quantity = 1; // current quantity that is going to be added to the cart
+
+		if (requestState.requestBody instanceof FormData || requestState.requestBody instanceof URLSearchParams) { // If the request comes from Form
+			if (requestState.requestBody.has('id')) {
+			variant = requestState.requestBody.get('id');
+			}
+			if (requestState.requestBody.has('quantity')) {
+			quantity = Number(requestState.requestBody.get('quantity').toString());
+			}
+		} else if (requestState.requestBody.items) { // If the request is { items: [{ id: 123456, quantity: 1 }] }
+			variant = requestState.requestBody.items[0].id;
+			if ('quantity' in requestState.requestBody.items[0]) {
+			quantity = Number(requestState.requestBody.items[0].quantity);
+			}
+		} else { // If the request is { id: 123456, quantity: 1 }
+			variant = requestState.requestBody.id;
+			if ('quantity' in requestState.requestBody) {
+			quantity = Number(requestState.requestBody.quantity);
+			}
+		}
+
+		if (!variant || isNaN(quantity)) return;
+		const cartVariants = getCartVariants();
+		const alreadyInCart = cartVariants[variant] || 0;
+
+		// If current cart items + adding items don't exceed the limit — don't do anything
+		if (alreadyInCart + quantity <= limit) return;
+
+		// Calculate how many items we can add to the cart and not exceed the limit
+		let newQuantity = limit - alreadyInCart;
+		if (newQuantity < 0) {
+			newQuantity = 0;
+		}
+		document.querySelector('#errorMessage').classList.remove('hidden')
+		document.querySelector('#errorMessage').textContent = `You're trying to add more than ${ limit } products to your cart. ${ newQuantity > 0 ? `We will add only ${ newQuantity }` : '' }`
+		// It is not possible to cancel the current request in Liquid Ajax Cart,
+		// but it is possible to adjust it
+		if (requestState.requestBody instanceof FormData || requestState.requestBody instanceof URLSearchParams) {
+			requestState.requestBody.set('quantity', newQuantity);
+		} else if (requestState.requestBody.items) {
+			requestState.requestBody.items[0].quantity = newQuantity;
+		} else {
+			requestState.requestBody.quantity = newQuantity;
+		}
+		}
+	});
+</script>
