@@ -1,247 +1,187 @@
 {% if section.settings.menu.links == blank %}
-	{% assign main_menu_linklist = linklists[section.settings.menu].links %}
+  {% assign main_menu_linklist = linklists[section.settings.menu].links %}
 {% else %}
-	{% assign main_menu_linklist = section.settings.menu.links %}
+  {% assign main_menu_linklist = section.settings.menu.links %}
 {% endif %}
 
-<div class="relative bg-white py-5 md:py-0 md:mb-12" x-data="{ mobileMenuOpen: false}">
-	<div class="mx-auto px-3 sm:px-6">
-		<div class="flex justify-between items-center md:justify-start md:space-x-10">
-			<div class="flex justify-start items-center truncate gap-x-2 md:gap-x-0">
-				<!-- Hamburger Menu -->
-				<div class="flex md:hidden">
-					<button
-						@click="mobileMenuOpen = true"
-						class="focus:outline-none"
-						type="button"
-					>
-						{% render 'icon-menu' %}
-					</button>
-				</div>
+<style>
+  [x-cloak] {
+    display: none !important;
+  }
+</style>
 
-				<!-- Store name / logo -->
-				<section>
-					<a href="{{ shop.secure_url }}" class="flex no-underline">
-						{% if settings.logo == blank and settings.logoSVG == blank %}
-							<h1 class="text-xl font-bold truncate">
-								{{ shop.name }}
-							</h1>
-						{% else %}
-							{% assign logo = settings.logoSVG %}
-							{% if logo == blank %}
-								{% assign logo = settings.logo %}
-								<figure class="m-0 max-w-xs overflow-hidden">
-									<img
-										loading="lazy"
-										src="{{ logo | img_url: 'small' }}"
-										alt="{{ logo.image.alt }}"
-										class="w-full"
-									>
-								</figure>
-							{% else %}
-								{% render 'logo-svg', logo: logo %}
-							{% endif %}
-						{% endif %}
-					</a>
-				</section>
-			</div>
+<div class="relative bg-white py-5 md:py-0 md:mb-12" x-data="{ mobileMenuOpen: false}" x-cloak>
+  <div class="mx-auto px-3 sm:px-6">
+    <div class="flex justify-between items-center md:justify-start md:space-x-10">
+      <div class="flex justify-start items-center truncate gap-x-2 md:gap-x-0">
+        <!-- Hamburger Menu -->
+        <div class="flex md:hidden">
+          <button @click="mobileMenuOpen = true" class="focus:outline-none" type="button">
+            {% render 'icon-menu' %}
+          </button>
+        </div>
 
-			<!-- Nav Menu -->
-			<nav class="hidden md:flex">
-				{% for link in main_menu_linklist %}
-					{% if link.links != blank %}
-						{% assign link_handle = link.handle | replace: '-', '_' %}
+        <!-- Store name / logo -->
+        <section>
+          <a href="{{ shop.secure_url }}" class="flex no-underline">
+            {% if settings.logo == blank and settings.logoSVG == blank %}
+              <h1 class="text-xl font-bold truncate">
+                {{ shop.name }}
+              </h1>
+            {% else %}
+              {% assign logo = settings.logoSVG %}
+              {% if logo == blank %}
+                {% assign logo = settings.logo %}
+                <figure class="m-0 max-w-xs overflow-hidden">
+                  <img loading="lazy" src="{{ logo | img_url: 'small' }}" alt="{{ logo.image.alt }}" class="w-full">
+                </figure>
+              {% else %}
+                {% render 'logo-svg', logo: logo %}
+              {% endif %}
+            {% endif %}
+          </a>
+        </section>
+      </div>
 
-						<div
-							x-data="{ {{ link_handle }}: false}"
-							@mouseleave="{{ link_handle }} = false"
-						>
-							<a
-								href="{{ link.url }}"
-								@mouseover="{{ link_handle }} = true"
-								class="inline-flex items-center gap-2 tracking-wide hover:bg-stone-100 p-5"
-							>
-								{{ link.title | upcase }}
-								{% render 'icon-dropdown' %}
-							</a>
+      <!-- Nav Menu -->
+      <nav class="hidden md:flex">
+        {% for link in main_menu_linklist %}
+          {% if link.links != blank %}
+            {% assign link_handle = link.handle | replace: '-', '_' %}
 
-							<div
-								x-show="{{ link_handle }}"
-								x-transition:enter="transition ease-out duration-300"
-								x-transition:enter-start="opacity-0 transform scale-90"
-								x-transition:enter-end="opacity-100 transform scale-100"
-								x-transition:leave="transition ease-in duration-300"
-								x-transition:leave-start="opacity-100 transform scale-100"
-								x-transition:leave-end="opacity-0 transform scale-90"
-								class="absolute left-0 w-full bg-stone-100"
-							>
-								<ul class="flex">
-									{% for childlink in link.links %}
-										<li>
-											<a
-												href="{{ childlink.url }}"
-												class="font-bold py-4 px-5 text-xs tracking-wide inline-block"
-											>
-												{{ childlink.title | upcase }}
-											</a>
-										</li>
-									{% endfor %}
-								</ul>
-							</div>
-						</div>
-					{% else %}
-						<a href="{{ link.url }}" class="tracking-wide hover:bg-stone-100 p-5">
-							{{- link.title | upcase -}}
-						</a>
-					{% endif %}
-				{% endfor %}
-			</nav>
+            <div x-data="{ {{ link_handle }}: false}" @mouseleave="{{ link_handle }} = false">
+              <a href="{{ link.url }}" @mouseover="{{ link_handle }} = true" class="inline-flex items-center gap-2 tracking-wide hover:bg-stone-100 p-5">
+                {{ link.title | upcase }}
+                {% render 'icon-dropdown' %}
+              </a>
 
-			<!-- Search/Cart/User -->
-			<section class="flex items-center justify-end md:flex-1 gap-x-2.5">
-				<div x-data="{ open: false }">
-					<button
-						@click="open = true"
-						class="flex"
-					>
-						{% render 'icon-search' %}
-					</button>
+              <div x-show="{{ link_handle }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" class="absolute left-0 w-full bg-stone-100">
+                <ul class="flex">
+                  {% for childlink in link.links %}
+                    <li>
+                      <a href="{{ childlink.url }}" class="font-bold py-4 px-5 text-xs tracking-wide inline-block">
+                        {{ childlink.title | upcase }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ link.url }}" class="tracking-wide hover:bg-stone-100 p-5">
+              {{- link.title | upcase -}}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </nav>
 
-					<!-- Search Container -->
-					<div
-						x-show="open"
-						@click.away="open = false"
-						x-transition:enter="transition ease-out duration-300"
-						x-transition:enter-start="opacity-0 transform scale-90"
-						x-transition:enter-end="opacity-100 transform scale-100"
-						x-transition:leave="transition ease-in duration-300"
-						x-transition:leave-start="opacity-100 transform scale-100"
-						x-transition:leave-end="opacity-0 transform scale-90"
-						class="absolute left-0 top-full w-full flex justify-center"
-					>
-						<form action="{{ routes.search_url }}" method="get" class="w-5/6 md:w-1/2">
-							<label class="flex gap-2">
-								<input
-									type="search"
-									name="q"
-									placeholder="SEARCH"
-									class="flex-1 border-b border-b-slate-300 p-2.5"
-								>
-								<button class="border-0" type="submit">{% render 'icon-search' %}</button>
-							</label>
-						</form>
-					</div>
-				</div>
+      <!-- Search/Cart/User -->
+      <section class="flex items-center justify-end md:flex-1 gap-x-2.5">
+        <div x-data="{ open: false }">
+          <button @click="open = true" class="flex">
+            {% render 'icon-search' %}
+          </button>
 
-				{% if shop.customer_accounts_enabled %}
-					{% if customer %}
-						<a href="{{ routes.account_url }}" class="cursor-pointe">
-							{%- render 'icon-user' -%}
-						</a>
-					{% else %}
-						<a href="{{ routes.account_url }}" class="cursor-pointer">
-							{% render 'icon-user' %}
-						</a>
-					{% endif %}
-				{% endif %}
+          <!-- Search Container -->
+          <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" class="absolute left-0 top-full w-full flex justify-center">
+            <form action="{{ routes.search_url }}" method="get" class="w-5/6 md:w-1/2">
+              <label class="flex gap-2">
+                <input type="search" name="q" placeholder="SEARCH" class="flex-1 border-b border-b-slate-300 p-2.5">
+                <button class="border-0" type="submit">{% render 'icon-search' %}</button>
+              </label>
+            </form>
+          </div>
+        </div>
 
-				<button
-					type="button"
-					data-ajax-cart-toggle-class-button="js-my-cart-open"
-					class="relative"
-				>
-					<div class="absolute -top-3.5 -right-3 cartIcon">
-						(<span data-ajax-cart-bind-state="cart.item_count"> {{ cart.item_count }} </span>)
-					</div>
-					{% render 'icon-shopping-bag' %}
-				</button>
-			</section>
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <a href="{{ routes.account_url }}" class="cursor-pointe">
+              {%- render 'icon-user' -%}
+            </a>
+          {% else %}
+            <a href="{{ routes.account_url }}" class="cursor-pointer">
+              {% render 'icon-user' %}
+            </a>
+          {% endif %}
+        {% endif %}
 
-			<!-- Mobile Menu Container -->
-			<section
-				@click.away="mobileMenuOpen = false"
-				x-show="mobileMenuOpen"
-				class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden"
-			>
-				<div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
-					<div class="p-2.5 divide-y-2 divide-gray-50">
-						<!-- Mobile Menu header Close Button -->
-						<div class="flex items-center justify-between pb-3">
-							<div>
-								<h1 class="text-lg text-black">
-									{{ section.settings.mobile_menu_title }}
-								</h1>
-							</div>
-							<div class="-mr-2">
-								<button
-									@click="mobileMenuOpen = false"
-									class="bg-white rounded-md p-2 text-black"
-									type="button"
-								>
-									{% render 'icon-close' %}
-								</button>
-							</div>
-						</div>
+        <button type="button" data-ajax-cart-toggle-class-button="js-my-cart-open" class="relative">
+          <div class="absolute -top-3.5 -right-3 cartIcon">
+            (<span data-ajax-cart-bind-state="cart.item_count">
+              {{ cart.item_count }}
+            </span>)
+          </div>
+          {% render 'icon-shopping-bag' %}
+        </button>
+      </section>
 
-						<!-- Navigation Links -->
-						<div class="pt-3">
-							<nav class="grid gap-y-5">
-								{% for link in main_menu_linklist %}
-									{% if link.links != blank %}
-										{% assign mobile_link_handle = link.handle | replace: '-', '_' %}
-										<div class="relative" x-data="{ {{ mobile_link_handle }}: false}">
-											<button
-												@click="{{ mobile_link_handle }} = true"
-												class="text-xs text-black uppercase flex items-center justify-between w-full"
-											>
-												{{ link.title }}
-												{% render 'icon-dropdown' %}
-											</button>
-											<div
-												class="grid gap-y-1.5 mt-1.5"
-												x-show="{{ mobile_link_handle }}"
-												@click.away="{{ mobile_link_handle }} = false"
-											>
-												{% for childlink in link.links %}
-													<a
-														href="{{ childlink.url }}"
-														class="flex items-center rounded-md text-black text-xs uppercase"
-														><span class="ml-3">{{ childlink.title }}</span></a
-													>
-												{% endfor %}
-											</div>
-										</div>
-									{% else %}
-										<a href="{{ link.url }}" class="text-xs text-black uppercase">
-											{{- link.title -}}
-										</a>
-									{% endif %}
-								{% endfor %}
-							</nav>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
+      <!-- Mobile Menu Container -->
+      <section @click.away="mobileMenuOpen = false" x-show="mobileMenuOpen" class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+        <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+          <div class="p-2.5 divide-y-2 divide-gray-50">
+            <!-- Mobile Menu header Close Button -->
+            <div class="flex items-center justify-between pb-3">
+              <div>
+                <h1 class="text-lg text-black">
+                  {{ section.settings.mobile_menu_title }}
+                </h1>
+              </div>
+              <div class="-mr-2">
+                <button @click="mobileMenuOpen = false" class="bg-white rounded-md p-2 text-black" type="button">
+                  {% render 'icon-close' %}
+                </button>
+              </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="pt-3">
+              <nav class="grid gap-y-5">
+                {% for link in main_menu_linklist %}
+                  {% if link.links != blank %}
+                    {% assign mobile_link_handle = link.handle | replace: '-', '_' %}
+                    <div class="relative" x-data="{ {{ mobile_link_handle }}: false}">
+                      <button @click="{{ mobile_link_handle }} = true" class="text-xs text-black uppercase flex items-center justify-between w-full">
+                        {{ link.title }}
+                        {% render 'icon-dropdown' %}
+                      </button>
+                      <div class="grid gap-y-1.5 mt-1.5" x-show="{{ mobile_link_handle }}" @click.away="{{ mobile_link_handle }} = false">
+                        {% for childlink in link.links %}
+                          <a href="{{ childlink.url }}" class="flex items-center rounded-md text-black text-xs uppercase">
+                            <span class="ml-3">{{ childlink.title }}</span>
+                          </a>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% else %}
+                    <a href="{{ link.url }}" class="text-xs text-black uppercase">
+                      {{- link.title -}}
+                    </a>
+                  {% endif %}
+                {% endfor %}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
 
 {% schema %}
-{
-	"name": "Header",
-	"settings": [
-		{
-			"type": "text",
-			"id": "mobile_menu_title",
-			"default": "Menu",
-			"label": "Mobile Menu Title"
-		},
-		{
-			"type": "link_list",
-			"id": "menu",
-			"default": "main-menu",
-			"label": "Main Navigation"
-		}
-	]
-}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "text",
+        "id": "mobile_menu_title",
+        "default": "Menu",
+        "label": "Mobile Menu Title"
+      }, {
+        "type": "link_list",
+        "id": "menu",
+        "default": "main-menu",
+        "label": "Main Navigation"
+      }
+    ]
+  }
 {% endschema %}

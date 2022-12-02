@@ -1,13 +1,18 @@
 {
-	"sections": {
-		"template": {
-			"type": "template-collection",
-			"blocks": {},
-			"block_order": []
-		},
-		"carousel-products": {
-			"type": "carousel-products"
-		}
-	},
-	"order": ["template", "carousel-products"]
+  "sections": {
+    "template": {
+      "type": "template-collection",
+      "settings": {
+      }
+    },
+    "carousel-products": {
+      "type": "carousel-products",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "template",
+    "carousel-products"
+  ]
 }

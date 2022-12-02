@@ -48,7 +48,7 @@
 
 		<!-- Product Information -->
 		<div class="product--information px-4 md:px-0 md:sticky">
-			{% form 'product', product, id: 'product-form', novalidate: 'novalidate', x-ref: 'product_form' %}
+			{% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
 				<input type="hidden" name="id" value="{{ selected_variant.id }}">
 				<div class="flex flex-col gap-y-6">
 					{% for block in section.blocks %}
@@ -124,10 +124,54 @@
 									</div>
 								{% endif %}
 							{% when 'variant_selector' %}
+
+								<!--GloboApp Variants-->
+								<div class="globo-swatch-product-detail"></div>
+								<!--GloboApp Variants-->
+
 								{% unless product.has_only_default_variant %}
+
+									<div class="product-option">
+										{% for option in product.options_with_values %}
+											{% if option.name == 'Size' %}
+											<div>
+												{{ option.name }}: {{ option.selected_value }}
+												{% for value in option.values %}
+
+												<div>
+													<input type="radio" {% if option.selected_value == value %}checked{% endif %}
+													name="{{ option.name }}"
+													value="{{ value }}"
+													id="{{ option.name | handleize }}-{{ value | handleize }}">
+													<label for="{{ option.name | handleize }}-{{ value | handleize }}">{{ value }}</label>
+												</div>
+
+												{% endfor %}
+											</div>
+											{% endif %}
+
+											{% if option.name == 'Color' %}
+											<div>
+												{{ option.name }}: {{ option.selected_value }}
+
+												<div>
+													<select id="{{ option.name | handleize }}-{{ option.selected_value | handleize }}" name="{{ option.name }}" >
+														{% for value in option.values %}
+																<option  value="{{ value }}" {% if option.selected_value == value %}selected="selected"{% endif %}>{{ value }}</option>
+														{% endfor %}
+													</select>
+												</div>
+
+											</div>
+											{% endif %}
+											
+										{% endfor %}
+									</div>
+
 									<variant-selector
 										data-url="{{ product.url }}"
 										data-section="{{ section.id }}"
+										class="hidden"
 									>
 										{% for option in product.options_with_values %}
 											<label
@@ -185,11 +229,11 @@
 									<button
 										type="submit"
 										class="flex-1 p-4 uppercase bg-black text-white text-center"
-										{% if selected_variant.variant.available == false %}
+										{% if selected_variant.available == false %}
 											disabled
 										{% endif %}
 									>
-										{% if selected_variant.variant.available == false %}
+										{% if selected_variant.available == false %}
 											Sold Out
 										{% else %}
 											Add to cart
@@ -300,7 +344,7 @@
 	}
 </style>
 
-<script>
+{%- comment -%} <script>
 	class VariantSelector extends HTMLElement {
 		constructor() {
 			super();
@@ -369,6 +413,24 @@
 		}
 	}
 	customElements.define("variant-selector", VariantSelector)
+</script> {%- endcomment -%}
+
+<script>
+
+	const product = {{ product | json }}
+
+	document.querySelectorAll('.product-option input[type="radio"]').forEach(radio => {
+		radio.addEventListener('change', () => {
+			var selectedOptions = [];
+			document.querySelectorAll('.product-option input[type="radio"]:checked').forEach(radio => {
+				selectedOptions.push(radio.value);
+			})
+
+			console.log(selectedOptions)
+
+		})
+	})
+
 </script>
 
 <script>

@@ -1,10 +1,12 @@
 {
-	"sections": {
-		"template":{
-			"type": "template-list-collections",
-			"blocks": {},
-			"block_order": []
-		}
-	},
-	"order": ["template"]
+  "sections": {
+    "template": {
+      "type": "template-list-collections",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "template"
+  ]
 }

@@ -1,0 +1,32 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
+<div>
+	<figure>
+		<a href="{{ product.url }}">
+			<img src="{{ product.images[0] | img_url: 'large' }}" alt="{{ product.image[0].alt }}">
+		</a>
+	</figure>
+	{% if request.page_type == 'collection' %}
+		{% if product.variants.size > 1 %}
+		<div class="variant-drop-down">
+		<form action="/cart/add" method="post" >
+		<select name="id">
+		{% for variant in product.variants %}
+		{% if variant.available %}
+		<option value="{{ variant.id }}">{{ variant.title }}</option>
+		{% else %}
+		<option disabled="disabled">{{ variant.title }} - Sold Out</option>
+		{% endif %}
+		{% endfor %}
+		</select><br>
+		<input type="submit" value="Buy now" class="variant-button" /><br> <br>
+		</form></div>
+		{% endif %}
+		{% endif %}
+		
+		{% if product.has_only_default_variant %}
+		<form method="post" action="/cart/add">
+		<input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+		<input type="submit" value="Buy now" class="variant-button" />
+		</form>
+		{% endif %}

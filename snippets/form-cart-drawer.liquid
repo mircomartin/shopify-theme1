@@ -1,78 +1,80 @@
 {% if cart.item_count > 0 %}
 	<div class="drawer__content">
-		<form action="{{ routes.cart_url }}" method="post" novalidate>
+		<form action="{{ routes.cart_url }}" method="post" novalidate id="cartContent">
 			<div
 				class="flex flex-1 flex-col"
 				style="height: calc(100vh - 300px); overflow-y: auto;"
-				data-ajax-cart-section-scroll
+				 data-ajax-cart-section
 			>
-				{% for item in cart.items %}
-					{% assign item_index = forloop.index %}
-					<div class="cart__drawer_items flex items-start gap-4 p-3 border-b border-b-slate-300 border-x-0 border-t-0">
-						<a href="{{ item.url }}">
-							{% if item.image %}
-								<img
-									loading="lazy"
-									src="{{ item.image | img_url: 'small' }}"
-									alt="{{ item.title | escape }}"
-									class="w-20 h-auto object-cover"
-								>
-							{% else %}
-								{{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
-							{% endif %}
-						</a>
-						<div class="flex flex-col gap-4">
-							<div class="flex flex-col justify-center md:w-3/4">
-								<a href="{{ item.url }}" class="font-medium">
-									{{- item.product.title | truncatewords: 5 -}}
-								</a>
-
-								{% if item.product.has_only_default_variant == false %}
-									<p class="text-stone-500 font-medium">
-										{{ item.variant.title | upcase }}
-									</p>
+				<div data-ajax-cart-section-scroll>
+					{% for item in cart.items %}
+						{% assign item_index = forloop.index %}
+						<div class="cart__drawer_items flex items-start gap-4 p-3 border-b border-b-slate-300 border-x-0 border-t-0">
+							<a href="{{ item.url }}">
+								{% if item.image %}
+									<img
+										loading="lazy"
+										src="{{ item.image | img_url: 'small' }}"
+										alt="{{ item.title | escape }}"
+										class="w-20 h-auto object-cover"
+									>
+								{% else %}
+									{{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
 								{% endif %}
-							</div>
+							</a>
 							<div class="flex flex-col gap-4">
-								<div class="flex items-center border">
-									<a
-										data-ajax-cart-request-button
-										class="w-1/3 flex justify-center"
-										href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | minus: 1 }}"
-									>
-										{% render 'icon-minus' %}
+								<div class="flex flex-col justify-center md:w-3/4">
+									<a href="{{ item.url }}" class="font-medium">
+										{{- item.product.title | truncatewords: 5 -}}
 									</a>
-									<input
-										data-ajax-cart-quantity-input="{{ item_index }}"
-										type="number"
-										name="updates[]"
-										value="{{ item.quantity }}"
-										min="1"
-										max="5"
-										class="border border-y-0 text-center font-medium flex-1"
-									>
-									<a
-										data-ajax-cart-request-button
-										class="w-1/3 flex justify-center"
-										href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | plus: 1 }}"
-									>
-										{% render 'icon-plus' %}
-									</a>
-								</div>
-								<a
-									class="text-stone-500 tracking-wider uppercase text-xs underline"
-									href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity=0"
-									data-ajax-cart-request-button
-									>Remove</a
-								>
 
-								<div>
-									<p>{{ item.line_price | money }}</p>
+									{% if item.product.has_only_default_variant == false %}
+										<p class="text-stone-500 font-medium">
+											{{ item.variant.title | upcase }}
+										</p>
+									{% endif %}
+								</div>
+								<div class="flex flex-col gap-4">
+									<div class="flex items-center border">
+										<a
+											data-ajax-cart-request-button
+											class="w-1/3 flex justify-center"
+											href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | minus: 1 }}"
+										>
+											{% render 'icon-minus' %}
+										</a>
+										<input
+											data-ajax-cart-quantity-input="{{ item_index }}"
+											type="number"
+											name="updates[]"
+											value="{{ item.quantity }}"
+											min="1"
+											max="5"
+											class="border border-y-0 text-center font-medium flex-1"
+										>
+										<a
+											data-ajax-cart-request-button
+											class="w-1/3 flex justify-center"
+											href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity={{ item.quantity | plus: 1 }}"
+										>
+											{% render 'icon-plus' %}
+										</a>
+									</div>
+									<a
+										class="text-stone-500 tracking-wider uppercase text-xs underline"
+										href="{{ routes.cart_change_url }}?line={{ item_index }}&quantity=0"
+										data-ajax-cart-request-button
+										>Remove</a
+									>
+
+									<div>
+										<p>{{ item.line_price | money }}</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				{% endfor %}
+					{% endfor %}
+				</div>
 			</div>
 
 			<div class="mt-10 px-3 flex flex-col gap-5">

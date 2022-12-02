@@ -902,6 +902,10 @@ video {
   min-height: 500px;
 }
 
+.min-h-full {
+  min-height: 100%;
+}
+
 .w-full {
   width: 100%;
 }
