@@ -344,7 +344,7 @@
 	}
 </style>
 
-{%- comment -%} <script>
+<script>
 	class VariantSelector extends HTMLElement {
 		constructor() {
 			super();
@@ -413,9 +413,9 @@
 		}
 	}
 	customElements.define("variant-selector", VariantSelector)
-</script> {%- endcomment -%}
+</script>
 
-<script>
+<!-- <script>
 
 	const product = {{ product | json }}
 
@@ -431,7 +431,7 @@
 		})
 	})
 
-</script>
+</script> -->
 
 <script>
 	const swiperMobile = new Swiper('.swiper.mobile', {

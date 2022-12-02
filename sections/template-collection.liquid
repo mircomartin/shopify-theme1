@@ -1,125 +1,30 @@
-<!--Breadcrumb-->
-{% if section.settings.breadcrumb %}
-	{% render 'breadcrumb' %}	
-{% endif %}
-<!--Breadcrumb-->
+<!-- Overlay -->
+<div class="fixed inset-0 filter_overlay w-full z-50 min-h-full bg-gray-200 bg-opacity-80 hidden" aria-hidden="true"></div>
+<!-- Overlay -->
+
+<div class="flex justify-between items-center">
+	<!--Breadcrumb-->
+	{% if section.settings.breadcrumb %}
+		{% render 'breadcrumb' %}	
+	{% endif %}
+	<!--Breadcrumb-->
+
+	<div class="px-4">
+		<button id="filter-grid" class="uppercase flex items-center w-[160px] justify-between" style="border: 1px solid #d5d5d5; padding: 0 15px; font-size: 12px;">
+			Filters
+			{% render 'icon-filter' %}
+		</button>
+		{% render 'filters' %}
+	</div>
+
+</div>
+
 <section class="px-4 my-5">
 	{% if section.settings.show_title_collection %}
 		<h1 class="text-center text-4xl my-4 tracking-widest">
 			{{ collection.title | upcase }}
 		</h1>
 	{% endif %}
-
-	<div>
-		<form class="filter-form">
-			{%- for filter in collection.filters -%}
-				<details class="filter-group">
-					<summary class="filter-group-summary">
-						<div>
-							<span>{{ filter.label }}</span>
-
-							{%- if filter.active_values.size > 0 -%}
-								<span>({{ filter.active_values.size }})</span>
-							{%- endif -%}
-						</div>
-					</summary>
-
-					<div class="filter-group-display">
-						<div class="filter-group-display__header">
-							<span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
-
-							{%- if filter.active_values.size > 0 -%}
-								<a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
-							{%- endif -%}
-						</div>
-
-						{%- case filter.type -%}
-							{%- when 'boolean' or 'list' -%}
-								<ul class="filter-group-display__list">
-									{%- for filter_value in filter.values -%}
-										<li class="filter-group-display__list-item">
-											<label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
-											<input type="checkbox"
-												name="{{ filter_value.param_name }}"
-												value="{{ filter_value.value }}"
-												id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
-												{% if filter_value.active -%}checked{%- endif %}
-												{% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-											>{{ filter_value.label }}</label>
-										</li>
-									{%- endfor -%}
-								</ul>
-
-								<div class="filter-group-display__submit">
-									<input type="submit" value="Apply">
-								</div>
-							{%- when 'price_range' -%}
-								<div class="filter-group-display__price-range">
-									<div class="filter-group-display__price-range-from">
-										<span>{{ cart.currency.symbol }}</span>
-
-										<input name="{{ filter.min_value.param_name }}"
-											id="Filter-{{ filter.min_value.param_name }}"
-											{% if filter.min_value.value -%}
-												value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-											{%- endif %}
-											type="number"
-											placeholder="0"
-											min="0"
-											max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-										>
-
-										<label for="Filter-{{ filter.min_value.param_name }}">From</label>
-									</div>
-									<div class="filter-group-display__price-range-to">
-										<span>{{ cart.currency.symbol }}</span>
-
-										<input name="{{ filter.max_value.param_name }}"
-											id="Filter-{{ filter.max_value.param_name }}"
-											{% if filter.max_value.value -%}
-												value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-											{%- endif %}
-											type="number"
-											placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-											min="0"
-											max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-										>
-
-										<label for="Filter-{{ filter.max_value.param_name }}">To</label>
-									</div>
-								</div>
-
-								<div class="filter-group-display__submit">
-									<input type="submit" value="Apply">
-								</div>
-						{%- endcase -%}
-					</div>
-				</details>
-			{%- endfor -%}
-
-			<div class="active-filters">
-				<a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear">Clear all</a>
-
-				{%- for filter in collection.filters -%}
-					{%- if filter.type == "price_range" -%}
-						{%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-							<a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
-								{%- assign min_value = filter.min_value.value | default: 0 -%}
-								{%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-								{{ min_value | money }} - {{ max_value | money }} X
-							</a>
-						{%- endif -%}
-					{%- else -%}
-						{%- for filter_value in filter.active_values -%}
-							<a class="active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
-								{{ filter.label }}: {{ filter_value.label }} X
-							</a>
-						{%- endfor -%}
-					{%- endif- %}
-				{%- endfor -%}
-			</div>
-		</form>
-	</div>
 
 	{% paginate collection.products by section.settings.number_of_products_per_page %}
 		<div class="grid grid-cols-2 gap-4 md:grid-cols-4" id="ProductGridContainer">
@@ -137,16 +42,22 @@
 </section>
 
 <script>
-		const buttonFilter = document.querySelectorAll('.filter-form input[type="checkbox"]');
+	const buttonFilter = document.querySelectorAll('.filter-form input[type="checkbox"]');
 
-		for (let i = 0; i < buttonFilter.length; i++) {
+	for (let i = 0; i < buttonFilter.length; i++) {
+		const element = buttonFilter[i];
+		
+		element.addEventListener('change', e => {
 
-		var url = new URLParse(window.location.href, true);
-			console.log(url)
-			const element = buttonFilter[i];
+			const elementChecked = document.querySelectorAll('.filter-form input[type="checkbox"]:checked')
+			let selectedOptions = [];
 
-			element.addEventListener('change', e => {
-				fetch('/collections/{{ collection.handle }}?' + element.getAttribute('name') + '=' + element.getAttribute('value'))
+			for (let i = 0; i < elementChecked.length; i++) {
+				const element = elementChecked[i];
+				const urlFilter = element.getAttribute('name') + '=' + element.getAttribute('value');
+				selectedOptions.push(urlFilter);
+				console.log(selectedOptions.toString().replace(',','&'))
+				fetch('/collections/{{ collection.handle }}?' + selectedOptions.toString().replace(',','&'))
 					.then(response => response.text())
 					.then(data => {
 						let html_div = document.createElement('div');
@@ -154,13 +65,14 @@
 						let html_dom = html_div.querySelector('#ProductGridContainer').innerHTML;
 						document.querySelector('#ProductGridContainer').innerHTML = html_dom;
 						// update url without refreshing the page 
-						history.replaceState(null, null, '?' + element.getAttribute('name') + '=' + element.getAttribute('value'));
+						history.replaceState(null, null, '?' + selectedOptions.toString().replace(',','&'));
 					})
 					.catch(error => console.error('Error:', error))
 					.finally(() => loading = false);
-			})
+			}
+		})
 
-		}
+	}
 </script>
 
 <style type="text/css">
